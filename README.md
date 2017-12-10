@@ -1,3 +1,5 @@
+<p align="center"><img width="40%" src="src/assets/svg/logo.svg"></p>
+
 # Cody++
 
 Cody++ is a simple and fast web IDE to create C++ applications for ESP32 microcontrollers based on arduino-code syntax.  
@@ -8,7 +10,7 @@ Checkout the [demo](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fische
 
 If you want to take a look at some of the examples mentioned in the menu on the left hand side, feel free to do so.
 
-![alt text](./demo.png)
+<p align="center"><img width="95%" src="demo.png"></p>
 
 ## Quick start
 
