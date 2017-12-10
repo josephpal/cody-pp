@@ -1,0 +1,11 @@
+$break-tablet: 960px;
+
+
+@mixin respond-to($media) {
+  @if $media == tablet {
+    @media only screen and (max-width: $break-tablet) { @content; }
+  }
+  @else if $media == widescreen {
+    @media only screen and (min-width: $break-tablet + 1) { @content; }
+  }
+}
