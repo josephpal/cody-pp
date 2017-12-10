@@ -1,26 +1,7 @@
-# vue-starter
+# Cody++
 
-> A Vue.js starter kit that lets you focus on more programming and less configruation.
+Cody++ is a simple and fast web IDE to create C++ applications for ESP32 microcontrollers based on arduino-code syntax.  
 
-## Build Setup
+## Demo
 
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-```
-# build for production and view the bundle analyzer report
-npm run build --report
-
-
-# run unit tests
-npm run unit
-
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
-=======
+Checkout the [demo](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.0/index.html).
