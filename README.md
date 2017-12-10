@@ -1,4 +1,4 @@
-<p align="center"><img width="40%" src="src/assets/svg/logo.svg"></p>
+<p align="center"><img width="40%" src="logo.png"></p>
 
 # Cody++
 
@@ -18,4 +18,4 @@ So far, no installation instructions are needed. Feel free to use the hosted dem
 
 ## Notification
 
-Neccessary C++ header files (e.g "ft_ESP32_IOobjects.h") are not uploaded yet. 
+Neccessary C++ header files (e.g. "ft_ESP32_IOobjects.h") are not uploaded yet. 
