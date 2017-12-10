@@ -1,4 +1,4 @@
-<p align="center"><img width="40%" src="logo.png"></p>
+<p align="center"><img width="25%" src="logo.png"></p>
 
 # Cody++
 
