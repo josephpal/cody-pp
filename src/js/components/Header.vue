@@ -1,7 +1,7 @@
 <template>
   <header>
-    <h1>Cody++</h1>
-    <p>&#169; Copyright 2017, T. Tr&auml;nkel, F.J. Pal</p>
+    <img class="logo" src="../../assets/svg/logo.svg" />
+    <p>&#169; Copyright {{(new Date()).getFullYear()}}, T. Tränkel, F.J. Pal</p>
   </header>
 </template>
 
@@ -22,5 +22,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .logo {
+      height: 70%;
+      width: auto;
+    }
   }
 </style>
