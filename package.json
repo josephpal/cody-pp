@@ -1,6 +1,6 @@
 {
-  "name": "esp-ide",
-  "description": "A Vue.js project",
+  "name": "cody-pp",
+  "description": "A simple and fast web IDE to create C++ applications for ESP32 microcontrollers based on arduino-code syntax",
   "version": "1.0.0",
   "author": "Joe",
   "private": true,
