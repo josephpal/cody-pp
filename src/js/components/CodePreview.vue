@@ -13,8 +13,8 @@
     </div>
 
     <div class="buttons">
-      <RoundButton :icon="icons.ArrowIcon" @click="onSendButtonClicked" />
-      <RoundButton :icon="icons.StopIcon" @click="onStopButtonClicked" />
+      <RoundButton :icon="icons.ArrowIcon" :enabled="!isRunning" @click="onSendButtonClicked" />
+      <RoundButton :icon="icons.StopIcon" :enabled="isRunning" @click="onStopButtonClicked" />
       <RoundButton :icon="getPlayButtonIcon" @click="onPlayButtonClicked" />
     </div>
   </div>
@@ -61,6 +61,14 @@ export default {
     blocklyInstance: {
       type: Object
     }
+  },
+
+  mounted() {
+    const webSocket = new WebSocket('ws://192.168.0.144');
+
+    webSocket.addEventListener('open', () => setInterval(() => webSocket.send("lala"), 1000));
+    //
+    webSocket.onmessage = (message) => console.log(message.data);
   },
 
   watch: {
