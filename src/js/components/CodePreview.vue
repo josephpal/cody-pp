@@ -66,7 +66,7 @@ export default {
   mounted() {
     const webSocket = new WebSocket('ws://192.168.0.144');
 
-    webSocket.addEventListener('open', () => setInterval(() => webSocket.send("lala"), 1000));
+    webSocket.addEventListener('open', () => setInterval(() => webSocket.send("test message"), 1000));
     //
     webSocket.onmessage = (message) => console.log(message.data);
   },
