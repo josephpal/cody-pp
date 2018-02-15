@@ -14,8 +14,10 @@ const webpackConfig = {
   output: {
     path: config.assetsRoot,
     publicPath: config.assetsPublicPath,
-    filename: config.isDev ? './js/[name].js' : './js/[name].[chunkhash].js',
-    chunkFilename: config.isDev ? './js/[id].js' : './js/chunk.[chunkhash].js',
+    //filename: config.isDev ? './js/[name].js' : './js/[name].[chunkhash].js',
+    filename: config.isDev ? './js/[name].js' : './[name].js',
+    //chunkFilename: config.isDev ? './js/[id].js' : './js/chunk.[chunkhash].js',
+    chunkFilename: config.isDev ? './js/[id].js' : './chunk.js',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -45,7 +47,8 @@ const webpackConfig = {
         loader: 'url-loader',
         options: {
           limit: 100,
-          name: path.posix.join(config.assetsSubDirectory, './img/[name].[hash:7].[ext]'),
+          //name: path.posix.join(config.assetsSubDirectory, './img/[name].[ext]'),
+          name: path.posix.join(config.assetsSubDirectory, './[name].[ext]'),
         },
       },
       {
@@ -53,7 +56,7 @@ const webpackConfig = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: path.posix.join(config.assetsSubDirectory, './media/[name].[hash:7].[ext]'),
+          name: path.posix.join(config.assetsSubDirectory, './media/[name].[ext]'),
         },
       },
       {
@@ -61,7 +64,8 @@ const webpackConfig = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: path.posix.join(config.assetsSubDirectory, './fonts/[name].[hash:7].[ext]'),
+          //name: path.posix.join(config.assetsSubDirectory, './fonts/[name].[ext]'),
+          name: path.posix.join(config.assetsSubDirectory, './[name].[ext]'),
         },
       },
     ],
