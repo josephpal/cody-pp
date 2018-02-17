@@ -74,7 +74,7 @@ Blockly.Dart['motor'] = function(block) {
   var dropdown_motordirection = block.getFieldValue('motorDirection');
   var dropdown_motorspeed = block.getFieldValue('motorSpeed');
   // TODO: Assemble JavaScript into code variable.
-  var code = 'mMotor' + dropdown_motornumber + '.setValues(' + dropdown_motordirection + ',' + dropdown_motorspeed + ');' + '\n';
+  var code = 'mMotorArray[' + dropdown_motornumber + '].setValues(' + dropdown_motordirection + ',' + dropdown_motorspeed + ');' + '\n';
   return code;
 };
 
