@@ -45,8 +45,20 @@ export default {
         name: 'C++'
       },
       {
+        id: Languages.ARDUINOCPP,
+        name: 'C++ (Arduino)'
+      },
+      {
         id: Languages.BASIC,
-        name: 'Basic'
+        name: 'Pseudo Code'
+      },
+      {
+        id: Languages.BASIC_GER,
+        name: 'Pseudo Code (De)'
+      },
+      {
+        id: Languages.JAVASCRIPT,
+        name: 'Javascript'
       },
       {
         id: Languages.INTERNAL,
@@ -86,12 +98,21 @@ export default {
   },
 
   computed: {
+    //syntax-highlighting
     languageClass() {
       switch(this.selectedLanguage) {
         case Languages.CPP:
           return 'cpp';
+        case Languages.ARDUINOCPP:
+          return 'cpp';
         case Languages.BASIC:
           return 'cpp';
+          break;
+        case Languages.BASIC_GER:
+          return 'cpp';
+        case Languages.JAVASCRIPT:
+          return 'cpp';
+          break;
         case Languages.INTERNAL:
           return 'cpp';
         default:
@@ -124,15 +145,29 @@ export default {
 
       switch (this.selectedLanguage) {
         case Languages.CPP:
-          this.code = Blockly.Dart.workspaceToCode(this.blocklyInstance);
+          console.log("CCP");
+          this.code = Blockly.Cpp.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.ARDUINOCPP:
+          console.log("Arduino Cpp");
+          this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.BASIC:
-          this.code = Blockly.JavaScript.workspaceToCode(this.blocklyInstance);
+          console.log("Basic");
+          this.code = Blockly.basic.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.BASIC_GER:
+        console.log("BAsic Ger");
+          this.code = Blockly.basicger.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.JAVASCRIPT:
+          console.log("Javascipt");
           break;
         case Languages.INTERNAL:
+          console.log("Internal");
           resetLogicCounterVar();
           resetLoopsCounterVar();
-          this.code = Blockly.Lua.workspaceToCode(this.blocklyInstance);
+          this.code = Blockly.interncode.workspaceToCode(this.blocklyInstance);
           break;
         default:
           this.code = '';

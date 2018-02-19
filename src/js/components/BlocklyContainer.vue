@@ -8,6 +8,14 @@
 import Blockly from 'node-blockly/browser';
 import '../utils/blockly/custom_blocks';
 import '../utils/blockly/lua';
+
+import '../utils/blockly/cpp';
+import '../utils/blockly/arduinocpp';
+import '../utils/blockly/basic';
+import '../utils/blockly/basicger';
+import '../utils/blockly/javascript';
+import '../utils/blockly/interncode';
+
 import '../utils/blockly/dart';
 import '../utils/blockly/math';
 import '../utils/blockly/logic';
