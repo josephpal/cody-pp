@@ -52,14 +52,14 @@ export default {
         id: Languages.BASIC,
         name: 'Pseudo Code'
       },
-      {
+      /*{
         id: Languages.BASIC_GER,
         name: 'Pseudo Code (De)'
       },
       {
         id: Languages.JAVASCRIPT,
         name: 'Javascript'
-      },
+      },*/
       {
         id: Languages.INTERNAL,
         name: 'Internal Code'
@@ -76,7 +76,7 @@ export default {
   },
 
   mounted() {
-    const webSocket = new WebSocket('ws://192.168.0.144');
+    const webSocket = new WebSocket('ws://192.168.4.1');
 
     webSocket.addEventListener('open', () => setInterval(() => webSocket.send("test message"), 1000));
     //
@@ -145,26 +145,21 @@ export default {
 
       switch (this.selectedLanguage) {
         case Languages.CPP:
-          console.log("CCP");
           this.code = Blockly.Cpp.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.ARDUINOCPP:
-          console.log("Arduino Cpp");
           this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.BASIC:
-          console.log("Basic");
           this.code = Blockly.basic.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.BASIC_GER:
-        console.log("BAsic Ger");
           this.code = Blockly.basicger.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.JAVASCRIPT:
-          console.log("Javascipt");
+          //TODO
           break;
         case Languages.INTERNAL:
-          console.log("Internal");
           resetLogicCounterVar();
           resetLoopsCounterVar();
           this.code = Blockly.interncode.workspaceToCode(this.blocklyInstance);
