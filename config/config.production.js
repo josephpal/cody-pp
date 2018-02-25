@@ -9,13 +9,15 @@ module.exports = {
   appName: 'Prod App',
   index: path.resolve(__dirname, '../dist/index.html'),
   assetsRoot: path.resolve(__dirname, '../dist'),
-  assetsSubDirectory: 'assets',
-  assetsPublicPath: '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.0/',
+  //assetsSubDirectory: 'assets',
+  assetsSubDirectory: '',
+  //assetsPublicPath: '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.0/',
+  assetsPublicPath: '/',
   // Gzip off by default as many popular static hosts such as
   // Surge or Netlify already gzip all static assets for you.
   // Before setting to `true`, make sure to:
   // npm install --save-dev compression-webpack-plugin
-  productionGzip: false,
+  productionGzip: true,
   productionGzipExtensions: ['js', 'css'],
   // Run the build command with an extra argument to
   // View the bundle analyzer report after build finishes:

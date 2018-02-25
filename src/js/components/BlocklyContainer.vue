@@ -8,6 +8,14 @@
 import Blockly from 'node-blockly/browser';
 import '../utils/blockly/custom_blocks';
 import '../utils/blockly/lua';
+
+import '../utils/blockly/cpp';
+import '../utils/blockly/arduinocpp';
+import '../utils/blockly/basic';
+import '../utils/blockly/basicger';
+import '../utils/blockly/javascript';
+import '../utils/blockly/interncode';
+
 import '../utils/blockly/dart';
 import '../utils/blockly/math';
 import '../utils/blockly/logic';
@@ -23,7 +31,7 @@ export default {
   mounted() {
     const blocklyInstance = Blockly.inject("blockly", {
       toolbox: Blockly.Xml.textToDom(xml),
-      media: process.env.NODE_ENV === 'production' ? `${config.assetsPublicPath}static/blockly/` : '/static/blockly/',
+      media: process.env.NODE_ENV === 'production' ? `${config.assetsPublicPath}` : '/static/blockly/',
       zoom: {
         controls: true,
         wheel: true,

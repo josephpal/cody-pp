@@ -13,9 +13,9 @@
     </div>
 
     <div class="buttons">
-      <RoundButton :icon="icons.ArrowIcon" @click="onSendButtonClicked" />
-      <RoundButton :icon="icons.StopIcon" @click="onStopButtonClicked" />
-      <RoundButton :icon="getPlayButtonIcon" @click="onPlayButtonClicked" />
+      <RoundButton :icon="icons.ArrowIcon" :enabled="!isRunning" @click="onSendButtonClicked" />
+      <RoundButton :icon="icons.StopIcon" :enabled="isRunning" @click="onStopButtonClicked" />
+      <RoundButton :icon="playButtonIcon" :enabled="isReady" @click="onPlayButtonClicked" />
     </div>
   </div>
 </template>
@@ -27,12 +27,13 @@ import Languages from '../enum/Languages';
 import Blockly from 'node-blockly/browser';
 import { resetLogicCounterVar } from '../utils/blockly/logic';
 import { resetLoopsCounterVar } from '../utils/blockly/loops';
-import { post } from '../utils/gateway';
+import { asyncWebSocketRequest } from '../utils/socketUtils';
 
 import PlayIcon from '../../assets/svg/play.svg';
 import StopIcon from '../../assets/svg/stop.svg';
 import PauseIcon from '../../assets/svg/stop.svg';
 import ArrowIcon from '../../assets/svg/arrow.svg';
+import SocketMessages from "../enum/SocketMessageTypes";
 
 export default {
   name: 'CodePreview',
@@ -45,15 +46,30 @@ export default {
         name: 'C++'
       },
       {
-        id: Languages.BASIC,
-        name: 'Basic'
+        id: Languages.ARDUINOCPP,
+        name: 'C++ (Arduino)'
       },
+      {
+        id: Languages.BASIC,
+        name: 'Pseudo Code'
+      },
+      /*{
+        id: Languages.BASIC_GER,
+        name: 'Pseudo Code (De)'
+      },
+      {
+        id: Languages.JAVASCRIPT,
+        name: 'Javascript'
+      },*/
       {
         id: Languages.INTERNAL,
         name: 'Internal Code'
       }],
       selectedLanguage: Languages.CPP,
       isRunning: false,
+      isPaused: false,
+      isReady: false,
+      webSocketReady: false,
     }
   },
 
@@ -61,6 +77,13 @@ export default {
     blocklyInstance: {
       type: Object
     }
+  },
+
+  mounted() {
+    this.socket = new WebSocket('ws://192.168.0.61:90');
+
+    this.socket.addEventListener('open', () => (this.webSocketReady = true));
+    this.socket.onmessage = this.onSocketMessage;
   },
 
   watch: {
@@ -78,11 +101,18 @@ export default {
   },
 
   computed: {
+    //syntax-highlighting
     languageClass() {
       switch(this.selectedLanguage) {
         case Languages.CPP:
           return 'cpp';
+        case Languages.ARDUINOCPP:
+          return 'cpp';
         case Languages.BASIC:
+          return 'cpp';
+        case Languages.BASIC_GER:
+          return 'cpp';
+        case Languages.JAVASCRIPT:
           return 'cpp';
         case Languages.INTERNAL:
           return 'cpp';
@@ -99,8 +129,8 @@ export default {
       };
     },
 
-    getPlayButtonIcon() {
-      return this.isRunning ? PauseIcon : PlayIcon;
+    playButtonIcon() {
+      return !this.isRunning || this.isPaused ? PlayIcon : PauseIcon;
     }
   },
 
@@ -116,46 +146,98 @@ export default {
 
       switch (this.selectedLanguage) {
         case Languages.CPP:
-          this.code = Blockly.Dart.workspaceToCode(this.blocklyInstance);
+          this.code = Blockly.Cpp.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.ARDUINOCPP:
+          this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyInstance);
           break;
         case Languages.BASIC:
-          this.code = Blockly.JavaScript.workspaceToCode(this.blocklyInstance);
+          this.code = Blockly.basic.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.BASIC_GER:
+          this.code = Blockly.basicger.workspaceToCode(this.blocklyInstance);
+          break;
+        case Languages.JAVASCRIPT:
+          //TODO
           break;
         case Languages.INTERNAL:
-          resetLogicCounterVar();
-          resetLoopsCounterVar();
-          this.code = Blockly.Lua.workspaceToCode(this.blocklyInstance);
+          this.code = this.getInternalCode();
           break;
         default:
           this.code = '';
       }
     },
 
+    getInternalCode() {
+      resetLogicCounterVar();
+      resetLoopsCounterVar();
+      return Blockly.interncode.workspaceToCode(this.blocklyInstance);
+    },
+
+    prepareInternalCode() {
+      return this.getInternalCode()
+          .replace('#Start;', '')
+          .replace('#Stop;', '')
+          .replace(/\n|\s/g, '')
+          .concat(';');
+    },
+
     onPlayButtonClicked() {
-      this.isRunning = !this.isRunning;
-
-      post('/start').then((response) => {
-
-      }).catch((response) => {
-
-      });
+      return asyncWebSocketRequest(
+          this.socket,
+          this.isRunning && !this.isPaused ? SocketMessages.PAUSE : SocketMessages.START,
+          '',
+          this.isRunning && !this.isPaused ? SocketMessages.PAUSED : SocketMessages.RUNNING,
+      );
     },
 
     onStopButtonClicked() {
-      post('/stop').then((response) => {
-
-      }).catch((response) => {
-
-      });
+      return asyncWebSocketRequest(
+          this.socket,
+          SocketMessages.STOP,
+          '',
+          SocketMessages.STOPPED,
+      );
     },
 
     onSendButtonClicked() {
-      post('/send').then((response) => {
+      return asyncWebSocketRequest(
+          this.socket,
+          SocketMessages.SEND,
+          this.prepareInternalCode(),
+          SocketMessages.READY,
+      );
+    },
 
-      }).catch((response) => {
-
-      });
-    }
+    onSocketMessage(message) {
+      console.log(`Received message ${message.data}`);
+      switch (message.data) {
+          case SocketMessages.RUNNING:
+              this.isReady = true;
+              this.isRunning = true;
+              this.isPaused = false;
+              break;
+          case SocketMessages.STOPPED:
+              this.isReady = true;
+              this.isRunning = false;
+              this.isPaused = false;
+              break;
+          case SocketMessages.PAUSED:
+              this.isReady = true;
+              this.isPaused = true;
+              this.isRunning = true;
+              break;
+          case SocketMessages.READY:
+              this.isReady = true;
+              break;
+          case SocketMessages.ERROR:
+              console.error('Server error');
+              break;
+          default:
+              console.warn('Unknown socket message');
+              break;
+      }
+    },
   },
 
   components: {

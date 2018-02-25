@@ -51,6 +51,23 @@ Blockly.Blocks['motor'] = {
  this.setHelpUrl("");
   }
 };
+/*
+ *
+ */
+
+Blockly.Blocks['digital_out'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set Digital Port")
+        .appendField(new Blockly.FieldDropdown([["D0","0"], ["D1","1"], ["D2","2"], ["D3","3"], ["D4","4"], ["D5","5"], ["D6","6"], ["D7","7"]]), "Port")
+        .appendField(new Blockly.FieldDropdown([["High","1"], ["Low","0"]]), "NAME");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+	this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
 
 /*
  *
@@ -156,6 +173,25 @@ Blockly.Blocks['controls_if1'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(120);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['controls_ifelse1'] = {
+  init: function() {
+    this.appendValueInput("IF0")
+        .setCheck("Boolean")
+        .appendField("if");
+    this.appendStatementInput("DO0")
+        .setCheck(null)
+        .appendField("do");
+    this.appendStatementInput("ELSE")
+        .setCheck(null)
+        .appendField("else do");
+	this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
  this.setTooltip("");
  this.setHelpUrl("");
   }

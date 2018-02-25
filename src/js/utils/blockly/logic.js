@@ -22,22 +22,30 @@ const goog = Blockly.goog;
  */
 
 /**
- * @fileoverview Generating Lua for logic blocks.
+ * @fileoverview Generating interncode for logic blocks.
  * @author rodrigoq@google.com (Rodrigo Queiro)
  */
 'use strict';
 
-goog.provide('Blockly.Lua.logic');
+goog.provide('Blockly.interncode.logic');
 
-goog.require('Blockly.Lua');
+goog.require('Blockly.interncode');
 
-goog.provide('Blockly.Dart.logic');
+goog.provide('Blockly.Cpp.logic');
 
-goog.require('Blockly.Dart');
+goog.require('Blockly.Cpp');
 
-goog.provide('Blockly.JavaScript.logic');
+goog.provide('Blockly.ArduinoCpp.logic');
 
-goog.require('Blockly.JavaScript');
+goog.require('Blockly.ArduinoCpp');
+
+goog.provide('Blockly.basic.logic');
+
+goog.require('Blockly.basic');
+
+goog.provide('Blockly.basicger.logic');
+
+goog.require('Blockly.basicger');
 
 var c = 0;
 
@@ -47,15 +55,15 @@ export const resetLogicCounterVar = () => {
 
 //////////////////////////////////////////////////////////////
 //
-Blockly.Lua['controls_if1'] = function(block) {
+Blockly.interncode['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
   var temp = c;
   var code = '', branchCode, conditionCode;
   do {
-    conditionCode = Blockly.Lua.valueToCode(block, 'IF' + n,
-      Blockly.Lua.ORDER_NONE) || 'A,0,=,0';
-    branchCode = Blockly.Lua.statementToCode(block, 'DO' + n);
+    conditionCode = Blockly.interncode.valueToCode(block, 'IF' + n,
+      Blockly.interncode.ORDER_NONE) || 'A,0,=,0';
+    branchCode = Blockly.interncode.statementToCode(block, 'DO' + n);
     code += (n > 0 ? 'else' : '') +
         '#I,' + conditionCode + ',' + c + ';' + '\n' + branchCode ;
 	++c;
@@ -63,21 +71,21 @@ Blockly.Lua['controls_if1'] = function(block) {
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
-    branchCode = Blockly.Lua.statementToCode(block, 'ELSE');
-    code += 'else\n' + branchCode;
+    branchCode = Blockly.interncode.statementToCode(block, 'ELSE');
+    code += '#E,' + temp + ';' + '\n' + branchCode;
   }
   temp = c-1;
   return code + '#J,' + temp + ';' + '\n';
 };
 
-Blockly.Dart['controls_if1'] = function(block) {
+Blockly.Cpp['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
   var code = '', branchCode, conditionCode;
   do {
-    conditionCode = Blockly.Dart.valueToCode(block, 'IF' + n,
-      Blockly.Dart.ORDER_NONE) || '';
-    branchCode = Blockly.Dart.statementToCode(block, 'DO' + n);
+    conditionCode = Blockly.Cpp.valueToCode(block, 'IF' + n,
+      Blockly.Cpp.ORDER_NONE) || '';
+    branchCode = Blockly.Cpp.statementToCode(block, 'DO' + n);
     code += (n > 0 ? 'else ' : '') +
         'if (' + conditionCode + ') {\n' + branchCode + '}';
 
@@ -85,20 +93,20 @@ Blockly.Dart['controls_if1'] = function(block) {
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
-    branchCode = Blockly.Dart.statementToCode(block, 'ELSE');
+    branchCode = Blockly.Cpp.statementToCode(block, 'ELSE');
     code += ' else {\n' + branchCode + '}';
   }
   return code + '\n';
 };
 
-Blockly.JavaScript['controls_if1'] = function(block) {
+Blockly.basic['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
   var code = '', branchCode, conditionCode;
   do {
-    conditionCode = Blockly.JavaScript.valueToCode(block, 'IF' + n,
-      Blockly.JavaScript.ORDER_NONE) || '';
-    branchCode = Blockly.JavaScript.statementToCode(block, 'DO' + n);
+    conditionCode = Blockly.basic.valueToCode(block, 'IF' + n,
+      Blockly.basic.ORDER_NONE) || '';
+    branchCode = Blockly.basic.statementToCode(block, 'DO' + n);
     code += (n > 0 ? 'else ' : '') +
         'if ' + conditionCode + ' {\n' + branchCode + '}';
 
@@ -106,7 +114,49 @@ Blockly.JavaScript['controls_if1'] = function(block) {
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
-    branchCode = Blockly.JavaScript.statementToCode(block, 'ELSE');
+    branchCode = Blockly.basic.statementToCode(block, 'ELSE');
+    code += ' else {\n' + branchCode + '}';
+  }
+  return code + '\n';
+};
+
+Blockly.basicger['controls_if1'] = function(block) {
+  // If/elseif/else condition.
+  var n = 0;
+  var code = '', branchCode, conditionCode;
+  do {
+    conditionCode = Blockly.basicger.valueToCode(block, 'IF' + n,
+      Blockly.basicger.ORDER_NONE) || '';
+    branchCode = Blockly.basicger.statementToCode(block, 'DO' + n);
+    code += (n > 0 ? 'else ' : '') +
+        'wenn ' + conditionCode + ' {\n' + branchCode + '}';
+
+    ++n;
+  } while (block.getInput('IF' + n));
+
+  if (block.getInput('ELSE')) {
+    branchCode = Blockly.basicger.statementToCode(block, 'ELSE');
+    code += ' sonst {\n' + branchCode + '}';
+  }
+  return code + '\n';
+};
+
+Blockly.ArduinoCpp['controls_if1'] = function(block) {
+  // If/elseif/else condition.
+  var n = 0;
+  var code = '', branchCode, conditionCode;
+  do {
+    conditionCode = Blockly.ArduinoCpp.valueToCode(block, 'IF' + n,
+      Blockly.ArduinoCpp.ORDER_NONE) || '';
+    branchCode = Blockly.ArduinoCpp.statementToCode(block, 'DO' + n);
+    code += (n > 0 ? 'else ' : '') +
+        'if (' + conditionCode + ') {\n' + branchCode + '}';
+
+    ++n;
+  } while (block.getInput('IF' + n));
+
+  if (block.getInput('ELSE')) {
+    branchCode = Blockly.ArduinoCpp.statementToCode(block, 'ELSE');
     code += ' else {\n' + branchCode + '}';
   }
   return code + '\n';
@@ -115,15 +165,19 @@ Blockly.JavaScript['controls_if1'] = function(block) {
 //
 //////////////////////////////////////////////////////////////
 //
-Blockly.Lua['controls_ifelse'] = Blockly.Lua['controls_if'];
+Blockly.interncode['controls_ifelse1'] = Blockly.interncode['controls_if1'];
 
-Blockly.Dart['controls_ifelse'] = Blockly.Dart['controls_if'];
+Blockly.Cpp['controls_ifelse1'] = Blockly.Cpp['controls_if1'];
 
-Blockly.JavaScript['controls_ifelse'] = Blockly.JavaScript['controls_if'];
+Blockly.basic['controls_ifelse1'] = Blockly.basic['controls_if1'];
+
+Blockly.basicger['controls_ifelse1'] = Blockly.basicger['controls_if1'];
+
+Blockly.ArduinoCpp['controls_ifelse1'] = Blockly.ArduinoCpp['controls_if1'];
 //
 ////////////////////////////////////////////////////////////
 //
-Blockly.Lua['analog_logic_compare'] = function(block) {
+Blockly.interncode['analog_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -137,10 +191,10 @@ Blockly.Lua['analog_logic_compare'] = function(block) {
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
   var code = 'A,' + argument0 + ',' + operator + ',' + argument1;
-  return [code, Blockly.Lua.ORDER_RELATIONAL];
+  return [code, Blockly.interncode.ORDER_RELATIONAL];
 };
 
-Blockly.Dart['analog_logic_compare'] = function(block) {
+Blockly.Cpp['analog_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -156,15 +210,40 @@ Blockly.Dart['analog_logic_compare'] = function(block) {
   var code;
 
   if (operator == '=') {
-	   code = 'mDAIn[' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
+	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
   }
   else {
-	   code = 'mDAIn[' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
+	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
   }
-  return [code, Blockly.Dart.ORDER_RELATIONAL];
+  return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
 
-Blockly.JavaScript['analog_logic_compare'] = function(block) {
+Blockly.ArduinoCpp['analog_logic_compare'] = function(block) {
+  // Comparison operator.
+  var OPERATORS = {
+    'EQ': '=',
+    'NEQ': '~=',
+    'LT': '<',
+    'LTE': '<=',
+    'GT': '>',
+    'GTE': '>='
+  };
+  var operator = OPERATORS[block.getFieldValue('OP')];
+  var argument0 = block.getFieldValue('A');
+  var argument1 = block.getFieldValue('B');
+
+  var code;
+
+  if (operator == '=') {
+	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
+  }
+  else {
+	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
+  }
+  return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
+};
+
+Blockly.basic['analog_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -183,10 +262,32 @@ Blockly.JavaScript['analog_logic_compare'] = function(block) {
   else {
 	var code = 'Analog Port ' + argument0 + ' ' + operator + ' ' + argument1 + ' then do ';
   }
-  return [code, Blockly.JavaScript.ORDER_RELATIONAL];
+  return [code, Blockly.basic.ORDER_RELATIONAL];
 };
 
-Blockly.Lua['digital_logic_compare'] = function(block) {
+Blockly.basicger['analog_logic_compare'] = function(block) {
+  // Comparison operator.
+  var OPERATORS = {
+    'EQ': '=',
+    'NEQ': '~=',
+    'LT': '<',
+    'LTE': '<=',
+    'GT': '>',
+    'GTE': '>='
+  };
+  var operator = OPERATORS[block.getFieldValue('OP')];
+  var argument0 = block.getFieldValue('A');
+  var argument1 = block.getFieldValue('B');
+  if (operator == '=') {
+	var code = 'Analoger Eingang ' + argument0 + ' ' + operator + operator + ' ' + argument1 + ' dann ';
+  }
+  else {
+	var code = 'Analoger Eingang ' + argument0 + ' ' + operator + ' ' + argument1 + ' dann ';
+  }
+  return [code, Blockly.basicger.ORDER_RELATIONAL];
+};
+
+Blockly.interncode['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -200,10 +301,10 @@ Blockly.Lua['digital_logic_compare'] = function(block) {
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
   var code = 'D,' + argument0 + ',' + "=" + ',' + argument1;
-  return [code, Blockly.Lua.ORDER_RELATIONAL];
+  return [code, Blockly.interncode.ORDER_RELATIONAL];
 };
 
-Blockly.Dart['digital_logic_compare'] = function(block) {
+Blockly.Cpp['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -216,11 +317,28 @@ Blockly.Dart['digital_logic_compare'] = function(block) {
   var operator = OPERATORS[block.getFieldValue('OP')];
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
-  var code = 'mDAIn[' + argument0 + '].getValueDigital()' + ' == '  + argument1;
-  return [code, Blockly.Dart.ORDER_RELATIONAL];
+  var code = 'mDAIn[Digital_Port_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
+  return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
 
-Blockly.JavaScript['digital_logic_compare'] = function(block) {
+Blockly.ArduinoCpp['digital_logic_compare'] = function(block) {
+  // Comparison operator.
+  var OPERATORS = {
+    'EQ': '=',
+    'NEQ': '~=',
+    'LT': '<',
+    'LTE': '<=',
+    'GT': '>',
+    'GTE': '>='
+  };
+  var operator = OPERATORS[block.getFieldValue('OP')];
+  var argument0 = block.getFieldValue('A');
+  var argument1 = block.getFieldValue('B');
+  var code = 'mDAIn[Digital_Port_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
+  return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
+};
+
+Blockly.basic['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
     'EQ': '=',
@@ -234,7 +352,24 @@ Blockly.JavaScript['digital_logic_compare'] = function(block) {
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
   var code = 'Digital Port ' + argument0 + ' ' + '==' + ' '  + argument1 + ' then do ';
-  return [code, Blockly.JavaScript.ORDER_RELATIONAL];
+  return [code, Blockly.basic.ORDER_RELATIONAL];
+};
+
+Blockly.basicger['digital_logic_compare'] = function(block) {
+  // Comparison operator.
+  var OPERATORS = {
+    'EQ': '=',
+    'NEQ': '~=',
+    'LT': '<',
+    'LTE': '<=',
+    'GT': '>',
+    'GTE': '>='
+  };
+  var operator = OPERATORS[block.getFieldValue('OP')];
+  var argument0 = block.getFieldValue('A');
+  var argument1 = block.getFieldValue('B');
+  var code = 'Digitaler Eingang ' + argument0 + ' ' + '==' + ' '  + argument1 + ' dann ';
+  return [code, Blockly.basicger.ORDER_RELATIONAL];
 };
 
 //
