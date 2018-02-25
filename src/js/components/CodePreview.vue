@@ -15,7 +15,7 @@
     <div class="buttons">
       <RoundButton :icon="icons.ArrowIcon" :enabled="!isRunning" @click="onSendButtonClicked" />
       <RoundButton :icon="icons.StopIcon" :enabled="isRunning" @click="onStopButtonClicked" />
-      <RoundButton :icon="getPlayButtonIcon" @click="onPlayButtonClicked" />
+      <RoundButton :icon="playButtonIcon" :enabled="isReady" @click="onPlayButtonClicked" />
     </div>
   </div>
 </template>
@@ -27,12 +27,13 @@ import Languages from '../enum/Languages';
 import Blockly from 'node-blockly/browser';
 import { resetLogicCounterVar } from '../utils/blockly/logic';
 import { resetLoopsCounterVar } from '../utils/blockly/loops';
-import { post } from '../utils/gateway';
+import { asyncWebSocketRequest } from '../utils/socketUtils';
 
 import PlayIcon from '../../assets/svg/play.svg';
 import StopIcon from '../../assets/svg/stop.svg';
 import PauseIcon from '../../assets/svg/stop.svg';
 import ArrowIcon from '../../assets/svg/arrow.svg';
+import SocketMessages from "../enum/SocketMessageTypes";
 
 export default {
   name: 'CodePreview',
@@ -66,6 +67,9 @@ export default {
       }],
       selectedLanguage: Languages.CPP,
       isRunning: false,
+      isPaused: false,
+      isReady: false,
+      webSocketReady: false,
     }
   },
 
@@ -76,11 +80,10 @@ export default {
   },
 
   mounted() {
-    const webSocket = new WebSocket('ws://192.168.4.1:90');
+    this.socket = new WebSocket('ws://192.168.0.61:90');
 
-    webSocket.addEventListener('open', () => setInterval(() => webSocket.send("test message"), 1000));
-    //
-    webSocket.onmessage = (message) => console.log(message.data);
+    this.socket.addEventListener('open', () => (this.webSocketReady = true));
+    this.socket.onmessage = this.onSocketMessage;
   },
 
   watch: {
@@ -107,12 +110,10 @@ export default {
           return 'cpp';
         case Languages.BASIC:
           return 'cpp';
-          break;
         case Languages.BASIC_GER:
           return 'cpp';
         case Languages.JAVASCRIPT:
           return 'cpp';
-          break;
         case Languages.INTERNAL:
           return 'cpp';
         default:
@@ -128,8 +129,8 @@ export default {
       };
     },
 
-    getPlayButtonIcon() {
-      return this.isRunning ? PauseIcon : PlayIcon;
+    playButtonIcon() {
+      return !this.isRunning || this.isPaused ? PlayIcon : PauseIcon;
     }
   },
 
@@ -160,40 +161,83 @@ export default {
           //TODO
           break;
         case Languages.INTERNAL:
-          resetLogicCounterVar();
-          resetLoopsCounterVar();
-          this.code = Blockly.interncode.workspaceToCode(this.blocklyInstance);
+          this.code = this.getInternalCode();
           break;
         default:
           this.code = '';
       }
     },
 
+    getInternalCode() {
+      resetLogicCounterVar();
+      resetLoopsCounterVar();
+      return Blockly.interncode.workspaceToCode(this.blocklyInstance);
+    },
+
+    prepareInternalCode() {
+      return this.getInternalCode()
+          .replace('#Start;', '')
+          .replace('#Stop;', '')
+          .replace(/\n|\s/g, '')
+          .concat(';');
+    },
+
     onPlayButtonClicked() {
-      this.isRunning = !this.isRunning;
-
-      post('/start').then((response) => {
-
-      }).catch((response) => {
-
-      });
+      return asyncWebSocketRequest(
+          this.socket,
+          this.isRunning && !this.isPaused ? SocketMessages.PAUSE : SocketMessages.START,
+          '',
+          this.isRunning && !this.isPaused ? SocketMessages.PAUSED : SocketMessages.RUNNING,
+      );
     },
 
     onStopButtonClicked() {
-      post('/stop').then((response) => {
-
-      }).catch((response) => {
-
-      });
+      return asyncWebSocketRequest(
+          this.socket,
+          SocketMessages.STOP,
+          '',
+          SocketMessages.STOPPED,
+      );
     },
 
     onSendButtonClicked() {
-      post('/send').then((response) => {
+      return asyncWebSocketRequest(
+          this.socket,
+          SocketMessages.SEND,
+          this.prepareInternalCode(),
+          SocketMessages.READY,
+      );
+    },
 
-      }).catch((response) => {
-
-      });
-    }
+    onSocketMessage(message) {
+      console.log(`Received message ${message.data}`);
+      switch (message.data) {
+          case SocketMessages.RUNNING:
+              this.isReady = true;
+              this.isRunning = true;
+              this.isPaused = false;
+              break;
+          case SocketMessages.STOPPED:
+              this.isReady = true;
+              this.isRunning = false;
+              this.isPaused = false;
+              break;
+          case SocketMessages.PAUSED:
+              this.isReady = true;
+              this.isPaused = true;
+              this.isRunning = true;
+              break;
+          case SocketMessages.READY:
+              this.isReady = true;
+              break;
+          case SocketMessages.ERROR:
+              console.error('Server error');
+              break;
+          default:
+              console.warn('Unknown socket message');
+              break;
+      }
+    },
   },
 
   components: {
