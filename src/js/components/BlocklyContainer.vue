@@ -5,6 +5,8 @@
 </template>
 
 <script>
+/* global __PUBLIC_PATH__ */
+
 import Blockly from 'node-blockly/browser';
 import '../utils/blockly/custom_blocks';
 import '../utils/blockly/lua';
@@ -29,9 +31,10 @@ export default {
   name: 'BlocklyContainer',
 
   mounted() {
+      console.log(config.assetsPublicPath);
     const blocklyInstance = Blockly.inject("blockly", {
       toolbox: Blockly.Xml.textToDom(xml),
-      media: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'demo' ? `${config.assetsPublicPath}` : '/static/',
+      media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
       zoom: {
         controls: true,
         wheel: true,

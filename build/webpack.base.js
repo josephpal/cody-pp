@@ -7,6 +7,7 @@ const defaults = {
   __PROD__: JSON.stringify(config.isProd),
   'process.env.NODE_ENV': `"${config.env}"`,
   __APP_MODE__: `"${config.appMode}"`,
+  __PUBLIC_PATH__: JSON.stringify(process.env.MODE === 'demo' ? config.assetsPublicPath : '/'),
 };
 
 const webpackConfig = {
