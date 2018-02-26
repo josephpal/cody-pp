@@ -85,7 +85,7 @@ export default {
   },
 
   mounted() {
-    this.socket = new WebSocket('ws://192.168.0.61:90');
+    this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.0.61:90');
 
     this.socket.addEventListener('open', () => (this.webSocketReady = true));
     this.socket.addEventListener('message', this.onSocketMessage);
