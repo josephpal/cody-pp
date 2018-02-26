@@ -31,7 +31,7 @@ export default {
   mounted() {
     const blocklyInstance = Blockly.inject("blockly", {
       toolbox: Blockly.Xml.textToDom(xml),
-      media: process.env.NODE_ENV === 'production' ? `${config.assetsPublicPath}` : '/static/',
+      media: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'demo' ? `${config.assetsPublicPath}` : '/static/',
       zoom: {
         controls: true,
         wheel: true,
