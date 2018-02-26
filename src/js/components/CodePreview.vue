@@ -31,7 +31,7 @@ import { asyncWebSocketRequest } from '../utils/socketUtils';
 
 import PlayIcon from '../../assets/svg/play.svg';
 import StopIcon from '../../assets/svg/stop.svg';
-import PauseIcon from '../../assets/svg/stop.svg';
+import PauseIcon from '../../assets/svg/pause.svg';
 import ArrowIcon from '../../assets/svg/arrow.svg';
 import SocketMessages from "../enum/SocketMessageTypes";
 
