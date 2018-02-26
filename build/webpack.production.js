@@ -91,7 +91,7 @@ const webpackConfig = {
       {
         from: path.resolve(__dirname, '../static'),
         //to: path.join(config.assetsSubDirectory, '../static'),
-        to: path.join(config.assetsSubDirectory, '../'),
+        to: config.assetsSubDirectory,
         ignore: ['.*'],
       },
     ]),
