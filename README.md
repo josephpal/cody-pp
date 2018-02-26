@@ -14,8 +14,4 @@ If you want to take a look at some of the examples mentioned in the menu on the 
 
 ## Quick start
 
-So far, no installation instructions are needed. Feel free to use the hosted demo. 
-
-## Notification
-
-Neccessary C++ header files (e.g. "ft_ESP32_IOobjects.h") are not uploaded yet. 
+So far, no installation instructions are needed. Feel free to use the hosted demo. You only have to copy the generated arduino c++ code in a new arduino sketch. Make sure the necessary headers - you find these files in the direcotry /lib - are included.
