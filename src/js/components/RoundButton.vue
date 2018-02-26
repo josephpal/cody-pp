@@ -1,12 +1,15 @@
 <template>
   <div class="round-button" :class="{ disabled: !enabled }" @click="onClicked">
-    <svg>
+    <Spinner v-if="showSpinner"/>
+    <svg class="icon" v-else>
       <use :href="`${icon}#Layer_1`"></use>
     </svg>
   </div>
 </template>
 
 <script>
+  import Spinner from './Spinner';
+
   export default {
     name: 'RoundButton',
 
@@ -18,16 +21,24 @@
       icon: {
         type: String,
         required: true
-      }
+      },
+        showSpinner: {
+          type: Boolean,
+          default: false,
+        },
     },
 
     methods: {
       onClicked() {
-        if (this.enabled) {
+        if (this.enabled && !this.showSpinner) {
           this.$emit('click');
         }
       }
-    }
+    },
+
+      components: {
+          Spinner,
+      },
   };
 </script>
 
@@ -64,7 +75,7 @@
       cursor: default;
     }
 
-    svg {
+    .icon {
       width: auto;
       height: 20px;
       fill: #fff;

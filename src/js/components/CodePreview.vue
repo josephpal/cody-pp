@@ -13,9 +13,9 @@
     </div>
 
     <div class="buttons">
-      <RoundButton :icon="icons.ArrowIcon" :enabled="!isRunning" @click="onSendButtonClicked" />
-      <RoundButton :icon="icons.StopIcon" :enabled="isRunning" @click="onStopButtonClicked" />
-      <RoundButton :icon="playButtonIcon" :enabled="isReady" @click="onPlayButtonClicked" />
+      <RoundButton :icon="icons.ArrowIcon" :enabled="webSocketReady && !isRunning" @click="onSendButtonClicked" :showSpinner="showSendBtnSpinner" />
+      <RoundButton :icon="icons.StopIcon" :enabled="webSocketReady && isRunning" @click="onStopButtonClicked" :showSpinner="showStopBtnSpinner" />
+      <RoundButton :icon="playButtonIcon" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked" :showSpinner="showPlayBtnSpinner" />
     </div>
   </div>
 </template>
@@ -70,6 +70,11 @@ export default {
       isPaused: false,
       isReady: false,
       webSocketReady: false,
+
+      // spinner state
+      showPlayBtnSpinner: false,
+      showStopBtnSpinner: false,
+      showSendBtnSpinner: false,
     }
   },
 
@@ -83,8 +88,12 @@ export default {
     this.socket = new WebSocket('ws://192.168.0.61:90');
 
     this.socket.addEventListener('open', () => (this.webSocketReady = true));
-    this.socket.onmessage = this.onSocketMessage;
+    this.socket.addEventListener('message', this.onSocketMessage);
   },
+
+    beforeDestroy() {
+        this.socket.removeEventListener('message', this.onSocketMessage);
+    },
 
   watch: {
     blocklyInstance() {
@@ -183,33 +192,40 @@ export default {
     },
 
     onPlayButtonClicked() {
+      this.showPlayBtnSpinner = true;
+
       return asyncWebSocketRequest(
           this.socket,
           this.isRunning && !this.isPaused ? SocketMessages.PAUSE : SocketMessages.START,
           '',
           this.isRunning && !this.isPaused ? SocketMessages.PAUSED : SocketMessages.RUNNING,
-      );
+      ).then(() => (this.showPlayBtnSpinner = false)).catch(() => (this.showPlayBtnSpinner = false));
     },
 
     onStopButtonClicked() {
+      this.showStopBtnSpinner = true;
+
       return asyncWebSocketRequest(
           this.socket,
           SocketMessages.STOP,
           '',
           SocketMessages.STOPPED,
-      );
+      ).then(() => (this.showStopBtnSpinner = false)).catch(() => (this.showStopBtnSpinner = false));
     },
 
     onSendButtonClicked() {
+      this.showSendBtnSpinner = true;
+
       return asyncWebSocketRequest(
           this.socket,
           SocketMessages.SEND,
           this.prepareInternalCode(),
           SocketMessages.READY,
-      );
+      ).then(() => (this.showSendBtnSpinner = false)).catch(() => (this.showSendBtnSpinner = false));
     },
 
     onSocketMessage(message) {
+        console.warn(message);
       console.log(`Received message ${message.data}`);
       switch (message.data) {
           case SocketMessages.RUNNING:
