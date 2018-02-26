@@ -210,10 +210,10 @@ Blockly.Cpp['analog_logic_compare'] = function(block) {
   var code;
 
   if (operator == '=') {
-	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
+	   code = 'mDAIn[Analog_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
   }
   else {
-	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
+	   code = 'mDAIn[Analog_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
   }
   return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
@@ -235,10 +235,10 @@ Blockly.ArduinoCpp['analog_logic_compare'] = function(block) {
   var code;
 
   if (operator == '=') {
-	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
+	   code = 'mDAIn[Analog_' + argument0 + '].getValueAnalog()' + ' == '  + argument1;
   }
   else {
-	   code = 'mDAIn[Analog_Port_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
+	   code = 'mDAIn[Analog_' + argument0 + '].getValueAnalog()' + ' ' + operator + ' '  + argument1;
   }
   return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
 };
@@ -317,7 +317,7 @@ Blockly.Cpp['digital_logic_compare'] = function(block) {
   var operator = OPERATORS[block.getFieldValue('OP')];
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
-  var code = 'mDAIn[Digital_Port_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
+  var code = 'mDAIn[Digital_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
   return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
 
@@ -334,7 +334,7 @@ Blockly.ArduinoCpp['digital_logic_compare'] = function(block) {
   var operator = OPERATORS[block.getFieldValue('OP')];
   var argument0 = block.getFieldValue('A');
   var argument1 = block.getFieldValue('B');
-  var code = 'mDAIn[Digital_Port_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
+  var code = 'mDAIn[Digital_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
   return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
 };
 
