@@ -166,7 +166,7 @@ Blockly.basic['controls_repeat_ext'] = function(block) {
   var loopVar = Blockly.basic.variableDB_.getDistinctName(
       'count', Blockly.Variables.NAME_TYPE);
   ++b;
-  var code = 'repeat ' + repeats + ' times {\n' + branch + '}\n';
+  var code = 'repeat ' + repeats + ' times \n' + branch;
   return code;
 };
 
@@ -185,7 +185,7 @@ Blockly.basicger['controls_repeat_ext'] = function(block) {
   var loopVar = Blockly.basicger.variableDB_.getDistinctName(
       'count', Blockly.Variables.NAME_TYPE);
   ++b;
-  var code = 'wiederhole ' + repeats + ' mal {\n' + branch + '}\n';
+  var code = 'wiederhole ' + repeats + ' mal \n' + branch;
   return code;
 };
 
@@ -256,7 +256,7 @@ Blockly.basic['controls_whileuntil1'] = function(block) {
     argument0 = 'not ' + argument0;
   }
   ++b;
-  return 'while ' + argument0 + '{\n' + branch + '}\n';
+  return 'while ' + argument0 + '\n' + branch;
 };
 
 Blockly.basicger['controls_whileuntil1'] = function(block) {
@@ -272,7 +272,7 @@ Blockly.basicger['controls_whileuntil1'] = function(block) {
     argument0 = 'nicht ' + argument0;
   }
   ++b;
-  return 'solange ' + argument0 + '{\n' + branch + '}\n';
+  return 'solange ' + argument0 + '\n' + branch;
 };
 
 
@@ -311,10 +311,10 @@ Blockly.Cpp['start'] = function(block) {
 	+ "enum Motor_Port {Motor_0, Motor_1, Motor_2, Motor_3};\n\n"
 	+ "enum Lamp_Port {Lamp_0, Lamp_1, Lamp_2, Lamp_3};\n\n"
 	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
+  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
   + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
   + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
+  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
 	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
 	+ "// global objects\n"
   + "Motor mMotorArray[MOTOR_QTY];\n" + "Lampe mLampArray[LAMP_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n"+ "\n"
@@ -362,10 +362,10 @@ Blockly.ArduinoCpp['start'] = function(block) {
 	+ "enum Motor_Port {Motor_0, Motor_1, Motor_2, Motor_3};\n\n"
 	+ "enum Lamp_Port {Lamp_0, Lamp_1, Lamp_2, Lamp_3};\n\n"
 	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + " "
   + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
   + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT
 	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
   + "// global objects\n"
   + "Motor mMotorArray[MOTOR_QTY];\n" + "Lampe mLampArray[LAMP_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n\n"
