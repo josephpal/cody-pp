@@ -65,7 +65,7 @@ export default {
         id: Languages.INTERNAL,
         name: 'Internal Code'
       }],
-      selectedLanguage: Languages.CPP,
+      selectedLanguage: Languages.ARDUINOCPP,
       isRunning: false,
       isPaused: false,
       isReady: false,

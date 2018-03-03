@@ -186,7 +186,7 @@ Blockly.interncode['lamp'] = function(block) {
 Blockly.Cpp['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
   var dropdown_state = block.getFieldValue('state');
-  var code = 'mLampeArray[Lampe_' + dropdown_lampnumber + '].setValues(' + dropdown_state + ');\n';
+  var code = 'mLampArray[Lamp_' + dropdown_lampnumber + '].setValues(' + dropdown_state + ');\n';
   return code;
 };
 
@@ -194,7 +194,7 @@ Blockly.Cpp['lamp'] = function(block) {
 Blockly.ArduinoCpp['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
   var dropdown_state = block.getFieldValue('state');
-  var code = 'mLampeArray[Lampe_' + dropdown_lampnumber + '].setValues(' + dropdown_state + ');\n';
+  var code = 'mLampArray[Lamp_' + dropdown_lampnumber + '].setValues(' + dropdown_state + ');\n';
   return code;
 };
 
@@ -225,7 +225,7 @@ Blockly.interncode['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
   // TODO: Assemble JavaScript into code variable.
-  var code = 'TODO...;\n';
+  var code = '#D,O,' + dropdown_Port + ',' + dropdown_name + ';\n';
   return code;
 };
 
@@ -249,7 +249,7 @@ Blockly.basic['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
   // TODO: Assemble JavaScript into code variable.
-  var code = 'set digitalen Port ' + dropdown_Port + ' to ' + dropdown_name + '\n';
+  var code = 'set digital Port ' + dropdown_Port + ' to ' + dropdown_name + '\n';
   return code;
 };
 
@@ -257,7 +257,7 @@ Blockly.basicger['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
   // TODO: Assemble JavaScript into code variable.
-  var code = 'Setze Digital Port ' + dropdown_Port + ' auf ' + dropdown_name + '\n';
+  var code = 'Setze digitalen Port ' + dropdown_Port + ' auf ' + dropdown_name + '\n';
   return code;
 };
 
