@@ -22,59 +22,59 @@ const goog = Blockly.goog;
  */
 
 /**
- * @fileoverview Generating Lua for math blocks.
+ * @fileoverview Generating interncode for math blocks.
  * @author rodrigoq@google.com (Rodrigo Queiro)
  */
 'use strict';
 
-goog.provide('Blockly.Lua.math');
+goog.provide('Blockly.interncode.math');
 
-goog.require('Blockly.Lua');
+goog.require('Blockly.interncode');
 
 
-Blockly.Lua['math_number'] = function(block) {
+Blockly.interncode['math_number'] = function(block) {
   // Numeric value.
   var code = parseFloat(block.getFieldValue('NUM'));
-  var order = code < 0 ? Blockly.Lua.ORDER_UNARY :
-              Blockly.Lua.ORDER_ATOMIC;
+  var order = code < 0 ? Blockly.interncode.ORDER_UNARY :
+              Blockly.interncode.ORDER_ATOMIC;
   return [code, order];
 };
 
-Blockly.Lua['math_arithmetic'] = function(block) {
+Blockly.interncode['math_arithmetic'] = function(block) {
   // Basic arithmetic operators, and power.
   var OPERATORS = {
-    ADD: [' + ', Blockly.Lua.ORDER_ADDITIVE],
-    MINUS: [' - ', Blockly.Lua.ORDER_ADDITIVE],
-    MULTIPLY: [' * ', Blockly.Lua.ORDER_MULTIPLICATIVE],
-    DIVIDE: [' / ', Blockly.Lua.ORDER_MULTIPLICATIVE],
-    POWER: [' ^ ', Blockly.Lua.ORDER_EXPONENTIATION]
+    ADD: [' + ', Blockly.interncode.ORDER_ADDITIVE],
+    MINUS: [' - ', Blockly.interncode.ORDER_ADDITIVE],
+    MULTIPLY: [' * ', Blockly.interncode.ORDER_MULTIPLICATIVE],
+    DIVIDE: [' / ', Blockly.interncode.ORDER_MULTIPLICATIVE],
+    POWER: [' ^ ', Blockly.interncode.ORDER_EXPONENTIATION]
   };
   var tuple = OPERATORS[block.getFieldValue('OP')];
   var operator = tuple[0];
   var order = tuple[1];
-  var argument0 = Blockly.Lua.valueToCode(block, 'A', order) || '0';
-  var argument1 = Blockly.Lua.valueToCode(block, 'B', order) || '0';
+  var argument0 = Blockly.interncode.valueToCode(block, 'A', order) || '0';
+  var argument1 = Blockly.interncode.valueToCode(block, 'B', order) || '0';
   var code = argument0 + operator + argument1;
   return [code, order];
 };
 
-Blockly.Lua['math_single'] = function(block) {
+Blockly.interncode['math_single'] = function(block) {
   // Math operators with single operand.
   var operator = block.getFieldValue('OP');
   var code;
   var arg;
   if (operator == 'NEG') {
     // Negation is a special case given its different operator precedence.
-    arg = Blockly.Lua.valueToCode(block, 'NUM',
-        Blockly.Lua.ORDER_UNARY) || '0';
-    return ['-' + arg, Blockly.Lua.ORDER_UNARY];
+    arg = Blockly.interncode.valueToCode(block, 'NUM',
+        Blockly.interncode.ORDER_UNARY) || '0';
+    return ['-' + arg, Blockly.interncode.ORDER_UNARY];
   }
   if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
-    arg = Blockly.Lua.valueToCode(block, 'NUM',
-        Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
+    arg = Blockly.interncode.valueToCode(block, 'NUM',
+        Blockly.interncode.ORDER_MULTIPLICATIVE) || '0';
   } else {
-    arg = Blockly.Lua.valueToCode(block, 'NUM',
-        Blockly.Lua.ORDER_NONE) || '0';
+    arg = Blockly.interncode.valueToCode(block, 'NUM',
+        Blockly.interncode.ORDER_NONE) || '0';
   }
   switch (operator) {
     case 'ABS':
@@ -126,34 +126,34 @@ Blockly.Lua['math_single'] = function(block) {
     default:
       throw 'Unknown math operator: ' + operator;
   }
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [code, Blockly.interncode.ORDER_HIGH];
 };
 
-Blockly.Lua['math_constant'] = function(block) {
+Blockly.interncode['math_constant'] = function(block) {
   // Constants: PI, E, the Golden Ratio, sqrt(2), 1/sqrt(2), INFINITY.
   var CONSTANTS = {
-    PI: ['math.pi', Blockly.Lua.ORDER_HIGH],
-    E: ['math.exp(1)', Blockly.Lua.ORDER_HIGH],
-    GOLDEN_RATIO: ['(1 + math.sqrt(5)) / 2', Blockly.Lua.ORDER_MULTIPLICATIVE],
-    SQRT2: ['math.sqrt(2)', Blockly.Lua.ORDER_HIGH],
-    SQRT1_2: ['math.sqrt(1 / 2)', Blockly.Lua.ORDER_HIGH],
-    INFINITY: ['math.huge', Blockly.Lua.ORDER_HIGH]
+    PI: ['math.pi', Blockly.interncode.ORDER_HIGH],
+    E: ['math.exp(1)', Blockly.interncode.ORDER_HIGH],
+    GOLDEN_RATIO: ['(1 + math.sqrt(5)) / 2', Blockly.interncode.ORDER_MULTIPLICATIVE],
+    SQRT2: ['math.sqrt(2)', Blockly.interncode.ORDER_HIGH],
+    SQRT1_2: ['math.sqrt(1 / 2)', Blockly.interncode.ORDER_HIGH],
+    INFINITY: ['math.huge', Blockly.interncode.ORDER_HIGH]
   };
   return CONSTANTS[block.getFieldValue('CONSTANT')];
 };
 
-Blockly.Lua['math_number_property'] = function(block) {
+Blockly.interncode['math_number_property'] = function(block) {
   // Check if a number is even, odd, prime, whole, positive, or negative
   // or if it is divisible by certain number. Returns true or false.
-  var number_to_check = Blockly.Lua.valueToCode(block, 'NUMBER_TO_CHECK',
-      Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
+  var number_to_check = Blockly.interncode.valueToCode(block, 'NUMBER_TO_CHECK',
+      Blockly.interncode.ORDER_MULTIPLICATIVE) || '0';
   var dropdown_property = block.getFieldValue('PROPERTY');
   var code;
   if (dropdown_property == 'PRIME') {
     // Prime is a special case as it is not a one-liner test.
-    var functionName = Blockly.Lua.provideFunction_(
+    var functionName = Blockly.interncode.provideFunction_(
         'math_isPrime',
-        ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(n)',
+        ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(n)',
          '  -- https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
          '  if n == 2 or n == 3 then',
          '    return true',
@@ -172,7 +172,7 @@ Blockly.Lua['math_number_property'] = function(block) {
          '  return true',
          'end']);
     code = functionName + '(' + number_to_check + ')';
-    return [code, Blockly.Lua.ORDER_HIGH];
+    return [code, Blockly.interncode.ORDER_HIGH];
   }
   switch (dropdown_property) {
     case 'EVEN':
@@ -191,12 +191,12 @@ Blockly.Lua['math_number_property'] = function(block) {
       code = number_to_check + ' < 0';
       break;
     case 'DIVISIBLE_BY':
-      var divisor = Blockly.Lua.valueToCode(block, 'DIVISOR',
-          Blockly.Lua.ORDER_MULTIPLICATIVE);
-      // If 'divisor' is some code that evals to 0, Lua will produce a nan.
+      var divisor = Blockly.interncode.valueToCode(block, 'DIVISOR',
+          Blockly.interncode.ORDER_MULTIPLICATIVE);
+      // If 'divisor' is some code that evals to 0, interncode will produce a nan.
       // Let's produce nil if we can determine this at compile-time.
       if (!divisor || divisor == '0') {
-        return ['nil', Blockly.Lua.ORDER_ATOMIC];
+        return ['nil', Blockly.interncode.ORDER_ATOMIC];
       }
       // The normal trick to implement ?: with and/or doesn't work here:
       //   divisor == 0 and nil or number_to_check % divisor == 0
@@ -204,35 +204,35 @@ Blockly.Lua['math_number_property'] = function(block) {
       code = number_to_check + ' % ' + divisor + ' == 0';
       break;
   }
-  return [code, Blockly.Lua.ORDER_RELATIONAL];
+  return [code, Blockly.interncode.ORDER_RELATIONAL];
 };
 
-Blockly.Lua['math_change'] = function(block) {
+Blockly.interncode['math_change'] = function(block) {
   // Add to a variable in place.
-  var argument0 = Blockly.Lua.valueToCode(block, 'DELTA',
-      Blockly.Lua.ORDER_ADDITIVE) || '0';
-  var varName = Blockly.Lua.variableDB_.getName(
+  var argument0 = Blockly.interncode.valueToCode(block, 'DELTA',
+      Blockly.interncode.ORDER_ADDITIVE) || '0';
+  var varName = Blockly.interncode.variableDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   return varName + ' = ' + varName + ' + ' + argument0 + '\n';
 };
 
 // Rounding functions have a single operand.
-Blockly.Lua['math_round'] = Blockly.Lua['math_single'];
+Blockly.interncode['math_round'] = Blockly.interncode['math_single'];
 // Trigonometry functions have a single operand.
-Blockly.Lua['math_trig'] = Blockly.Lua['math_single'];
+Blockly.interncode['math_trig'] = Blockly.interncode['math_single'];
 
-Blockly.Lua['math_on_list'] = function(block) {
+Blockly.interncode['math_on_list'] = function(block) {
   // Math functions for lists.
   var func = block.getFieldValue('OP');
-  var list = Blockly.Lua.valueToCode(block, 'LIST',
-      Blockly.Lua.ORDER_NONE) || '{}';
+  var list = Blockly.interncode.valueToCode(block, 'LIST',
+      Blockly.interncode.ORDER_NONE) || '{}';
   var functionName;
 
   // Functions needed in more than one case.
   function provideSum() {
-    return Blockly.Lua.provideFunction_(
+    return Blockly.interncode.provideFunction_(
         'math_sum',
-        ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+        ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
          '  local result = 0',
          '  for _, v in ipairs(t) do',
          '    result = result + v',
@@ -248,9 +248,9 @@ Blockly.Lua['math_on_list'] = function(block) {
 
     case 'MIN':
       // Returns 0 for the empty list.
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_min',
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
            '  if #t == 0 then',
            '    return 0',
            '  end',
@@ -266,9 +266,9 @@ Blockly.Lua['math_on_list'] = function(block) {
 
     case 'AVERAGE':
       // Returns 0 for the empty list.
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_average',
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
            '  if #t == 0 then',
            '    return 0',
            '  end',
@@ -278,9 +278,9 @@ Blockly.Lua['math_on_list'] = function(block) {
 
     case 'MAX':
       // Returns 0 for the empty list.
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_max',
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
            '  if #t == 0 then',
            '    return 0',
            '  end',
@@ -295,11 +295,11 @@ Blockly.Lua['math_on_list'] = function(block) {
       break;
 
     case 'MEDIAN':
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_median',
           // This operation excludes non-numbers.
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
-           '  -- Source: http://lua-users.org/wiki/SimpleStats',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+           '  -- Source: http://interncode-users.org/wiki/SimpleStats',
            '  if #t == 0 then',
            '    return 0',
            '  end',
@@ -319,13 +319,13 @@ Blockly.Lua['math_on_list'] = function(block) {
       break;
 
     case 'MODE':
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_modes',
           // As a list of numbers can contain more than one mode,
           // the returned result is provided as an array.
-          // The Lua version includes non-numbers.
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
-           '  -- Source: http://lua-users.org/wiki/SimpleStats',
+          // The interncode version includes non-numbers.
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+           '  -- Source: http://interncode-users.org/wiki/SimpleStats',
            '  local counts={}',
            '  for _, v in ipairs(t) do',
            '    if counts[v] == nil then',
@@ -351,9 +351,9 @@ Blockly.Lua['math_on_list'] = function(block) {
       break;
 
     case 'STD_DEV':
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_standard_deviation',
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
            '  local m',
            '  local vm',
            '  local total = 0',
@@ -373,9 +373,9 @@ Blockly.Lua['math_on_list'] = function(block) {
       break;
 
     case 'RANDOM':
-      functionName = Blockly.Lua.provideFunction_(
+      functionName = Blockly.interncode.provideFunction_(
           'math_random_list',
-          ['function ' + Blockly.Lua.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
+          ['function ' + Blockly.interncode.FUNCTION_NAME_PLACEHOLDER_ + '(t)',
            '  if #t == 0 then',
            '    return nil',
            '  end',
@@ -386,45 +386,45 @@ Blockly.Lua['math_on_list'] = function(block) {
     default:
       throw 'Unknown operator: ' + func;
   }
-  return [functionName + '(' + list + ')', Blockly.Lua.ORDER_HIGH];
+  return [functionName + '(' + list + ')', Blockly.interncode.ORDER_HIGH];
 };
 
-Blockly.Lua['math_modulo'] = function(block) {
+Blockly.interncode['math_modulo'] = function(block) {
   // Remainder computation.
-  var argument0 = Blockly.Lua.valueToCode(block, 'DIVIDEND',
-      Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
-  var argument1 = Blockly.Lua.valueToCode(block, 'DIVISOR',
-      Blockly.Lua.ORDER_MULTIPLICATIVE) || '0';
+  var argument0 = Blockly.interncode.valueToCode(block, 'DIVIDEND',
+      Blockly.interncode.ORDER_MULTIPLICATIVE) || '0';
+  var argument1 = Blockly.interncode.valueToCode(block, 'DIVISOR',
+      Blockly.interncode.ORDER_MULTIPLICATIVE) || '0';
   var code = argument0 + ' % ' + argument1;
-  return [code, Blockly.Lua.ORDER_MULTIPLICATIVE];
+  return [code, Blockly.interncode.ORDER_MULTIPLICATIVE];
 };
 
-Blockly.Lua['math_constrain'] = function(block) {
+Blockly.interncode['math_constrain'] = function(block) {
   // Constrain a number between two limits.
-  var argument0 = Blockly.Lua.valueToCode(block, 'VALUE',
-      Blockly.Lua.ORDER_NONE) || '0';
-  var argument1 = Blockly.Lua.valueToCode(block, 'LOW',
-      Blockly.Lua.ORDER_NONE) || '-math.huge';
-  var argument2 = Blockly.Lua.valueToCode(block, 'HIGH',
-      Blockly.Lua.ORDER_NONE) || 'math.huge';
+  var argument0 = Blockly.interncode.valueToCode(block, 'VALUE',
+      Blockly.interncode.ORDER_NONE) || '0';
+  var argument1 = Blockly.interncode.valueToCode(block, 'LOW',
+      Blockly.interncode.ORDER_NONE) || '-math.huge';
+  var argument2 = Blockly.interncode.valueToCode(block, 'HIGH',
+      Blockly.interncode.ORDER_NONE) || 'math.huge';
   var code = 'math.min(math.max(' + argument0 + ', ' + argument1 + '), ' +
       argument2 + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [code, Blockly.interncode.ORDER_HIGH];
 };
 
-Blockly.Lua['math_random_int'] = function(block) {
+Blockly.interncode['math_random_int'] = function(block) {
   // Random integer between [X] and [Y].
-  var argument0 = Blockly.Lua.valueToCode(block, 'FROM',
-      Blockly.Lua.ORDER_NONE) || '0';
-  var argument1 = Blockly.Lua.valueToCode(block, 'TO',
-      Blockly.Lua.ORDER_NONE) || '0';
+  var argument0 = Blockly.interncode.valueToCode(block, 'FROM',
+      Blockly.interncode.ORDER_NONE) || '0';
+  var argument1 = Blockly.interncode.valueToCode(block, 'TO',
+      Blockly.interncode.ORDER_NONE) || '0';
   var code = 'math.random(' + argument0 + ', ' + argument1 + ')';
-  return [code, Blockly.Lua.ORDER_HIGH];
+  return [code, Blockly.interncode.ORDER_HIGH];
 };
 
-Blockly.Lua['math_random_float'] = function(block) {
+Blockly.interncode['math_random_float'] = function(block) {
   // Random fraction between 0 and 1.
-  return ['math.random()', Blockly.Lua.ORDER_HIGH];
+  return ['math.random()', Blockly.interncode.ORDER_HIGH];
 };
 
 /**
@@ -448,90 +448,90 @@ Blockly.Lua['math_random_float'] = function(block) {
  */
 
 /**
- * @fileoverview Generating Dart for math blocks.
+ * @fileoverview Generating ArduinoCpp for math blocks.
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
 'use strict';
 
-goog.provide('Blockly.Dart.math');
+goog.provide('Blockly.ArduinoCpp.math');
 
-goog.require('Blockly.Dart');
+goog.require('Blockly.ArduinoCpp');
 
 
-Blockly.Dart.addReservedWords('Math');
+Blockly.ArduinoCpp.addReservedWords('Math');
 
-Blockly.Dart['math_number'] = function(block) {
+Blockly.ArduinoCpp['math_number'] = function(block) {
   // Numeric value.
   var code = parseFloat(block.getFieldValue('NUM'));
   var order;
   if (code == Infinity) {
     code = 'double.INFINITY';
-    order = Blockly.Dart.ORDER_UNARY_POSTFIX;
+    order = Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX;
   } else if (code == -Infinity) {
     code = '-double.INFINITY';
-    order = Blockly.Dart.ORDER_UNARY_PREFIX;
+    order = Blockly.ArduinoCpp.ORDER_UNARY_PREFIX;
   } else {
-    // -4.abs() returns -4 in Dart due to strange order of operation choices.
+    // -4.abs() returns -4 in ArduinoCpp due to strange order of operation choices.
     // -4 is actually an operator and a number.  Reflect this in the order.
     order = code < 0 ?
-        Blockly.Dart.ORDER_UNARY_PREFIX : Blockly.Dart.ORDER_ATOMIC;
+        Blockly.ArduinoCpp.ORDER_UNARY_PREFIX : Blockly.ArduinoCpp.ORDER_ATOMIC;
   }
   return [code, order];
 };
 
-Blockly.Dart['math_arithmetic'] = function(block) {
+Blockly.ArduinoCpp['math_arithmetic'] = function(block) {
   // Basic arithmetic operators, and power.
   var OPERATORS = {
-    'ADD': [' + ', Blockly.Dart.ORDER_ADDITIVE],
-    'MINUS': [' - ', Blockly.Dart.ORDER_ADDITIVE],
-    'MULTIPLY': [' * ', Blockly.Dart.ORDER_MULTIPLICATIVE],
-    'DIVIDE': [' / ', Blockly.Dart.ORDER_MULTIPLICATIVE],
-    'POWER': [null, Blockly.Dart.ORDER_NONE]  // Handle power separately.
+    'ADD': [' + ', Blockly.ArduinoCpp.ORDER_ADDITIVE],
+    'MINUS': [' - ', Blockly.ArduinoCpp.ORDER_ADDITIVE],
+    'MULTIPLY': [' * ', Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE],
+    'DIVIDE': [' / ', Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE],
+    'POWER': [null, Blockly.ArduinoCpp.ORDER_NONE]  // Handle power separately.
   };
   var tuple = OPERATORS[block.getFieldValue('OP')];
   var operator = tuple[0];
   var order = tuple[1];
-  var argument0 = Blockly.Dart.valueToCode(block, 'A', order) || '0';
-  var argument1 = Blockly.Dart.valueToCode(block, 'B', order) || '0';
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'A', order) || '0';
+  var argument1 = Blockly.ArduinoCpp.valueToCode(block, 'B', order) || '0';
   var code;
-  // Power in Dart requires a special case since it has no operator.
+  // Power in ArduinoCpp requires a special case since it has no operator.
   if (!operator) {
-    Blockly.Dart.definitions_['import_dart_math'] =
-        'import \'dart:math\' as Math;';
+    Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+        'import \'ArduinoCpp:math\' as Math;';
     code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-    return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+    return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
   }
   code = argument0 + operator + argument1;
   return [code, order];
 };
 
-Blockly.Dart['math_single'] = function(block) {
+Blockly.ArduinoCpp['math_single'] = function(block) {
   // Math operators with single operand.
   var operator = block.getFieldValue('OP');
   var code;
   var arg;
   if (operator == 'NEG') {
     // Negation is a special case given its different operator precedence.
-    arg = Blockly.Dart.valueToCode(block, 'NUM',
-        Blockly.Dart.ORDER_UNARY_PREFIX) || '0';
+    arg = Blockly.ArduinoCpp.valueToCode(block, 'NUM',
+        Blockly.ArduinoCpp.ORDER_UNARY_PREFIX) || '0';
     if (arg[0] == '-') {
-      // --3 is not legal in Dart.
+      // --3 is not legal in ArduinoCpp.
       arg = ' ' + arg;
     }
     code = '-' + arg;
-    return [code, Blockly.Dart.ORDER_UNARY_PREFIX];
+    return [code, Blockly.ArduinoCpp.ORDER_UNARY_PREFIX];
   }
-  Blockly.Dart.definitions_['import_dart_math'] =
-      'import \'dart:math\' as Math;';
+  Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+      'import \'ArduinoCpp:math\' as Math;';
   if (operator == 'ABS' || operator.substring(0, 5) == 'ROUND') {
-    arg = Blockly.Dart.valueToCode(block, 'NUM',
-        Blockly.Dart.ORDER_UNARY_POSTFIX) || '0';
+    arg = Blockly.ArduinoCpp.valueToCode(block, 'NUM',
+        Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX) || '0';
   } else if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
-    arg = Blockly.Dart.valueToCode(block, 'NUM',
-        Blockly.Dart.ORDER_MULTIPLICATIVE) || '0';
+    arg = Blockly.ArduinoCpp.valueToCode(block, 'NUM',
+        Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE) || '0';
   } else {
-    arg = Blockly.Dart.valueToCode(block, 'NUM',
-        Blockly.Dart.ORDER_NONE) || '0';
+    arg = Blockly.ArduinoCpp.valueToCode(block, 'NUM',
+        Blockly.ArduinoCpp.ORDER_NONE) || '0';
   }
   // First, handle cases which generate values that don't need parentheses
   // wrapping the code.
@@ -571,7 +571,7 @@ Blockly.Dart['math_single'] = function(block) {
       break;
   }
   if (code) {
-    return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+    return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
   }
   // Second, handle cases which generate values that may need parentheses
   // wrapping the code.
@@ -591,33 +591,33 @@ Blockly.Dart['math_single'] = function(block) {
     default:
       throw 'Unknown math operator: ' + operator;
   }
-  return [code, Blockly.Dart.ORDER_MULTIPLICATIVE];
+  return [code, Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE];
 };
 
-Blockly.Dart['math_constant'] = function(block) {
+Blockly.ArduinoCpp['math_constant'] = function(block) {
   // Constants: PI, E, the Golden Ratio, sqrt(2), 1/sqrt(2), INFINITY.
   var CONSTANTS = {
-    'PI': ['Math.PI', Blockly.Dart.ORDER_UNARY_POSTFIX],
-    'E': ['Math.E', Blockly.Dart.ORDER_UNARY_POSTFIX],
+    'PI': ['Math.PI', Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX],
+    'E': ['Math.E', Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX],
     'GOLDEN_RATIO':
-        ['(1 + Math.sqrt(5)) / 2', Blockly.Dart.ORDER_MULTIPLICATIVE],
-    'SQRT2': ['Math.SQRT2', Blockly.Dart.ORDER_UNARY_POSTFIX],
-    'SQRT1_2': ['Math.SQRT1_2', Blockly.Dart.ORDER_UNARY_POSTFIX],
-    'INFINITY': ['double.INFINITY', Blockly.Dart.ORDER_ATOMIC]
+        ['(1 + Math.sqrt(5)) / 2', Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE],
+    'SQRT2': ['Math.SQRT2', Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX],
+    'SQRT1_2': ['Math.SQRT1_2', Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX],
+    'INFINITY': ['double.INFINITY', Blockly.ArduinoCpp.ORDER_ATOMIC]
   };
   var constant = block.getFieldValue('CONSTANT');
   if (constant != 'INFINITY') {
-    Blockly.Dart.definitions_['import_dart_math'] =
-        'import \'dart:math\' as Math;';
+    Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+        'import \'ArduinoCpp:math\' as Math;';
   }
   return CONSTANTS[constant];
 };
 
-Blockly.Dart['math_number_property'] = function(block) {
+Blockly.ArduinoCpp['math_number_property'] = function(block) {
   // Check if a number is even, odd, prime, whole, positive, or negative
   // or if it is divisible by certain number. Returns true or false.
-  var number_to_check = Blockly.Dart.valueToCode(block, 'NUMBER_TO_CHECK',
-      Blockly.Dart.ORDER_MULTIPLICATIVE);
+  var number_to_check = Blockly.ArduinoCpp.valueToCode(block, 'NUMBER_TO_CHECK',
+      Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE);
   if (!number_to_check) {
     return ['false', Blockly.Python.ORDER_ATOMIC];
   }
@@ -625,11 +625,11 @@ Blockly.Dart['math_number_property'] = function(block) {
   var code;
   if (dropdown_property == 'PRIME') {
     // Prime is a special case as it is not a one-liner test.
-    Blockly.Dart.definitions_['import_dart_math'] =
-        'import \'dart:math\' as Math;';
-    var functionName = Blockly.Dart.provideFunction_(
+    Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+        'import \'ArduinoCpp:math\' as Math;';
+    var functionName = Blockly.ArduinoCpp.provideFunction_(
         'math_isPrime',
-        ['bool ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
+        ['bool ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
          '  // https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
          '  if (n == 2 || n == 3) {',
          '    return true;',
@@ -649,7 +649,7 @@ Blockly.Dart['math_number_property'] = function(block) {
          '  return true;',
          '}']);
     code = functionName + '(' + number_to_check + ')';
-    return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+    return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
   }
   switch (dropdown_property) {
     case 'EVEN':
@@ -668,43 +668,43 @@ Blockly.Dart['math_number_property'] = function(block) {
       code = number_to_check + ' < 0';
       break;
     case 'DIVISIBLE_BY':
-      var divisor = Blockly.Dart.valueToCode(block, 'DIVISOR',
-          Blockly.Dart.ORDER_MULTIPLICATIVE);
+      var divisor = Blockly.ArduinoCpp.valueToCode(block, 'DIVISOR',
+          Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE);
       if (!divisor) {
         return ['false', Blockly.Python.ORDER_ATOMIC];
       }
       code = number_to_check + ' % ' + divisor + ' == 0';
       break;
   }
-  return [code, Blockly.Dart.ORDER_EQUALITY];
+  return [code, Blockly.ArduinoCpp.ORDER_EQUALITY];
 };
 
-Blockly.Dart['math_change'] = function(block) {
+Blockly.ArduinoCpp['math_change'] = function(block) {
   // Add to a variable in place.
-  var argument0 = Blockly.Dart.valueToCode(block, 'DELTA',
-      Blockly.Dart.ORDER_ADDITIVE) || '0';
-  var varName = Blockly.Dart.variableDB_.getName(block.getFieldValue('VAR'),
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'DELTA',
+      Blockly.ArduinoCpp.ORDER_ADDITIVE) || '0';
+  var varName = Blockly.ArduinoCpp.variableDB_.getName(block.getFieldValue('VAR'),
       Blockly.Variables.NAME_TYPE);
   return varName + ' = (' + varName + ' is num ? ' + varName + ' : 0) + ' +
       argument0 + ';\n';
 };
 
 // Rounding functions have a single operand.
-Blockly.Dart['math_round'] = Blockly.Dart['math_single'];
+Blockly.ArduinoCpp['math_round'] = Blockly.ArduinoCpp['math_single'];
 // Trigonometry functions have a single operand.
-Blockly.Dart['math_trig'] = Blockly.Dart['math_single'];
+Blockly.ArduinoCpp['math_trig'] = Blockly.ArduinoCpp['math_single'];
 
-Blockly.Dart['math_on_list'] = function(block) {
+Blockly.ArduinoCpp['math_on_list'] = function(block) {
   // Math functions for lists.
   var func = block.getFieldValue('OP');
-  var list = Blockly.Dart.valueToCode(block, 'LIST',
-      Blockly.Dart.ORDER_NONE) || '[]';
+  var list = Blockly.ArduinoCpp.valueToCode(block, 'LIST',
+      Blockly.ArduinoCpp.ORDER_NONE) || '[]';
   var code;
   switch (func) {
     case 'SUM':
-      var functionName = Blockly.Dart.provideFunction_(
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_sum',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  num sumVal = 0;',
            '  myList.forEach((num entry) {sumVal += entry;});',
@@ -713,11 +713,11 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'MIN':
-      Blockly.Dart.definitions_['import_dart_math'] =
-          'import \'dart:math\' as Math;';
-      var functionName = Blockly.Dart.provideFunction_(
+      Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+          'import \'ArduinoCpp:math\' as Math;';
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_min',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  if (myList.isEmpty) return null;',
            '  num minVal = myList[0];',
@@ -728,11 +728,11 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'MAX':
-      Blockly.Dart.definitions_['import_dart_math'] =
-          'import \'dart:math\' as Math;';
-      var functionName = Blockly.Dart.provideFunction_(
+      Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+          'import \'ArduinoCpp:math\' as Math;';
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_max',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  if (myList.isEmpty) return null;',
            '  num maxVal = myList[0];',
@@ -745,9 +745,9 @@ Blockly.Dart['math_on_list'] = function(block) {
     case 'AVERAGE':
       // This operation exclude null and values that are not int or float:
       //   math_mean([null,null,"aString",1,9]) == 5.0.
-      var functionName = Blockly.Dart.provideFunction_(
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_mean',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  // First filter list for numbers only.',
            '  List localList = new List.from(myList);',
@@ -760,9 +760,9 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'MEDIAN':
-      var functionName = Blockly.Dart.provideFunction_(
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_median',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  // First filter list for numbers only, then sort, ' +
               'then return middle value',
@@ -782,14 +782,14 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'MODE':
-      Blockly.Dart.definitions_['import_dart_math'] =
-          'import \'dart:math\' as Math;';
+      Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+          'import \'ArduinoCpp:math\' as Math;';
       // As a list of numbers can contain more than one mode,
       // the returned result is provided as an array.
       // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
-      var functionName = Blockly.Dart.provideFunction_(
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_modes',
-          ['List ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['List ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List values) {',
            '  List modes = [];',
            '  List counts = [];',
@@ -821,11 +821,11 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'STD_DEV':
-      Blockly.Dart.definitions_['import_dart_math'] =
-          'import \'dart:math\' as Math;';
-      var functionName = Blockly.Dart.provideFunction_(
+      Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+          'import \'ArduinoCpp:math\' as Math;';
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_standard_deviation',
-          ['num ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['num ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  // First filter list for numbers only.',
            '  List numbers = new List.from(myList);',
@@ -843,11 +843,11 @@ Blockly.Dart['math_on_list'] = function(block) {
       code = functionName + '(' + list + ')';
       break;
     case 'RANDOM':
-      Blockly.Dart.definitions_['import_dart_math'] =
-          'import \'dart:math\' as Math;';
-      var functionName = Blockly.Dart.provideFunction_(
+      Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+          'import \'ArduinoCpp:math\' as Math;';
+      var functionName = Blockly.ArduinoCpp.provideFunction_(
           'math_random_item',
-          ['dynamic ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ +
+          ['dynamic ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ +
               '(List myList) {',
            '  int x = new Math.Random().nextInt(myList.length);',
            '  return myList[x];',
@@ -857,45 +857,45 @@ Blockly.Dart['math_on_list'] = function(block) {
     default:
       throw 'Unknown operator: ' + func;
   }
-  return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+  return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
 };
 
-Blockly.Dart['math_modulo'] = function(block) {
+Blockly.ArduinoCpp['math_modulo'] = function(block) {
   // Remainder computation.
-  var argument0 = Blockly.Dart.valueToCode(block, 'DIVIDEND',
-      Blockly.Dart.ORDER_MULTIPLICATIVE) || '0';
-  var argument1 = Blockly.Dart.valueToCode(block, 'DIVISOR',
-      Blockly.Dart.ORDER_MULTIPLICATIVE) || '0';
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'DIVIDEND',
+      Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE) || '0';
+  var argument1 = Blockly.ArduinoCpp.valueToCode(block, 'DIVISOR',
+      Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE) || '0';
   var code = argument0 + ' % ' + argument1;
-  return [code, Blockly.Dart.ORDER_MULTIPLICATIVE];
+  return [code, Blockly.ArduinoCpp.ORDER_MULTIPLICATIVE];
 };
 
-Blockly.Dart['math_constrain'] = function(block) {
+Blockly.ArduinoCpp['math_constrain'] = function(block) {
   // Constrain a number between two limits.
-  Blockly.Dart.definitions_['import_dart_math'] =
-      'import \'dart:math\' as Math;';
-  var argument0 = Blockly.Dart.valueToCode(block, 'VALUE',
-      Blockly.Dart.ORDER_NONE) || '0';
-  var argument1 = Blockly.Dart.valueToCode(block, 'LOW',
-      Blockly.Dart.ORDER_NONE) || '0';
-  var argument2 = Blockly.Dart.valueToCode(block, 'HIGH',
-      Blockly.Dart.ORDER_NONE) || 'double.INFINITY';
+  Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+      'import \'ArduinoCpp:math\' as Math;';
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'VALUE',
+      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+  var argument1 = Blockly.ArduinoCpp.valueToCode(block, 'LOW',
+      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+  var argument2 = Blockly.ArduinoCpp.valueToCode(block, 'HIGH',
+      Blockly.ArduinoCpp.ORDER_NONE) || 'double.INFINITY';
   var code = 'Math.min(Math.max(' + argument0 + ', ' + argument1 + '), ' +
       argument2 + ')';
-  return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+  return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
 };
 
-Blockly.Dart['math_random_int'] = function(block) {
+Blockly.ArduinoCpp['math_random_int'] = function(block) {
   // Random integer between [X] and [Y].
-  Blockly.Dart.definitions_['import_dart_math'] =
-      'import \'dart:math\' as Math;';
-  var argument0 = Blockly.Dart.valueToCode(block, 'FROM',
-      Blockly.Dart.ORDER_NONE) || '0';
-  var argument1 = Blockly.Dart.valueToCode(block, 'TO',
-      Blockly.Dart.ORDER_NONE) || '0';
-  var functionName = Blockly.Dart.provideFunction_(
+  Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+      'import \'ArduinoCpp:math\' as Math;';
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'FROM',
+      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+  var argument1 = Blockly.ArduinoCpp.valueToCode(block, 'TO',
+      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+  var functionName = Blockly.ArduinoCpp.provideFunction_(
       'math_random_int',
-      ['int ' + Blockly.Dart.FUNCTION_NAME_PLACEHOLDER_ + '(num a, num b) {',
+      ['int ' + Blockly.ArduinoCpp.FUNCTION_NAME_PLACEHOLDER_ + '(num a, num b) {',
        '  if (a > b) {',
        '    // Swap a and b to ensure a is smaller.',
        '    num c = a;',
@@ -905,14 +905,502 @@ Blockly.Dart['math_random_int'] = function(block) {
        '  return new Math.Random().nextInt(b - a + 1) + a;',
        '}']);
   var code = functionName + '(' + argument0 + ', ' + argument1 + ')';
-  return [code, Blockly.Dart.ORDER_UNARY_POSTFIX];
+  return [code, Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
 };
 
-Blockly.Dart['math_random_float'] = function(block) {
+Blockly.ArduinoCpp['math_random_float'] = function(block) {
   // Random fraction between 0 and 1.
-  Blockly.Dart.definitions_['import_dart_math'] =
-      'import \'dart:math\' as Math;';
-  return ['new Math.Random().nextDouble()', Blockly.Dart.ORDER_UNARY_POSTFIX];
+  Blockly.ArduinoCpp.definitions_['import_ArduinoCpp_math'] =
+      'import \'ArduinoCpp:math\' as Math;';
+  return ['new Math.Random().nextDouble()', Blockly.ArduinoCpp.ORDER_UNARY_POSTFIX];
+};
+
+/**
+ * @license
+ * Visual Blocks Language
+ *
+ * Copyright 2014 Google Inc.
+ * https://developers.google.com/blockly/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview Generating Cpp for math blocks.
+ * @author q.neutron@gmail.com (Quynh Neutron)
+ */
+'use strict';
+
+goog.provide('Blockly.Cpp.math');
+
+goog.require('Blockly.Cpp');
+
+
+Blockly.Cpp.addReservedWords('Math');
+
+Blockly.Cpp['math_number'] = function(block) {
+  // Numeric value.
+  var code = parseFloat(block.getFieldValue('NUM'));
+  var order;
+  if (code == Infinity) {
+    code = 'double.INFINITY';
+    order = Blockly.Cpp.ORDER_UNARY_POSTFIX;
+  } else if (code == -Infinity) {
+    code = '-double.INFINITY';
+    order = Blockly.Cpp.ORDER_UNARY_PREFIX;
+  } else {
+    // -4.abs() returns -4 in Cpp due to strange order of operation choices.
+    // -4 is actually an operator and a number.  Reflect this in the order.
+    order = code < 0 ?
+        Blockly.Cpp.ORDER_UNARY_PREFIX : Blockly.Cpp.ORDER_ATOMIC;
+  }
+  return [code, order];
+};
+
+Blockly.Cpp['math_arithmetic'] = function(block) {
+  // Basic arithmetic operators, and power.
+  var OPERATORS = {
+    'ADD': [' + ', Blockly.Cpp.ORDER_ADDITIVE],
+    'MINUS': [' - ', Blockly.Cpp.ORDER_ADDITIVE],
+    'MULTIPLY': [' * ', Blockly.Cpp.ORDER_MULTIPLICATIVE],
+    'DIVIDE': [' / ', Blockly.Cpp.ORDER_MULTIPLICATIVE],
+    'POWER': [null, Blockly.Cpp.ORDER_NONE]  // Handle power separately.
+  };
+  var tuple = OPERATORS[block.getFieldValue('OP')];
+  var operator = tuple[0];
+  var order = tuple[1];
+  var argument0 = Blockly.Cpp.valueToCode(block, 'A', order) || '0';
+  var argument1 = Blockly.Cpp.valueToCode(block, 'B', order) || '0';
+  var code;
+  // Power in Cpp requires a special case since it has no operator.
+  if (!operator) {
+    Blockly.Cpp.definitions_['import_Cpp_math'] =
+        'import \'Cpp:math\' as Math;';
+    code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
+    return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+  }
+  code = argument0 + operator + argument1;
+  return [code, order];
+};
+
+Blockly.Cpp['math_single'] = function(block) {
+  // Math operators with single operand.
+  var operator = block.getFieldValue('OP');
+  var code;
+  var arg;
+  if (operator == 'NEG') {
+    // Negation is a special case given its different operator precedence.
+    arg = Blockly.Cpp.valueToCode(block, 'NUM',
+        Blockly.Cpp.ORDER_UNARY_PREFIX) || '0';
+    if (arg[0] == '-') {
+      // --3 is not legal in Cpp.
+      arg = ' ' + arg;
+    }
+    code = '-' + arg;
+    return [code, Blockly.Cpp.ORDER_UNARY_PREFIX];
+  }
+  Blockly.Cpp.definitions_['import_Cpp_math'] =
+      'import \'Cpp:math\' as Math;';
+  if (operator == 'ABS' || operator.substring(0, 5) == 'ROUND') {
+    arg = Blockly.Cpp.valueToCode(block, 'NUM',
+        Blockly.Cpp.ORDER_UNARY_POSTFIX) || '0';
+  } else if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
+    arg = Blockly.Cpp.valueToCode(block, 'NUM',
+        Blockly.Cpp.ORDER_MULTIPLICATIVE) || '0';
+  } else {
+    arg = Blockly.Cpp.valueToCode(block, 'NUM',
+        Blockly.Cpp.ORDER_NONE) || '0';
+  }
+  // First, handle cases which generate values that don't need parentheses
+  // wrapping the code.
+  switch (operator) {
+    case 'ABS':
+      code = arg + '.abs()';
+      break;
+    case 'ROOT':
+      code = 'Math.sqrt(' + arg + ')';
+      break;
+    case 'LN':
+      code = 'Math.log(' + arg + ')';
+      break;
+    case 'EXP':
+      code = 'Math.exp(' + arg + ')';
+      break;
+    case 'POW10':
+      code = 'Math.pow(10,' + arg + ')';
+      break;
+    case 'ROUND':
+      code = arg + '.round()';
+      break;
+    case 'ROUNDUP':
+      code = arg + '.ceil()';
+      break;
+    case 'ROUNDDOWN':
+      code = arg + '.floor()';
+      break;
+    case 'SIN':
+      code = 'Math.sin(' + arg + ' / 180 * Math.PI)';
+      break;
+    case 'COS':
+      code = 'Math.cos(' + arg + ' / 180 * Math.PI)';
+      break;
+    case 'TAN':
+      code = 'Math.tan(' + arg + ' / 180 * Math.PI)';
+      break;
+  }
+  if (code) {
+    return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+  }
+  // Second, handle cases which generate values that may need parentheses
+  // wrapping the code.
+  switch (operator) {
+    case 'LOG10':
+      code = 'Math.log(' + arg + ') / Math.log(10)';
+      break;
+    case 'ASIN':
+      code = 'Math.asin(' + arg + ') / Math.PI * 180';
+      break;
+    case 'ACOS':
+      code = 'Math.acos(' + arg + ') / Math.PI * 180';
+      break;
+    case 'ATAN':
+      code = 'Math.atan(' + arg + ') / Math.PI * 180';
+      break;
+    default:
+      throw 'Unknown math operator: ' + operator;
+  }
+  return [code, Blockly.Cpp.ORDER_MULTIPLICATIVE];
+};
+
+Blockly.Cpp['math_constant'] = function(block) {
+  // Constants: PI, E, the Golden Ratio, sqrt(2), 1/sqrt(2), INFINITY.
+  var CONSTANTS = {
+    'PI': ['Math.PI', Blockly.Cpp.ORDER_UNARY_POSTFIX],
+    'E': ['Math.E', Blockly.Cpp.ORDER_UNARY_POSTFIX],
+    'GOLDEN_RATIO':
+        ['(1 + Math.sqrt(5)) / 2', Blockly.Cpp.ORDER_MULTIPLICATIVE],
+    'SQRT2': ['Math.SQRT2', Blockly.Cpp.ORDER_UNARY_POSTFIX],
+    'SQRT1_2': ['Math.SQRT1_2', Blockly.Cpp.ORDER_UNARY_POSTFIX],
+    'INFINITY': ['double.INFINITY', Blockly.Cpp.ORDER_ATOMIC]
+  };
+  var constant = block.getFieldValue('CONSTANT');
+  if (constant != 'INFINITY') {
+    Blockly.Cpp.definitions_['import_Cpp_math'] =
+        'import \'Cpp:math\' as Math;';
+  }
+  return CONSTANTS[constant];
+};
+
+Blockly.Cpp['math_number_property'] = function(block) {
+  // Check if a number is even, odd, prime, whole, positive, or negative
+  // or if it is divisible by certain number. Returns true or false.
+  var number_to_check = Blockly.Cpp.valueToCode(block, 'NUMBER_TO_CHECK',
+      Blockly.Cpp.ORDER_MULTIPLICATIVE);
+  if (!number_to_check) {
+    return ['false', Blockly.Python.ORDER_ATOMIC];
+  }
+  var dropdown_property = block.getFieldValue('PROPERTY');
+  var code;
+  if (dropdown_property == 'PRIME') {
+    // Prime is a special case as it is not a one-liner test.
+    Blockly.Cpp.definitions_['import_Cpp_math'] =
+        'import \'Cpp:math\' as Math;';
+    var functionName = Blockly.Cpp.provideFunction_(
+        'math_isPrime',
+        ['bool ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
+         '  // https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
+         '  if (n == 2 || n == 3) {',
+         '    return true;',
+         '  }',
+         '  // False if n is null, negative, is 1, or not whole.',
+         '  // And false if n is divisible by 2 or 3.',
+         '  if (n == null || n <= 1 || n % 1 != 0 || n % 2 == 0 ||' +
+            ' n % 3 == 0) {',
+         '    return false;',
+         '  }',
+         '  // Check all the numbers of form 6k +/- 1, up to sqrt(n).',
+         '  for (var x = 6; x <= Math.sqrt(n) + 1; x += 6) {',
+         '    if (n % (x - 1) == 0 || n % (x + 1) == 0) {',
+         '      return false;',
+         '    }',
+         '  }',
+         '  return true;',
+         '}']);
+    code = functionName + '(' + number_to_check + ')';
+    return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+  }
+  switch (dropdown_property) {
+    case 'EVEN':
+      code = number_to_check + ' % 2 == 0';
+      break;
+    case 'ODD':
+      code = number_to_check + ' % 2 == 1';
+      break;
+    case 'WHOLE':
+      code = number_to_check + ' % 1 == 0';
+      break;
+    case 'POSITIVE':
+      code = number_to_check + ' > 0';
+      break;
+    case 'NEGATIVE':
+      code = number_to_check + ' < 0';
+      break;
+    case 'DIVISIBLE_BY':
+      var divisor = Blockly.Cpp.valueToCode(block, 'DIVISOR',
+          Blockly.Cpp.ORDER_MULTIPLICATIVE);
+      if (!divisor) {
+        return ['false', Blockly.Python.ORDER_ATOMIC];
+      }
+      code = number_to_check + ' % ' + divisor + ' == 0';
+      break;
+  }
+  return [code, Blockly.Cpp.ORDER_EQUALITY];
+};
+
+Blockly.Cpp['math_change'] = function(block) {
+  // Add to a variable in place.
+  var argument0 = Blockly.Cpp.valueToCode(block, 'DELTA',
+      Blockly.Cpp.ORDER_ADDITIVE) || '0';
+  var varName = Blockly.Cpp.variableDB_.getName(block.getFieldValue('VAR'),
+      Blockly.Variables.NAME_TYPE);
+  return varName + ' = (' + varName + ' is num ? ' + varName + ' : 0) + ' +
+      argument0 + ';\n';
+};
+
+// Rounding functions have a single operand.
+Blockly.Cpp['math_round'] = Blockly.Cpp['math_single'];
+// Trigonometry functions have a single operand.
+Blockly.Cpp['math_trig'] = Blockly.Cpp['math_single'];
+
+Blockly.Cpp['math_on_list'] = function(block) {
+  // Math functions for lists.
+  var func = block.getFieldValue('OP');
+  var list = Blockly.Cpp.valueToCode(block, 'LIST',
+      Blockly.Cpp.ORDER_NONE) || '[]';
+  var code;
+  switch (func) {
+    case 'SUM':
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_sum',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  num sumVal = 0;',
+           '  myList.forEach((num entry) {sumVal += entry;});',
+           '  return sumVal;',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MIN':
+      Blockly.Cpp.definitions_['import_Cpp_math'] =
+          'import \'Cpp:math\' as Math;';
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_min',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  if (myList.isEmpty) return null;',
+           '  num minVal = myList[0];',
+           '  myList.forEach((num entry) ' +
+              '{minVal = Math.min(minVal, entry);});',
+           '  return minVal;',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MAX':
+      Blockly.Cpp.definitions_['import_Cpp_math'] =
+          'import \'Cpp:math\' as Math;';
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_max',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  if (myList.isEmpty) return null;',
+           '  num maxVal = myList[0];',
+           '  myList.forEach((num entry) ' +
+              '{maxVal = Math.max(maxVal, entry);});',
+           '  return maxVal;',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'AVERAGE':
+      // This operation exclude null and values that are not int or float:
+      //   math_mean([null,null,"aString",1,9]) == 5.0.
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_mean',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  // First filter list for numbers only.',
+           '  List localList = new List.from(myList);',
+           '  localList.removeWhere((a) => a is! num);',
+           '  if (localList.isEmpty) return null;',
+           '  num sumVal = 0;',
+           '  localList.forEach((num entry) {sumVal += entry;});',
+           '  return sumVal / localList.length;',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MEDIAN':
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_median',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  // First filter list for numbers only, then sort, ' +
+              'then return middle value',
+           '  // or the average of two middle values if list has an ' +
+              'even number of elements.',
+           '  List localList = new List.from(myList);',
+           '  localList.removeWhere((a) => a is! num);',
+           '  if (localList.isEmpty) return null;',
+           '  localList.sort((a, b) => (a - b));',
+           '  int index = localList.length ~/ 2;',
+           '  if (localList.length % 2 == 1) {',
+           '    return localList[index];',
+           '  } else {',
+           '    return (localList[index - 1] + localList[index]) / 2;',
+           '  }',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MODE':
+      Blockly.Cpp.definitions_['import_Cpp_math'] =
+          'import \'Cpp:math\' as Math;';
+      // As a list of numbers can contain more than one mode,
+      // the returned result is provided as an array.
+      // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_modes',
+          ['List ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List values) {',
+           '  List modes = [];',
+           '  List counts = [];',
+           '  int maxCount = 0;',
+           '  for (int i = 0; i < values.length; i++) {',
+           '    var value = values[i];',
+           '    bool found = false;',
+           '    int thisCount;',
+           '    for (int j = 0; j < counts.length; j++) {',
+           '      if (counts[j][0] == value) {',
+           '        thisCount = ++counts[j][1];',
+           '        found = true;',
+           '        break;',
+           '      }',
+           '    }',
+           '    if (!found) {',
+           '      counts.add([value, 1]);',
+           '      thisCount = 1;',
+           '    }',
+           '    maxCount = Math.max(thisCount, maxCount);',
+           '  }',
+           '  for (int j = 0; j < counts.length; j++) {',
+           '    if (counts[j][1] == maxCount) {',
+           '        modes.add(counts[j][0]);',
+           '    }',
+           '  }',
+           '  return modes;',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'STD_DEV':
+      Blockly.Cpp.definitions_['import_Cpp_math'] =
+          'import \'Cpp:math\' as Math;';
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_standard_deviation',
+          ['num ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  // First filter list for numbers only.',
+           '  List numbers = new List.from(myList);',
+           '  numbers.removeWhere((a) => a is! num);',
+           '  if (numbers.isEmpty) return null;',
+           '  num n = numbers.length;',
+           '  num sum = 0;',
+           '  numbers.forEach((x) => sum += x);',
+           '  num mean = sum / n;',
+           '  num sumSquare = 0;',
+           '  numbers.forEach((x) => sumSquare += ' +
+              'Math.pow(x - mean, 2));',
+           '  return Math.sqrt(sumSquare / n);',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    case 'RANDOM':
+      Blockly.Cpp.definitions_['import_Cpp_math'] =
+          'import \'Cpp:math\' as Math;';
+      var functionName = Blockly.Cpp.provideFunction_(
+          'math_random_item',
+          ['dynamic ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ +
+              '(List myList) {',
+           '  int x = new Math.Random().nextInt(myList.length);',
+           '  return myList[x];',
+           '}']);
+      code = functionName + '(' + list + ')';
+      break;
+    default:
+      throw 'Unknown operator: ' + func;
+  }
+  return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Cpp['math_modulo'] = function(block) {
+  // Remainder computation.
+  var argument0 = Blockly.Cpp.valueToCode(block, 'DIVIDEND',
+      Blockly.Cpp.ORDER_MULTIPLICATIVE) || '0';
+  var argument1 = Blockly.Cpp.valueToCode(block, 'DIVISOR',
+      Blockly.Cpp.ORDER_MULTIPLICATIVE) || '0';
+  var code = argument0 + ' % ' + argument1;
+  return [code, Blockly.Cpp.ORDER_MULTIPLICATIVE];
+};
+
+Blockly.Cpp['math_constrain'] = function(block) {
+  // Constrain a number between two limits.
+  Blockly.Cpp.definitions_['import_Cpp_math'] =
+      'import \'Cpp:math\' as Math;';
+  var argument0 = Blockly.Cpp.valueToCode(block, 'VALUE',
+      Blockly.Cpp.ORDER_NONE) || '0';
+  var argument1 = Blockly.Cpp.valueToCode(block, 'LOW',
+      Blockly.Cpp.ORDER_NONE) || '0';
+  var argument2 = Blockly.Cpp.valueToCode(block, 'HIGH',
+      Blockly.Cpp.ORDER_NONE) || 'double.INFINITY';
+  var code = 'Math.min(Math.max(' + argument0 + ', ' + argument1 + '), ' +
+      argument2 + ')';
+  return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Cpp['math_random_int'] = function(block) {
+  // Random integer between [X] and [Y].
+  Blockly.Cpp.definitions_['import_Cpp_math'] =
+      'import \'Cpp:math\' as Math;';
+  var argument0 = Blockly.Cpp.valueToCode(block, 'FROM',
+      Blockly.Cpp.ORDER_NONE) || '0';
+  var argument1 = Blockly.Cpp.valueToCode(block, 'TO',
+      Blockly.Cpp.ORDER_NONE) || '0';
+  var functionName = Blockly.Cpp.provideFunction_(
+      'math_random_int',
+      ['int ' + Blockly.Cpp.FUNCTION_NAME_PLACEHOLDER_ + '(num a, num b) {',
+       '  if (a > b) {',
+       '    // Swap a and b to ensure a is smaller.',
+       '    num c = a;',
+       '    a = b;',
+       '    b = c;',
+       '  }',
+       '  return new Math.Random().nextInt(b - a + 1) + a;',
+       '}']);
+  var code = functionName + '(' + argument0 + ', ' + argument1 + ')';
+  return [code, Blockly.Cpp.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Cpp['math_random_float'] = function(block) {
+  // Random fraction between 0 and 1.
+  Blockly.Cpp.definitions_['import_Cpp_math'] =
+      'import \'Cpp:math\' as Math;';
+  return ['new Math.Random().nextDouble()', Blockly.Cpp.ORDER_UNARY_POSTFIX];
 };
 
 /**
@@ -936,68 +1424,68 @@ Blockly.Dart['math_random_float'] = function(block) {
  */
 
 /**
- * @fileoverview Generating JavaScript for math blocks.
+ * @fileoverview Generating basic for math blocks.
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
 'use strict';
 
-goog.provide('Blockly.JavaScript.math');
+goog.provide('Blockly.basic.math');
 
-goog.require('Blockly.JavaScript');
+goog.require('Blockly.basic');
 
 
-Blockly.JavaScript['math_number'] = function(block) {
+Blockly.basic['math_number'] = function(block) {
   // Numeric value.
   var code = parseFloat(block.getFieldValue('NUM'));
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  return [code, Blockly.basic.ORDER_ATOMIC];
 };
 
-Blockly.JavaScript['math_arithmetic'] = function(block) {
+Blockly.basic['math_arithmetic'] = function(block) {
   // Basic arithmetic operators, and power.
   var OPERATORS = {
-    'ADD': [' + ', Blockly.JavaScript.ORDER_ADDITION],
-    'MINUS': [' - ', Blockly.JavaScript.ORDER_SUBTRACTION],
-    'MULTIPLY': [' * ', Blockly.JavaScript.ORDER_MULTIPLICATION],
-    'DIVIDE': [' / ', Blockly.JavaScript.ORDER_DIVISION],
-    'POWER': [null, Blockly.JavaScript.ORDER_COMMA]  // Handle power separately.
+    'ADD': [' + ', Blockly.basic.ORDER_ADDITION],
+    'MINUS': [' - ', Blockly.basic.ORDER_SUBTRACTION],
+    'MULTIPLY': [' * ', Blockly.basic.ORDER_MULTIPLICATION],
+    'DIVIDE': [' / ', Blockly.basic.ORDER_DIVISION],
+    'POWER': [null, Blockly.basic.ORDER_COMMA]  // Handle power separately.
   };
   var tuple = OPERATORS[block.getFieldValue('OP')];
   var operator = tuple[0];
   var order = tuple[1];
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0';
-  var argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0';
+  var argument0 = Blockly.basic.valueToCode(block, 'A', order) || '0';
+  var argument1 = Blockly.basic.valueToCode(block, 'B', order) || '0';
   var code;
-  // Power in JavaScript requires a special case since it has no operator.
+  // Power in basic requires a special case since it has no operator.
   if (!operator) {
     code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.basic.ORDER_FUNCTION_CALL];
   }
   code = argument0 + operator + argument1;
   return [code, order];
 };
 
-Blockly.JavaScript['math_single'] = function(block) {
+Blockly.basic['math_single'] = function(block) {
   // Math operators with single operand.
   var operator = block.getFieldValue('OP');
   var code;
   var arg;
   if (operator == 'NEG') {
     // Negation is a special case given its different operator precedence.
-    arg = Blockly.JavaScript.valueToCode(block, 'NUM',
-        Blockly.JavaScript.ORDER_UNARY_NEGATION) || '0';
+    arg = Blockly.basic.valueToCode(block, 'NUM',
+        Blockly.basic.ORDER_UNARY_NEGATION) || '0';
     if (arg[0] == '-') {
       // --3 is not legal in JS.
       arg = ' ' + arg;
     }
     code = '-' + arg;
-    return [code, Blockly.JavaScript.ORDER_UNARY_NEGATION];
+    return [code, Blockly.basic.ORDER_UNARY_NEGATION];
   }
   if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
-    arg = Blockly.JavaScript.valueToCode(block, 'NUM',
-        Blockly.JavaScript.ORDER_DIVISION) || '0';
+    arg = Blockly.basic.valueToCode(block, 'NUM',
+        Blockly.basic.ORDER_DIVISION) || '0';
   } else {
-    arg = Blockly.JavaScript.valueToCode(block, 'NUM',
-        Blockly.JavaScript.ORDER_NONE) || '0';
+    arg = Blockly.basic.valueToCode(block, 'NUM',
+        Blockly.basic.ORDER_NONE) || '0';
   }
   // First, handle cases which generate values that don't need parentheses
   // wrapping the code.
@@ -1037,7 +1525,7 @@ Blockly.JavaScript['math_single'] = function(block) {
       break;
   }
   if (code) {
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.basic.ORDER_FUNCTION_CALL];
   }
   // Second, handle cases which generate values that may need parentheses
   // wrapping the code.
@@ -1057,35 +1545,35 @@ Blockly.JavaScript['math_single'] = function(block) {
     default:
       throw 'Unknown math operator: ' + operator;
   }
-  return [code, Blockly.JavaScript.ORDER_DIVISION];
+  return [code, Blockly.basic.ORDER_DIVISION];
 };
 
-Blockly.JavaScript['math_constant'] = function(block) {
+Blockly.basic['math_constant'] = function(block) {
   // Constants: PI, E, the Golden Ratio, sqrt(2), 1/sqrt(2), INFINITY.
   var CONSTANTS = {
-    'PI': ['Math.PI', Blockly.JavaScript.ORDER_MEMBER],
-    'E': ['Math.E', Blockly.JavaScript.ORDER_MEMBER],
+    'PI': ['Math.PI', Blockly.basic.ORDER_MEMBER],
+    'E': ['Math.E', Blockly.basic.ORDER_MEMBER],
     'GOLDEN_RATIO':
-        ['(1 + Math.sqrt(5)) / 2', Blockly.JavaScript.ORDER_DIVISION],
-    'SQRT2': ['Math.SQRT2', Blockly.JavaScript.ORDER_MEMBER],
-    'SQRT1_2': ['Math.SQRT1_2', Blockly.JavaScript.ORDER_MEMBER],
-    'INFINITY': ['Infinity', Blockly.JavaScript.ORDER_ATOMIC]
+        ['(1 + Math.sqrt(5)) / 2', Blockly.basic.ORDER_DIVISION],
+    'SQRT2': ['Math.SQRT2', Blockly.basic.ORDER_MEMBER],
+    'SQRT1_2': ['Math.SQRT1_2', Blockly.basic.ORDER_MEMBER],
+    'INFINITY': ['Infinity', Blockly.basic.ORDER_ATOMIC]
   };
   return CONSTANTS[block.getFieldValue('CONSTANT')];
 };
 
-Blockly.JavaScript['math_number_property'] = function(block) {
+Blockly.basic['math_number_property'] = function(block) {
   // Check if a number is even, odd, prime, whole, positive, or negative
   // or if it is divisible by certain number. Returns true or false.
-  var number_to_check = Blockly.JavaScript.valueToCode(block, 'NUMBER_TO_CHECK',
-      Blockly.JavaScript.ORDER_MODULUS) || '0';
+  var number_to_check = Blockly.basic.valueToCode(block, 'NUMBER_TO_CHECK',
+      Blockly.basic.ORDER_MODULUS) || '0';
   var dropdown_property = block.getFieldValue('PROPERTY');
   var code;
   if (dropdown_property == 'PRIME') {
     // Prime is a special case as it is not a one-liner test.
-    var functionName = Blockly.JavaScript.provideFunction_(
+    var functionName = Blockly.basic.provideFunction_(
         'mathIsPrime',
-        ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
+        ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
          '  // https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
          '  if (n == 2 || n == 3) {',
          '    return true;',
@@ -1105,7 +1593,7 @@ Blockly.JavaScript['math_number_property'] = function(block) {
          '  return true;',
          '}']);
     code = functionName + '(' + number_to_check + ')';
-    return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+    return [code, Blockly.basic.ORDER_FUNCTION_CALL];
   }
   switch (dropdown_property) {
     case 'EVEN':
@@ -1124,67 +1612,67 @@ Blockly.JavaScript['math_number_property'] = function(block) {
       code = number_to_check + ' < 0';
       break;
     case 'DIVISIBLE_BY':
-      var divisor = Blockly.JavaScript.valueToCode(block, 'DIVISOR',
-          Blockly.JavaScript.ORDER_MODULUS) || '0';
+      var divisor = Blockly.basic.valueToCode(block, 'DIVISOR',
+          Blockly.basic.ORDER_MODULUS) || '0';
       code = number_to_check + ' % ' + divisor + ' == 0';
       break;
   }
-  return [code, Blockly.JavaScript.ORDER_EQUALITY];
+  return [code, Blockly.basic.ORDER_EQUALITY];
 };
 
-Blockly.JavaScript['math_change'] = function(block) {
+Blockly.basic['math_change'] = function(block) {
   // Add to a variable in place.
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'DELTA',
-      Blockly.JavaScript.ORDER_ADDITION) || '0';
-  var varName = Blockly.JavaScript.variableDB_.getName(
+  var argument0 = Blockly.basic.valueToCode(block, 'DELTA',
+      Blockly.basic.ORDER_ADDITION) || '0';
+  var varName = Blockly.basic.variableDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
   return varName + ' = (typeof ' + varName + ' == \'number\' ? ' + varName +
       ' : 0) + ' + argument0 + ';\n';
 };
 
 // Rounding functions have a single operand.
-Blockly.JavaScript['math_round'] = Blockly.JavaScript['math_single'];
+Blockly.basic['math_round'] = Blockly.basic['math_single'];
 // Trigonometry functions have a single operand.
-Blockly.JavaScript['math_trig'] = Blockly.JavaScript['math_single'];
+Blockly.basic['math_trig'] = Blockly.basic['math_single'];
 
-Blockly.JavaScript['math_on_list'] = function(block) {
+Blockly.basic['math_on_list'] = function(block) {
   // Math functions for lists.
   var func = block.getFieldValue('OP');
   var list, code;
   switch (func) {
     case 'SUM':
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_MEMBER) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_MEMBER) || '[]';
       code = list + '.reduce(function(x, y) {return x + y;})';
       break;
     case 'MIN':
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_COMMA) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_COMMA) || '[]';
       code = 'Math.min.apply(null, ' + list + ')';
       break;
     case 'MAX':
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_COMMA) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_COMMA) || '[]';
       code = 'Math.max.apply(null, ' + list + ')';
       break;
     case 'AVERAGE':
       // mathMean([null,null,1,3]) == 2.0.
-      var functionName = Blockly.JavaScript.provideFunction_(
+      var functionName = Blockly.basic.provideFunction_(
           'mathMean',
-          ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
               '(myList) {',
             '  return myList.reduce(function(x, y) {return x + y;}) / ' +
                   'myList.length;',
             '}']);
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_NONE) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_NONE) || '[]';
       code = functionName + '(' + list + ')';
       break;
     case 'MEDIAN':
       // mathMedian([null,null,1,3]) == 2.0.
-      var functionName = Blockly.JavaScript.provideFunction_(
+      var functionName = Blockly.basic.provideFunction_(
           'mathMedian',
-          ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
               '(myList) {',
             '  var localList = myList.filter(function (x) ' +
               '{return typeof x == \'number\';});',
@@ -1197,17 +1685,17 @@ Blockly.JavaScript['math_on_list'] = function(block) {
             '    return localList[(localList.length - 1) / 2];',
             '  }',
             '}']);
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_NONE) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_NONE) || '[]';
       code = functionName + '(' + list + ')';
       break;
     case 'MODE':
       // As a list of numbers can contain more than one mode,
       // the returned result is provided as an array.
       // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
-      var functionName = Blockly.JavaScript.provideFunction_(
+      var functionName = Blockly.basic.provideFunction_(
           'mathModes',
-          ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
               '(values) {',
             '  var modes = [];',
             '  var counts = [];',
@@ -1236,14 +1724,14 @@ Blockly.JavaScript['math_on_list'] = function(block) {
             '  }',
             '  return modes;',
             '}']);
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_NONE) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_NONE) || '[]';
       code = functionName + '(' + list + ')';
       break;
     case 'STD_DEV':
-      var functionName = Blockly.JavaScript.provideFunction_(
+      var functionName = Blockly.basic.provideFunction_(
           'mathStandardDeviation',
-          ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
               '(numbers) {',
             '  var n = numbers.length;',
             '  if (!n) return null;',
@@ -1255,60 +1743,60 @@ Blockly.JavaScript['math_on_list'] = function(block) {
             '  variance = variance / n;',
             '  return Math.sqrt(variance);',
             '}']);
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_NONE) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_NONE) || '[]';
       code = functionName + '(' + list + ')';
       break;
     case 'RANDOM':
-      var functionName = Blockly.JavaScript.provideFunction_(
+      var functionName = Blockly.basic.provideFunction_(
           'mathRandomList',
-          ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+          ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
               '(list) {',
             '  var x = Math.floor(Math.random() * list.length);',
             '  return list[x];',
             '}']);
-      list = Blockly.JavaScript.valueToCode(block, 'LIST',
-          Blockly.JavaScript.ORDER_NONE) || '[]';
+      list = Blockly.basic.valueToCode(block, 'LIST',
+          Blockly.basic.ORDER_NONE) || '[]';
       code = functionName + '(' + list + ')';
       break;
     default:
       throw 'Unknown operator: ' + func;
   }
-  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  return [code, Blockly.basic.ORDER_FUNCTION_CALL];
 };
 
-Blockly.JavaScript['math_modulo'] = function(block) {
+Blockly.basic['math_modulo'] = function(block) {
   // Remainder computation.
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'DIVIDEND',
-      Blockly.JavaScript.ORDER_MODULUS) || '0';
-  var argument1 = Blockly.JavaScript.valueToCode(block, 'DIVISOR',
-      Blockly.JavaScript.ORDER_MODULUS) || '0';
+  var argument0 = Blockly.basic.valueToCode(block, 'DIVIDEND',
+      Blockly.basic.ORDER_MODULUS) || '0';
+  var argument1 = Blockly.basic.valueToCode(block, 'DIVISOR',
+      Blockly.basic.ORDER_MODULUS) || '0';
   var code = argument0 + ' % ' + argument1;
-  return [code, Blockly.JavaScript.ORDER_MODULUS];
+  return [code, Blockly.basic.ORDER_MODULUS];
 };
 
-Blockly.JavaScript['math_constrain'] = function(block) {
+Blockly.basic['math_constrain'] = function(block) {
   // Constrain a number between two limits.
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'VALUE',
-      Blockly.JavaScript.ORDER_COMMA) || '0';
-  var argument1 = Blockly.JavaScript.valueToCode(block, 'LOW',
-      Blockly.JavaScript.ORDER_COMMA) || '0';
-  var argument2 = Blockly.JavaScript.valueToCode(block, 'HIGH',
-      Blockly.JavaScript.ORDER_COMMA) || 'Infinity';
+  var argument0 = Blockly.basic.valueToCode(block, 'VALUE',
+      Blockly.basic.ORDER_COMMA) || '0';
+  var argument1 = Blockly.basic.valueToCode(block, 'LOW',
+      Blockly.basic.ORDER_COMMA) || '0';
+  var argument2 = Blockly.basic.valueToCode(block, 'HIGH',
+      Blockly.basic.ORDER_COMMA) || 'Infinity';
   var code = 'Math.min(Math.max(' + argument0 + ', ' + argument1 + '), ' +
       argument2 + ')';
-  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  return [code, Blockly.basic.ORDER_FUNCTION_CALL];
 };
 
-Blockly.JavaScript['math_random_int'] = function(block) {
+Blockly.basic['math_random_int'] = function(block) {
   // Random integer between [X] and [Y].
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'FROM',
-      Blockly.JavaScript.ORDER_COMMA) || '0';
-  var argument1 = Blockly.JavaScript.valueToCode(block, 'TO',
-      Blockly.JavaScript.ORDER_COMMA) || '0';
-  var functionName = Blockly.JavaScript.provideFunction_(
+  var argument0 = Blockly.basic.valueToCode(block, 'FROM',
+      Blockly.basic.ORDER_COMMA) || '0';
+  var argument1 = Blockly.basic.valueToCode(block, 'TO',
+      Blockly.basic.ORDER_COMMA) || '0';
+  var functionName = Blockly.basic.provideFunction_(
       'mathRandomInt',
-      ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
+      ['function ' + Blockly.basic.FUNCTION_NAME_PLACEHOLDER_ +
           '(a, b) {',
        '  if (a > b) {',
        '    // Swap a and b to ensure a is smaller.',
@@ -1319,10 +1807,422 @@ Blockly.JavaScript['math_random_int'] = function(block) {
        '  return Math.floor(Math.random() * (b - a + 1) + a);',
        '}']);
   var code = functionName + '(' + argument0 + ', ' + argument1 + ')';
-  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  return [code, Blockly.basic.ORDER_FUNCTION_CALL];
 };
 
-Blockly.JavaScript['math_random_float'] = function(block) {
+Blockly.basic['math_random_float'] = function(block) {
   // Random fraction between 0 and 1.
-  return ['Math.random()', Blockly.JavaScript.ORDER_FUNCTION_CALL];
+  return ['Math.random()', Blockly.basic.ORDER_FUNCTION_CALL];
+};
+
+/**
+ * @license
+ * Visual Blocks Language
+ *
+ * Copyright 2012 Google Inc.
+ * https://developers.google.com/blockly/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview Generating basicger for math blocks.
+ * @author q.neutron@gmail.com (Quynh Neutron)
+ */
+'use strict';
+
+goog.provide('Blockly.basicger.math');
+
+goog.require('Blockly.basicger');
+
+
+Blockly.basicger['math_number'] = function(block) {
+  // Numeric value.
+  var code = parseFloat(block.getFieldValue('NUM'));
+  return [code, Blockly.basicger.ORDER_ATOMIC];
+};
+
+Blockly.basicger['math_arithmetic'] = function(block) {
+  // basicger arithmetic operators, and power.
+  var OPERATORS = {
+    'ADD': [' + ', Blockly.basicger.ORDER_ADDITION],
+    'MINUS': [' - ', Blockly.basicger.ORDER_SUBTRACTION],
+    'MULTIPLY': [' * ', Blockly.basicger.ORDER_MULTIPLICATION],
+    'DIVIDE': [' / ', Blockly.basicger.ORDER_DIVISION],
+    'POWER': [null, Blockly.basicger.ORDER_COMMA]  // Handle power separately.
+  };
+  var tuple = OPERATORS[block.getFieldValue('OP')];
+  var operator = tuple[0];
+  var order = tuple[1];
+  var argument0 = Blockly.basicger.valueToCode(block, 'A', order) || '0';
+  var argument1 = Blockly.basicger.valueToCode(block, 'B', order) || '0';
+  var code;
+  // Power in basicger requires a special case since it has no operator.
+  if (!operator) {
+    code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
+    return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+  }
+  code = argument0 + operator + argument1;
+  return [code, order];
+};
+
+Blockly.basicger['math_single'] = function(block) {
+  // Math operators with single operand.
+  var operator = block.getFieldValue('OP');
+  var code;
+  var arg;
+  if (operator == 'NEG') {
+    // Negation is a special case given its different operator precedence.
+    arg = Blockly.basicger.valueToCode(block, 'NUM',
+        Blockly.basicger.ORDER_UNARY_NEGATION) || '0';
+    if (arg[0] == '-') {
+      // --3 is not legal in JS.
+      arg = ' ' + arg;
+    }
+    code = '-' + arg;
+    return [code, Blockly.basicger.ORDER_UNARY_NEGATION];
+  }
+  if (operator == 'SIN' || operator == 'COS' || operator == 'TAN') {
+    arg = Blockly.basicger.valueToCode(block, 'NUM',
+        Blockly.basicger.ORDER_DIVISION) || '0';
+  } else {
+    arg = Blockly.basicger.valueToCode(block, 'NUM',
+        Blockly.basicger.ORDER_NONE) || '0';
+  }
+  // First, handle cases which generate values that don't need parentheses
+  // wrapping the code.
+  switch (operator) {
+    case 'ABS':
+      code = 'Math.abs(' + arg + ')';
+      break;
+    case 'ROOT':
+      code = 'Math.sqrt(' + arg + ')';
+      break;
+    case 'LN':
+      code = 'Math.log(' + arg + ')';
+      break;
+    case 'EXP':
+      code = 'Math.exp(' + arg + ')';
+      break;
+    case 'POW10':
+      code = 'Math.pow(10,' + arg + ')';
+      break;
+    case 'ROUND':
+      code = 'Math.round(' + arg + ')';
+      break;
+    case 'ROUNDUP':
+      code = 'Math.ceil(' + arg + ')';
+      break;
+    case 'ROUNDDOWN':
+      code = 'Math.floor(' + arg + ')';
+      break;
+    case 'SIN':
+      code = 'Math.sin(' + arg + ' / 180 * Math.PI)';
+      break;
+    case 'COS':
+      code = 'Math.cos(' + arg + ' / 180 * Math.PI)';
+      break;
+    case 'TAN':
+      code = 'Math.tan(' + arg + ' / 180 * Math.PI)';
+      break;
+  }
+  if (code) {
+    return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+  }
+  // Second, handle cases which generate values that may need parentheses
+  // wrapping the code.
+  switch (operator) {
+    case 'LOG10':
+      code = 'Math.log(' + arg + ') / Math.log(10)';
+      break;
+    case 'ASIN':
+      code = 'Math.asin(' + arg + ') / Math.PI * 180';
+      break;
+    case 'ACOS':
+      code = 'Math.acos(' + arg + ') / Math.PI * 180';
+      break;
+    case 'ATAN':
+      code = 'Math.atan(' + arg + ') / Math.PI * 180';
+      break;
+    default:
+      throw 'Unknown math operator: ' + operator;
+  }
+  return [code, Blockly.basicger.ORDER_DIVISION];
+};
+
+Blockly.basicger['math_constant'] = function(block) {
+  // Constants: PI, E, the Golden Ratio, sqrt(2), 1/sqrt(2), INFINITY.
+  var CONSTANTS = {
+    'PI': ['Math.PI', Blockly.basicger.ORDER_MEMBER],
+    'E': ['Math.E', Blockly.basicger.ORDER_MEMBER],
+    'GOLDEN_RATIO':
+        ['(1 + Math.sqrt(5)) / 2', Blockly.basicger.ORDER_DIVISION],
+    'SQRT2': ['Math.SQRT2', Blockly.basicger.ORDER_MEMBER],
+    'SQRT1_2': ['Math.SQRT1_2', Blockly.basicger.ORDER_MEMBER],
+    'INFINITY': ['Infinity', Blockly.basicger.ORDER_ATOMIC]
+  };
+  return CONSTANTS[block.getFieldValue('CONSTANT')];
+};
+
+Blockly.basicger['math_number_property'] = function(block) {
+  // Check if a number is even, odd, prime, whole, positive, or negative
+  // or if it is divisible by certain number. Returns true or false.
+  var number_to_check = Blockly.basicger.valueToCode(block, 'NUMBER_TO_CHECK',
+      Blockly.basicger.ORDER_MODULUS) || '0';
+  var dropdown_property = block.getFieldValue('PROPERTY');
+  var code;
+  if (dropdown_property == 'PRIME') {
+    // Prime is a special case as it is not a one-liner test.
+    var functionName = Blockly.basicger.provideFunction_(
+        'mathIsPrime',
+        ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
+         '  // https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
+         '  if (n == 2 || n == 3) {',
+         '    return true;',
+         '  }',
+         '  // False if n is NaN, negative, is 1, or not whole.',
+         '  // And false if n is divisible by 2 or 3.',
+         '  if (isNaN(n) || n <= 1 || n % 1 != 0 || n % 2 == 0 ||' +
+            ' n % 3 == 0) {',
+         '    return false;',
+         '  }',
+         '  // Check all the numbers of form 6k +/- 1, up to sqrt(n).',
+         '  for (var x = 6; x <= Math.sqrt(n) + 1; x += 6) {',
+         '    if (n % (x - 1) == 0 || n % (x + 1) == 0) {',
+         '      return false;',
+         '    }',
+         '  }',
+         '  return true;',
+         '}']);
+    code = functionName + '(' + number_to_check + ')';
+    return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+  }
+  switch (dropdown_property) {
+    case 'EVEN':
+      code = number_to_check + ' % 2 == 0';
+      break;
+    case 'ODD':
+      code = number_to_check + ' % 2 == 1';
+      break;
+    case 'WHOLE':
+      code = number_to_check + ' % 1 == 0';
+      break;
+    case 'POSITIVE':
+      code = number_to_check + ' > 0';
+      break;
+    case 'NEGATIVE':
+      code = number_to_check + ' < 0';
+      break;
+    case 'DIVISIBLE_BY':
+      var divisor = Blockly.basicger.valueToCode(block, 'DIVISOR',
+          Blockly.basicger.ORDER_MODULUS) || '0';
+      code = number_to_check + ' % ' + divisor + ' == 0';
+      break;
+  }
+  return [code, Blockly.basicger.ORDER_EQUALITY];
+};
+
+Blockly.basicger['math_change'] = function(block) {
+  // Add to a variable in place.
+  var argument0 = Blockly.basicger.valueToCode(block, 'DELTA',
+      Blockly.basicger.ORDER_ADDITION) || '0';
+  var varName = Blockly.basicger.variableDB_.getName(
+      block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
+  return varName + ' = (typeof ' + varName + ' == \'number\' ? ' + varName +
+      ' : 0) + ' + argument0 + ';\n';
+};
+
+// Rounding functions have a single operand.
+Blockly.basicger['math_round'] = Blockly.basicger['math_single'];
+// Trigonometry functions have a single operand.
+Blockly.basicger['math_trig'] = Blockly.basicger['math_single'];
+
+Blockly.basicger['math_on_list'] = function(block) {
+  // Math functions for lists.
+  var func = block.getFieldValue('OP');
+  var list, code;
+  switch (func) {
+    case 'SUM':
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_MEMBER) || '[]';
+      code = list + '.reduce(function(x, y) {return x + y;})';
+      break;
+    case 'MIN':
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_COMMA) || '[]';
+      code = 'Math.min.apply(null, ' + list + ')';
+      break;
+    case 'MAX':
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_COMMA) || '[]';
+      code = 'Math.max.apply(null, ' + list + ')';
+      break;
+    case 'AVERAGE':
+      // mathMean([null,null,1,3]) == 2.0.
+      var functionName = Blockly.basicger.provideFunction_(
+          'mathMean',
+          ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+              '(myList) {',
+            '  return myList.reduce(function(x, y) {return x + y;}) / ' +
+                  'myList.length;',
+            '}']);
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_NONE) || '[]';
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MEDIAN':
+      // mathMedian([null,null,1,3]) == 2.0.
+      var functionName = Blockly.basicger.provideFunction_(
+          'mathMedian',
+          ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+              '(myList) {',
+            '  var localList = myList.filter(function (x) ' +
+              '{return typeof x == \'number\';});',
+            '  if (!localList.length) return null;',
+            '  localList.sort(function(a, b) {return b - a;});',
+            '  if (localList.length % 2 == 0) {',
+            '    return (localList[localList.length / 2 - 1] + ' +
+              'localList[localList.length / 2]) / 2;',
+            '  } else {',
+            '    return localList[(localList.length - 1) / 2];',
+            '  }',
+            '}']);
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_NONE) || '[]';
+      code = functionName + '(' + list + ')';
+      break;
+    case 'MODE':
+      // As a list of numbers can contain more than one mode,
+      // the returned result is provided as an array.
+      // Mode of [3, 'x', 'x', 1, 1, 2, '3'] -> ['x', 1].
+      var functionName = Blockly.basicger.provideFunction_(
+          'mathModes',
+          ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+              '(values) {',
+            '  var modes = [];',
+            '  var counts = [];',
+            '  var maxCount = 0;',
+            '  for (var i = 0; i < values.length; i++) {',
+            '    var value = values[i];',
+            '    var found = false;',
+            '    var thisCount;',
+            '    for (var j = 0; j < counts.length; j++) {',
+            '      if (counts[j][0] === value) {',
+            '        thisCount = ++counts[j][1];',
+            '        found = true;',
+            '        break;',
+            '      }',
+            '    }',
+            '    if (!found) {',
+            '      counts.push([value, 1]);',
+            '      thisCount = 1;',
+            '    }',
+            '    maxCount = Math.max(thisCount, maxCount);',
+            '  }',
+            '  for (var j = 0; j < counts.length; j++) {',
+            '    if (counts[j][1] == maxCount) {',
+            '        modes.push(counts[j][0]);',
+            '    }',
+            '  }',
+            '  return modes;',
+            '}']);
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_NONE) || '[]';
+      code = functionName + '(' + list + ')';
+      break;
+    case 'STD_DEV':
+      var functionName = Blockly.basicger.provideFunction_(
+          'mathStandardDeviation',
+          ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+              '(numbers) {',
+            '  var n = numbers.length;',
+            '  if (!n) return null;',
+            '  var mean = numbers.reduce(function(x, y) {return x + y;}) / n;',
+            '  var variance = 0;',
+            '  for (var j = 0; j < n; j++) {',
+            '    variance += Math.pow(numbers[j] - mean, 2);',
+            '  }',
+            '  variance = variance / n;',
+            '  return Math.sqrt(variance);',
+            '}']);
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_NONE) || '[]';
+      code = functionName + '(' + list + ')';
+      break;
+    case 'RANDOM':
+      var functionName = Blockly.basicger.provideFunction_(
+          'mathRandomList',
+          ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+              '(list) {',
+            '  var x = Math.floor(Math.random() * list.length);',
+            '  return list[x];',
+            '}']);
+      list = Blockly.basicger.valueToCode(block, 'LIST',
+          Blockly.basicger.ORDER_NONE) || '[]';
+      code = functionName + '(' + list + ')';
+      break;
+    default:
+      throw 'Unknown operator: ' + func;
+  }
+  return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+};
+
+Blockly.basicger['math_modulo'] = function(block) {
+  // Remainder computation.
+  var argument0 = Blockly.basicger.valueToCode(block, 'DIVIDEND',
+      Blockly.basicger.ORDER_MODULUS) || '0';
+  var argument1 = Blockly.basicger.valueToCode(block, 'DIVISOR',
+      Blockly.basicger.ORDER_MODULUS) || '0';
+  var code = argument0 + ' % ' + argument1;
+  return [code, Blockly.basicger.ORDER_MODULUS];
+};
+
+Blockly.basicger['math_constrain'] = function(block) {
+  // Constrain a number between two limits.
+  var argument0 = Blockly.basicger.valueToCode(block, 'VALUE',
+      Blockly.basicger.ORDER_COMMA) || '0';
+  var argument1 = Blockly.basicger.valueToCode(block, 'LOW',
+      Blockly.basicger.ORDER_COMMA) || '0';
+  var argument2 = Blockly.basicger.valueToCode(block, 'HIGH',
+      Blockly.basicger.ORDER_COMMA) || 'Infinity';
+  var code = 'Math.min(Math.max(' + argument0 + ', ' + argument1 + '), ' +
+      argument2 + ')';
+  return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+};
+
+Blockly.basicger['math_random_int'] = function(block) {
+  // Random integer between [X] and [Y].
+  var argument0 = Blockly.basicger.valueToCode(block, 'FROM',
+      Blockly.basicger.ORDER_COMMA) || '0';
+  var argument1 = Blockly.basicger.valueToCode(block, 'TO',
+      Blockly.basicger.ORDER_COMMA) || '0';
+  var functionName = Blockly.basicger.provideFunction_(
+      'mathRandomInt',
+      ['function ' + Blockly.basicger.FUNCTION_NAME_PLACEHOLDER_ +
+          '(a, b) {',
+       '  if (a > b) {',
+       '    // Swap a and b to ensure a is smaller.',
+       '    var c = a;',
+       '    a = b;',
+       '    b = c;',
+       '  }',
+       '  return Math.floor(Math.random() * (b - a + 1) + a);',
+       '}']);
+  var code = functionName + '(' + argument0 + ', ' + argument1 + ')';
+  return [code, Blockly.basicger.ORDER_FUNCTION_CALL];
+};
+
+Blockly.basicger['math_random_float'] = function(block) {
+  // Random fraction between 0 and 1.
+  return ['Math.random()', Blockly.basicger.ORDER_FUNCTION_CALL];
 };

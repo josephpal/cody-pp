@@ -30,7 +30,7 @@ const webpackConfig = {
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      sourceMap: false,
       output: {
         comments: false,
       },
@@ -42,7 +42,8 @@ const webpackConfig = {
     }),
     // extract css into its own file
     new ExtractTextPlugin({
-      filename: './css/[name].[contenthash].css',
+      //filename: './css/[name].[contenthash].css',
+      filename: './[name].css',
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -89,7 +90,8 @@ const webpackConfig = {
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
-        to: path.join(config.assetsSubDirectory, '../static'),
+        //to: path.join(config.assetsSubDirectory, '../static'),
+        to: config.assetsSubDirectory,
         ignore: ['.*'],
       },
     ]),

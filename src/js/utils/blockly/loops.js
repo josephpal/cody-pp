@@ -22,22 +22,30 @@ const goog = Blockly.goog;
  */
 
 /**
- * @fileoverview Generating Lua for loop blocks.
+ * @fileoverview Generating interncode for loop blocks.
  * @author rodrigoq@google.com (Rodrigo Queiro)
  */
 'use strict';
 
-goog.provide('Blockly.Lua.loops');
+goog.provide('Blockly.interncode.loops');
 
-goog.require('Blockly.Lua');
+goog.require('Blockly.interncode');
 
-goog.provide('Blockly.Dart.loops');
+goog.provide('Blockly.Cpp.loops');
 
-goog.require('Blockly.Dart');
+goog.require('Blockly.Cpp');
 
-goog.provide('Blockly.JavaScript.loops');
+goog.provide('Blockly.ArduinoCpp.loops');
 
-goog.require('Blockly.JavaScript');
+goog.require('Blockly.ArduinoCpp');
+
+goog.provide('Blockly.basic.loops');
+
+goog.require('Blockly.basic');
+
+goog.provide('Blockly.basicger.loops');
+
+goog.require('Blockly.basicger');
 
 var b = -1;
 
@@ -51,7 +59,7 @@ export const resetLoopsCounterVar = () => {
  * the appropriate label can be put at the end of the loop body.
  * @const {string}
  */
-Blockly.Lua.CONTINUE_STATEMENT = 'goto continue\n';
+Blockly.interncode.CONTINUE_STATEMENT = 'goto continue\n';
 
 /**
  * If the loop body contains a "goto continue" statement, add a continue label
@@ -62,25 +70,41 @@ Blockly.Lua.CONTINUE_STATEMENT = 'goto continue\n';
  * @param {string} branch Generated code of the loop body
  * @return {string} Generated label or '' if unnecessary
  */
-Blockly.Lua.addContinueLabel = function(branch) {
-  if (branch.indexOf(Blockly.Lua.CONTINUE_STATEMENT) > -1) {
-    return branch + Blockly.Lua.INDENT + '::continue::\n';
+Blockly.interncode.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.interncode.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.interncode.INDENT + '::continue::\n';
   } else {
     return branch;
   }
 };
 
-Blockly.Dart.addContinueLabel = function(branch) {
-  if (branch.indexOf(Blockly.Dart.CONTINUE_STATEMENT) > -1) {
-    return branch + Blockly.Dart.INDENT + '::continue::\n';
+Blockly.Cpp.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.Cpp.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.Cpp.INDENT + '::continue::\n';
   } else {
     return branch;
   }
 };
 
-Blockly.JavaScript.addContinueLabel = function(branch) {
-  if (branch.indexOf(Blockly.Dart.CONTINUE_STATEMENT) > -1) {
-    return branch + Blockly.Dart.INDENT + '::continue::\n';
+Blockly.ArduinoCpp.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.ArduinoCpp.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.ArduinoCpp.INDENT + '::continue::\n';
+  } else {
+    return branch;
+  }
+};
+
+Blockly.basic.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.basic.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.basic.INDENT + '::continue::\n';
+  } else {
+    return branch;
+  }
+};
+
+Blockly.basicger.addContinueLabel = function(branch) {
+  if (branch.indexOf(Blockly.basicger.CONTINUE_STATEMENT) > -1) {
+    return branch + Blockly.basicger.INDENT + '::continue::\n';
   } else {
     return branch;
   }
@@ -88,19 +112,19 @@ Blockly.JavaScript.addContinueLabel = function(branch) {
 
 ////////////////////////////////////////////////////////////////
 //
-Blockly.Lua['controls_repeat_ext'] = function(block) {
+Blockly.interncode['controls_repeat_ext'] = function(block) {
 
   // Repeat n times (external number).
-  var repeats = Blockly.Lua.valueToCode(block, 'TIMES',
-      Blockly.Lua.ORDER_NONE) || '0';
+  var repeats = Blockly.interncode.valueToCode(block, 'TIMES',
+      Blockly.interncode.ORDER_NONE) || '0';
   if (Blockly.isNumber(repeats)) {
     repeats = parseInt(repeats, 10);
   } else {
     repeats = 'math.floor(' + repeats + ')';
   }
-  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.Lua.addContinueLabel(branch);
-  var loopVar = Blockly.Lua.variableDB_.getDistinctName(
+  var branch = Blockly.interncode.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.interncode.addContinueLabel(branch);
+  var loopVar = Blockly.interncode.variableDB_.getDistinctName(
       'count', Blockly.Variables.NAME_TYPE);
   ++b;
   var code = '#W,' + 'Z,' + repeats + ',' + b + ';' + '\n' +
@@ -108,53 +132,94 @@ Blockly.Lua['controls_repeat_ext'] = function(block) {
   return code;
 };
 
-Blockly.Dart['controls_repeat_ext'] = function(block) {
+Blockly.Cpp['controls_repeat_ext'] = function(block) {
 
   // Repeat n times (external number).
-  var repeats = Blockly.Dart.valueToCode(block, 'TIMES',
-      Blockly.Dart.ORDER_NONE) || '0';
+  var repeats = Blockly.Cpp.valueToCode(block, 'TIMES',
+      Blockly.Cpp.ORDER_NONE) || '0';
   if (Blockly.isNumber(repeats)) {
     repeats = parseInt(repeats, 10);
   } else {
     repeats = 'math.floor(' + repeats + ')';
   }
-  var branch = Blockly.Dart.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.Dart.addContinueLabel(branch);
+  var branch = Blockly.Cpp.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Cpp.addContinueLabel(branch);
+  var loopVar = Blockly.Cpp.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
+  ++b;
+  var code = 'for (int i = 0; i<' + repeats + ';i++) {\n' + branch + '}\n';
+  return code;
+};
+
+Blockly.basic['controls_repeat_ext'] = function(block) {
+
+  // Repeat n times (external number).
+  var repeats = Blockly.basic.valueToCode(block, 'TIMES',
+      Blockly.basic.ORDER_NONE) || '0';
+  if (Blockly.isNumber(repeats)) {
+    repeats = parseInt(repeats, 10);
+  } else {
+    repeats = 'math.floor(' + repeats + ')';
+  }
+  var branch = Blockly.basic.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.basic.addContinueLabel(branch);
+  var loopVar = Blockly.basic.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
+  ++b;
+  var code = 'repeat ' + repeats + ' times \n' + branch;
+  return code;
+};
+
+Blockly.basicger['controls_repeat_ext'] = function(block) {
+
+  // Repeat n times (external number).
+  var repeats = Blockly.basicger.valueToCode(block, 'TIMES',
+      Blockly.basicger.ORDER_NONE) || '0';
+  if (Blockly.isNumber(repeats)) {
+    repeats = parseInt(repeats, 10);
+  } else {
+    repeats = 'math.floor(' + repeats + ')';
+  }
+  var branch = Blockly.basicger.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.basicger.addContinueLabel(branch);
+  var loopVar = Blockly.basicger.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
+  ++b;
+  var code = 'wiederhole ' + repeats + ' mal \n' + branch;
+  return code;
+};
+
+Blockly.ArduinoCpp['controls_repeat_ext'] = function(block) {
+
+  // Repeat n times (external number).
+  var repeats = Blockly.ArduinoCpp.valueToCode(block, 'TIMES',
+      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+  if (Blockly.isNumber(repeats)) {
+    repeats = parseInt(repeats, 10);
+  } else {
+    repeats = 'math.floor(' + repeats + ')';
+  }
+  var branch = Blockly.ArduinoCpp.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.ArduinoCpp.addContinueLabel(branch);
+  var loopVar = Blockly.ArduinoCpp.variableDB_.getDistinctName(
+      'count', Blockly.Variables.NAME_TYPE);
   ++b;
   var code = 'for (int i = 0; i < ' + repeats + '; i++) {\n' + branch + '}\n';
   return code;
 };
 
-Blockly.JavaScript['controls_repeat_ext'] = function(block) {
-
-  // Repeat n times (external number).
-  var repeats = Blockly.JavaScript.valueToCode(block, 'TIMES',
-      Blockly.JavaScript.ORDER_NONE) || '0';
-  if (Blockly.isNumber(repeats)) {
-    repeats = parseInt(repeats, 10);
-  } else {
-    repeats = 'math.floor(' + repeats + ')';
-  }
-  var branch = Blockly.JavaScript.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.JavaScript.addContinueLabel(branch);
-  var loopVar = Blockly.JavaScript.variableDB_.getDistinctName(
-      'count', Blockly.Variables.NAME_TYPE);
-  ++b;
-  var code = 'repeat ' + repeats + ' times {\n' + branch + '}\n';
-  return code;
-};
 //
 /////////////////////////////////////////////////////////////
 //
-Blockly.Lua['controls_whileuntil1'] = function(block) {
+Blockly.interncode['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
-  var argument0 = Blockly.Lua.valueToCode(block, 'BOOL',
-      until ? Blockly.Lua.ORDER_UNARY :
-      Blockly.Lua.ORDER_NONE) || 'A,0,=,0';
-  var branch = Blockly.Lua.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.Lua.addLoopTrap(branch, block.id);
-  branch = Blockly.Lua.addContinueLabel(branch);
+  var argument0 = Blockly.interncode.valueToCode(block, 'BOOL',
+      until ? Blockly.interncode.ORDER_UNARY :
+      Blockly.interncode.ORDER_NONE) || 'A,0,=,0';
+  var branch = Blockly.interncode.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.interncode.addLoopTrap(branch, block.id);
+  branch = Blockly.interncode.addContinueLabel(branch);
   if (until) {
     argument0 = 'not ' + argument0;
   }
@@ -162,15 +227,15 @@ Blockly.Lua['controls_whileuntil1'] = function(block) {
   return '#W,' + argument0 + ',' + b + ';\n' + branch + '#X,' + b + ';\n';
 };
 
-Blockly.Dart['controls_whileuntil1'] = function(block) {
+Blockly.Cpp['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
-  var argument0 = Blockly.Dart.valueToCode(block, 'BOOL',
-      until ? Blockly.Dart.ORDER_UNARY :
-      Blockly.Dart.ORDER_NONE) || '';
-  var branch = Blockly.Dart.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.Dart.addLoopTrap(branch, block.id);
-  branch = Blockly.Dart.addContinueLabel(branch);
+  var argument0 = Blockly.Cpp.valueToCode(block, 'BOOL',
+      until ? Blockly.Cpp.ORDER_UNARY :
+      Blockly.Cpp.ORDER_NONE) || '';
+  var branch = Blockly.Cpp.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.Cpp.addLoopTrap(branch, block.id);
+  branch = Blockly.Cpp.addContinueLabel(branch);
   if (until) {
     argument0 = 'not ' + argument0;
   }
@@ -178,86 +243,152 @@ Blockly.Dart['controls_whileuntil1'] = function(block) {
   return 'while (' + argument0 + ') {\n' + branch + '}\n';
 };
 
-Blockly.JavaScript['controls_whileuntil1'] = function(block) {
+Blockly.basic['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
-  var argument0 = Blockly.JavaScript.valueToCode(block, 'BOOL',
-      until ? Blockly.JavaScript.ORDER_UNARY :
-      Blockly.JavaScript.ORDER_NONE) || '';
-  var branch = Blockly.JavaScript.statementToCode(block, 'DO') || '\n';
-  branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-  branch = Blockly.JavaScript.addContinueLabel(branch);
+  var argument0 = Blockly.basic.valueToCode(block, 'BOOL',
+      until ? Blockly.basic.ORDER_UNARY :
+      Blockly.basic.ORDER_NONE) || '';
+  var branch = Blockly.basic.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.basic.addLoopTrap(branch, block.id);
+  branch = Blockly.basic.addContinueLabel(branch);
   if (until) {
     argument0 = 'not ' + argument0;
   }
   ++b;
-  return 'while ' + argument0 + '{\n' + branch + '}\n';
+  return 'while ' + argument0 + '\n' + branch;
 };
+
+Blockly.basicger['controls_whileuntil1'] = function(block) {
+  // Do while/until loop.
+  var until = block.getFieldValue('MODE') == 'UNTIL';
+  var argument0 = Blockly.basicger.valueToCode(block, 'BOOL',
+      until ? Blockly.basicger.ORDER_UNARY :
+      Blockly.basicger.ORDER_NONE) || '';
+  var branch = Blockly.basicger.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.basicger.addLoopTrap(branch, block.id);
+  branch = Blockly.basicger.addContinueLabel(branch);
+  if (until) {
+    argument0 = 'nicht ' + argument0;
+  }
+  ++b;
+  return 'solange ' + argument0 + '\n' + branch;
+};
+
+
+Blockly.ArduinoCpp['controls_whileuntil1'] = function(block) {
+  // Do while/until loop.
+  var until = block.getFieldValue('MODE') == 'UNTIL';
+  var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'BOOL',
+      until ? Blockly.ArduinoCpp.ORDER_UNARY :
+      Blockly.ArduinoCpp.ORDER_NONE) || '';
+  var branch = Blockly.ArduinoCpp.statementToCode(block, 'DO') || '\n';
+  branch = Blockly.ArduinoCpp.addLoopTrap(branch, block.id);
+  branch = Blockly.ArduinoCpp.addContinueLabel(branch);
+  if (until) {
+    argument0 = 'not ' + argument0;
+  }
+  ++b;
+  return 'while (' + argument0 + ') {\n' + branch + '}\n';
+};
+
 //
 /////////////////////////////////////////////////////////
 
-Blockly.Lua['start'] = function(block) {
-  var branch = Blockly.Lua.statementToCode(block, 'state') || '\n';
-  branch = Blockly.Lua.addLoopTrap(branch, block.id);
-  branch = Blockly.Lua.addContinueLabel(branch);
+Blockly.interncode['start'] = function(block) {
+  var branch = Blockly.interncode.statementToCode(block, 'state') || '\n';
+  branch = Blockly.interncode.addLoopTrap(branch, block.id);
+  branch = Blockly.interncode.addContinueLabel(branch);
   var code = '#Start;\n' + branch + '#Stop;\n';
   return code;
 };
 
-Blockly.Dart['start'] = function(block) {
-  var branch = Blockly.Dart.statementToCode(block, 'state') || '\n';
-  branch = Blockly.Dart.addLoopTrap(branch, block.id);
-  branch = Blockly.Dart.addContinueLabel(branch);
+Blockly.Cpp['start'] = function(block) {
+  var branch = Blockly.Cpp.statementToCode(block, 'state') || '\n';
+  branch = Blockly.Cpp.addLoopTrap(branch, block.id);
+  branch = Blockly.Cpp.addContinueLabel(branch);
   var code = "#include \"ft_ESP32_IOobjects.h\"\n\n"
-    + "// global objects\n"
-    + "Motor mMotorArray[MOTOR_QTY];\n" + "Lampe mLampeArray[LAMP_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n"
-    + "\n" + "void setup() {\n"
-    + Blockly.Dart.INDENT + "Serial.begin(9600);\n\n"
-    + Blockly.Dart.INDENT + "// motor objects\n"
-    + Blockly.Dart.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
-    + Blockly.Dart.INDENT + Blockly.Dart.INDENT + "mMotorArray[i] = Motor(i);\n"
-    + Blockly.Dart.INDENT + "}\n\n"
-    + Blockly.Dart.INDENT + "// lamp objects\n"
-    + Blockly.Dart.INDENT + "for(unsigned int i = 0; i < LAMP_QTY; i++) {\n"
-    + Blockly.Dart.INDENT + Blockly.Dart.INDENT + "mLampeArray[i] = Lampe(i);\n"
-    + Blockly.Dart.INDENT + "}\n\n"
-    + Blockly.Dart.INDENT + "// input objects\n"
-    + Blockly.Dart.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
-    + Blockly.Dart.INDENT + Blockly.Dart.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
-    + Blockly.Dart.INDENT + "}\n}\n\n"
-    + "void loop() {\n"
-    + branch + "\n"
-    + Blockly.Dart.INDENT + "while(true) {\n"
-    + Blockly.Dart.INDENT + Blockly.Dart.INDENT + "// infinite loop\n"
-    + Blockly.Dart.INDENT + "}\n"
-    + "}";
+	+ "enum Motor_Port {Motor_0, Motor_1, Motor_2, Motor_3};\n\n"
+	+ "enum Lamp_Port {Lamp_0, Lamp_1, Lamp_2, Lamp_3};\n\n"
+	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
+  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
+  + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
+  + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
+  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
+	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
+	+ "// global objects\n"
+  + "Motor mMotorArray[MOTOR_QTY];\n" + "Lampe mLampArray[LAMP_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n"+ "\n"
+  + "// setup enum\n"
+	+ "Motor_Port mMotor;\n" + "Lamp_Port mLamp;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" +  "\n"
+	+ "int main() {\n"
+  + Blockly.Cpp.INDENT + "// motor objects\n"
+  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
+  + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
+  + Blockly.Cpp.INDENT + "}\n\n"
+  + Blockly.Cpp.INDENT + "// lamp objects\n"
+  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < LAMP_QTY; i++) {\n"
+  + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mLampArray[i] = Lampe(i);\n"
+  + Blockly.Cpp.INDENT + "}\n\n"
+  + Blockly.Cpp.INDENT + "// input objects\n"
+  + Blockly.Cpp.INDENT + "DigitalAnalogIn mDAIn[DAIN_QTY];\n\n"
+  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
+  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
+  + Blockly.Cpp.INDENT + "}\n\n"
+  + branch + "\n" + Blockly.Cpp.INDENT + "return 0; \n}";
   return code;
 };
 
-/*Blockly.Dart['start'] = function(block) {
-  var branch = Blockly.Dart.statementToCode(block, 'state') || '\n';
-  branch = Blockly.Dart.addLoopTrap(branch, block.id);
-  branch = Blockly.Dart.addContinueLabel(branch);
-  var code = "#include \"ft_ESP32_IOobjects.h\"\n" + "\n" + "int main() {\n"
-    + Blockly.Dart.INDENT + "// motor objects\n"
-    + Blockly.Dart.INDENT + "Motor mMotor0(0);\n"
-    + Blockly.Dart.INDENT + "Motor mMotor1(1);\n\n"
-    + Blockly.Dart.INDENT + "// lamp objects\n"
-    + Blockly.Dart.INDENT + "Lampe mLampe0(0);\n"
-    + Blockly.Dart.INDENT + "Lampe mLampe1(1);\n\n"
-    + Blockly.Dart.INDENT + "// input objects\n"
-    + Blockly.Dart.INDENT + "DigitalAnalogIn mDAIn[DAIN_QTY];\n\n"
-    + Blockly.Dart.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
-    + Blockly.Dart.INDENT + Blockly.Dart.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
-    + Blockly.Dart.INDENT + "}\n\n"
-    + branch + "\n" + Blockly.Dart.INDENT + "return 0; \n}";
-  return code;
-};*/
-
-Blockly.JavaScript['start'] = function(block) {
-  var branch = Blockly.JavaScript.statementToCode(block, 'state') || '\n';
-  branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-  branch = Blockly.JavaScript.addContinueLabel(branch);
+Blockly.basic['start'] = function(block) {
+  var branch = Blockly.basic.statementToCode(block, 'state') || '\n';
+  branch = Blockly.basic.addLoopTrap(branch, block.id);
+  branch = Blockly.basic.addContinueLabel(branch);
   var code = "Start application\n" + branch + "Stop application";
+  return code;
+};
+
+Blockly.basicger['start'] = function(block) {
+  var branch = Blockly.basicger.statementToCode(block, 'state') || '\n';
+  branch = Blockly.basicger.addLoopTrap(branch, block.id);
+  branch = Blockly.basicger.addContinueLabel(branch);
+  var code = "Starte Programm\n" + branch + "Stoppe Programm";
+  return code;
+};
+
+Blockly.ArduinoCpp['start'] = function(block) {
+  var branch = Blockly.ArduinoCpp.statementToCode(block, 'state') || '\n';
+  branch = Blockly.ArduinoCpp.addLoopTrap(branch, block.id);
+  branch = Blockly.ArduinoCpp.addContinueLabel(branch);
+  var code = "#include \"ft_ESP32_IOobjects.h\"\n\n"
+	+ "enum Motor_Port {Motor_0, Motor_1, Motor_2, Motor_3};\n\n"
+	+ "enum Lamp_Port {Lamp_0, Lamp_1, Lamp_2, Lamp_3};\n\n"
+	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + " "
+  + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
+  + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT
+	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
+  + "// global objects\n"
+  + "Motor mMotorArray[MOTOR_QTY];\n" + "Lampe mLampArray[LAMP_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n\n"
+	+ "// setup enum\n"
+	+ "Motor_Port mMotor;\n" + "Lamp_Port mLamp;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" + "\n" + "void setup() {\n"
+  + Blockly.ArduinoCpp.INDENT + "Serial.begin(115200);\n\n"
+  + Blockly.ArduinoCpp.INDENT + "// motor objects\n"
+  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
+  + Blockly.ArduinoCpp.INDENT + "}\n\n"
+  + Blockly.ArduinoCpp.INDENT + "// lamp objects\n"
+  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < LAMP_QTY; i++) {\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mLampArray[i] = Lampe(i);\n"
+  + Blockly.ArduinoCpp.INDENT + "}\n\n"
+  + Blockly.ArduinoCpp.INDENT + "// input objects\n"
+  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
+  + Blockly.ArduinoCpp.INDENT + "}\n}\n\n"
+  + "void loop() {\n"
+  + branch + "\n"
+  + Blockly.ArduinoCpp.INDENT + "while(true) {\n"
+  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "// infinite loop\n"
+  + Blockly.ArduinoCpp.INDENT + "}\n"
+  + "}";
   return code;
 };

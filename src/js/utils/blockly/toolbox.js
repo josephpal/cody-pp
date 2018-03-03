@@ -12,6 +12,7 @@ export const xml = `<xml id="toolbox" style="display: none">
         <category name="Actuator">
             <block type="motor"></block>
             <block type="lamp"></block>
+            <!--<block type="digital_out"></block>-->
         </category>
 
         <category name="Loops">
@@ -27,6 +28,7 @@ export const xml = `<xml id="toolbox" style="display: none">
 
         <category name="Branching">
             <block type="controls_if1"></block>
+            <block type="controls_ifelse1"></block>
         </category>
 
         <category name="Delay">
