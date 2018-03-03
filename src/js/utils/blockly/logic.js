@@ -108,16 +108,16 @@ Blockly.basic['controls_if1'] = function(block) {
       Blockly.basic.ORDER_NONE) || '';
     branchCode = Blockly.basic.statementToCode(block, 'DO' + n);
     code += (n > 0 ? 'else ' : '') +
-        'if ' + conditionCode + ' {\n' + branchCode + '}';
+        'if ' + conditionCode + ' \n' + branchCode + '';
 
     ++n;
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
     branchCode = Blockly.basic.statementToCode(block, 'ELSE');
-    code += ' else {\n' + branchCode + '}';
+    code += 'else \n' + branchCode + '';
   }
-  return code + '\n';
+  return code;
 };
 
 Blockly.basicger['controls_if1'] = function(block) {
@@ -129,16 +129,16 @@ Blockly.basicger['controls_if1'] = function(block) {
       Blockly.basicger.ORDER_NONE) || '';
     branchCode = Blockly.basicger.statementToCode(block, 'DO' + n);
     code += (n > 0 ? 'else ' : '') +
-        'wenn ' + conditionCode + ' {\n' + branchCode + '}';
+        'wenn ' + conditionCode + ' \n' + branchCode + '';
 
     ++n;
   } while (block.getInput('IF' + n));
 
   if (block.getInput('ELSE')) {
     branchCode = Blockly.basicger.statementToCode(block, 'ELSE');
-    code += ' sonst {\n' + branchCode + '}';
+    code += 'sonst \n' + branchCode + '';
   }
-  return code + '\n';
+  return code;
 };
 
 Blockly.ArduinoCpp['controls_if1'] = function(block) {
