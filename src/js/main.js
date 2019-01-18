@@ -2,6 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
+import VueRouter from 'vue-router'
+import routes from './routes'
+
 import Vuebar from 'vuebar';
 import HighlightJS from './directives/highlightjs';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -13,12 +16,14 @@ Vue.config.productionTip = false;
 
 Vue.use(HighlightJS);
 Vue.use(Vuebar);
+Vue.use(VueRouter);
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  template: '<App/>',
-  components: {
-    App,
-  },
+const router = new VueRouter({
+  routes,
+  mode: 'history'
 });
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app');

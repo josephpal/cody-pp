@@ -1,45 +1,22 @@
 <template>
   <div id="app">
-    <Header />
-     <main>
-      <BlocklyContainer @registerBlockly="registerBlockly" />
-      <CodePreview :blocklyInstance="blocklyInstance" />
-     </main>
+    <router-view />
   </div>
 </template>
 
 <script>
-import BlocklyContainer from './components/BlocklyContainer';
-import Header from './components/Header';
-import CodePreview from './components/CodePreview';
 
 export default {
   name: 'app',
 
-  data() {
-    return {
-      blocklyInstance: null
-    };
-  },
+  data() { return {  }; },
 
-  methods: {
-    registerBlockly(instance) {
-      this.blocklyInstance = instance;
-    }
-  },
+  methods: {},
 
-  components: {
-    Header,
-    BlocklyContainer,
-    CodePreview
-  }
+  components: {}
 };
 </script>
 
 <style lang="scss">
-  #app {
-    main {
-      display: flex;
-    }
-  }
+
 </style>
