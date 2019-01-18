@@ -1,7 +1,7 @@
 <template>
   <div class="inputFieldContainer">
     <div class="inputFields">
-      <InputField type="text" title="IP address:"/>
+      <InputField type="text" title="IP address:" placeholder="192.168.4.1"/>
       <InputField type="text" title="SSID:"/>
       <InputField type="password" title="Password:"/>
       <InputField type="password" title="Re-enter password:"/>

@@ -1,7 +1,7 @@
 <template>
   <div class="input-field">
     <p class="title">{{title}}</p>
-    <input :type="type" name="">
+    <input :type="type" name="" :placeholder="placeholder">
   </div>
 </template>
 
@@ -17,6 +17,9 @@ export default {
     type: {
       type: String,
       required: true
+    },
+    placeholder: {
+      type: String
     }
   }
 };
