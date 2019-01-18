@@ -1,6 +1,5 @@
 <template>
   <div id="codypp">
-    <Header />
      <main>
       <BlocklyContainer @registerBlockly="registerBlockly" />
       <CodePreview :blocklyInstance="blocklyInstance" />
@@ -10,7 +9,6 @@
 
 <script>
 import BlocklyContainer from './BlocklyContainer';
-import Header from './Header';
 import CodePreview from './CodePreview';
 
 export default {
@@ -29,7 +27,6 @@ export default {
   },
 
   components: {
-    Header,
     BlocklyContainer,
     CodePreview
   }

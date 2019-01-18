@@ -24,7 +24,7 @@
 </script>
 
 <style lang="scss">
-    @import '../../scss/variables/colors';
+    @import '../../../scss/variables/colors';
 
     .spinner {
         color: $colorWhite;

@@ -1,15 +1,17 @@
-import codyppRoute from './components/codypp'
-import configRoute from './components/config'
+import codyppRoute from './components/codypp-ide/codypp'
+import configRoute from './components/codypp-config/config'
 
 export default [
   {
     path: '/',
     name: 'codypp',
-    component: codyppRoute
+    component: codyppRoute,
+    meta: { title: 'Cody++' }
   },
   {
     path: '/config',
     name: 'config',
-    component: configRoute
+    component: configRoute,
+    meta: { title: 'Cody++ Configuration' }
   }
 ];

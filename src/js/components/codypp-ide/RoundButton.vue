@@ -43,8 +43,8 @@
 </script>
 
 <style lang="scss">
-  @import '../../scss/variables/colors';
-  @import '../../scss/mixins/breakpoints';
+  @import '../../../scss/variables/colors';
+  @import '../../../scss/mixins/breakpoints';
 
   .round-button {
     display: flex;

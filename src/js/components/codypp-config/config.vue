@@ -1,14 +1,13 @@
 <template>
   <div id="config">
-    <Header />
      <main>
-      <div>Configuration page...</div>
+      <InputFieldContainer />
      </main>
   </div>
 </template>
 
 <script>
-import Header from './Header';
+import InputFieldContainer from './InputFieldContainer';
 
 export default {
   name: 'config',
@@ -22,7 +21,7 @@ export default {
   },
 
   components: {
-    Header
+    InputFieldContainer
   }
 };
 </script>
@@ -31,6 +30,7 @@ export default {
   #config {
     main {
       display: flex;
+      justify-content: center;
     }
   }
 </style>

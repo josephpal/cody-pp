@@ -1,10 +1,12 @@
 <template>
   <div id="app">
+    <Header />
     <router-view />
   </div>
 </template>
 
 <script>
+import Header from './components/Header';
 
 export default {
   name: 'app',
@@ -13,7 +15,9 @@ export default {
 
   methods: {},
 
-  components: {}
+  components: {
+    Header
+  }
 };
 </script>
 

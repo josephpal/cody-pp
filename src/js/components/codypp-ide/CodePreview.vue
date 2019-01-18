@@ -23,17 +23,17 @@
 <script>
 import DropDown from './DropDown';
 import RoundButton from './RoundButton';
-import Languages from '../enum/Languages';
+import Languages from '../../enum/Languages';
 import Blockly from 'node-blockly/browser';
-import { resetLogicCounterVar } from '../utils/blockly/logic';
-import { resetLoopsCounterVar } from '../utils/blockly/loops';
-import { asyncWebSocketRequest } from '../utils/socketUtils';
+import { resetLogicCounterVar } from '../../utils/blockly/logic';
+import { resetLoopsCounterVar } from '../../utils/blockly/loops';
+import { asyncWebSocketRequest } from '../../utils/socketUtils';
 
-import PlayIcon from '../../assets/svg/play.svg';
-import StopIcon from '../../assets/svg/stop.svg';
-import PauseIcon from '../../assets/svg/pause.svg';
-import ArrowIcon from '../../assets/svg/arrow.svg';
-import SocketMessages from "../enum/SocketMessageTypes";
+import PlayIcon from '../../../assets/svg/play.svg';
+import StopIcon from '../../../assets/svg/stop.svg';
+import PauseIcon from '../../../assets/svg/pause.svg';
+import ArrowIcon from '../../../assets/svg/arrow.svg';
+import SocketMessages from "../../enum/SocketMessageTypes";
 
 export default {
   name: 'CodePreview',
@@ -264,8 +264,8 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../../scss/variables/colors';
-  @import '../../scss/mixins/breakpoints';
+  @import '../../../scss/variables/colors';
+  @import '../../../scss/mixins/breakpoints';
 
   .code-preview {
     width: 40%;
