@@ -1,7 +1,11 @@
 <template>
   <div class="input-field">
     <p class="title">{{title}}</p>
-    <input :type="type" name="" :placeholder="placeholder">
+    <input  :type="type"
+            :name="name"
+            :placeholder="placeholder"
+            @input="$emit('input', $event.target.value)"
+            :value="value" >
   </div>
 </template>
 
@@ -10,6 +14,10 @@ export default {
   name: 'InputField',
 
   props: {
+    name: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -20,6 +28,10 @@ export default {
     },
     placeholder: {
       type: String
+    },
+    value: {
+      type: String,
+      required: true
     }
   }
 };

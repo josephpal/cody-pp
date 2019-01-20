@@ -1,7 +1,5 @@
 <template>
-  <div class="button">
-    <p>BUTTON</p>
-  </div>
+  <p>BUTTON</p>
 </template>
 
 <script>
@@ -11,8 +9,5 @@ export default {
 </script>
 
 <style lang="scss">
-.button {
-  align: center;
-  margin: 0 auto;
-}
+
 </style>
