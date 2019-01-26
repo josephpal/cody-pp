@@ -15,63 +15,67 @@
 </template>
 
 <script>
-export default {
-  name: 'InputField',
+  export default {
+    name: 'InputField',
 
-  props: {
-    name: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    type: {
-      type: String,
-      required: true
-    },
-    placeholder: {
-      type: String
-    },
-    value: {
-      type: String,
-      required: true
-    },
-    errorMessage: {
-      type: String,
-      required: true
+    props: {
+      name: {
+        type: String,
+        required: true
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      type: {
+        type: String,
+        required: true
+      },
+      placeholder: {
+        type: String
+      },
+      value: {
+        type: String,
+        required: true
+      },
+      errorMessage: {
+        type: String,
+        required: true
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss">
-.input-field-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+  @import '../../../scss/variables/colors';
 
-.input-field {
-  position: relative;
-}
+  .input-field-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.error-message {
-  position: absolute;
-  top: 100%;
-  font-size: 0.8em;
-  color: red;
-}
+  .input-field {
+    position: relative;
+  }
 
-.error-message-invisible {
-  opacity: 0;
-}
+  .error-message {
+    position: absolute;
+    top: 100%;
+    padding-top: 2px;
+    font-size: 0.8em;
+    color: $colorRed;
+    opacity: 90%;
+  }
 
-input {
-  background: none;
-  color: white;
-  border: none;
-  border-bottom: 1px solid gray;
-}
+  .error-message-invisible {
+    opacity: 0;
+  }
+
+  input {
+    background: none;
+    color: white;
+    border: none;
+    border-bottom: 1px solid gray;
+  }
 </style>

@@ -91,9 +91,9 @@ export default {
     this.socket.addEventListener('message', this.onSocketMessage);
   },
 
-    beforeDestroy() {
-        this.socket.removeEventListener('message', this.onSocketMessage);
-    },
+  beforeDestroy() {
+      this.socket.removeEventListener('message', this.onSocketMessage);
+  },
 
   watch: {
     blocklyInstance() {
@@ -225,7 +225,7 @@ export default {
     },
 
     onSocketMessage(message) {
-        console.warn(message);
+      console.warn(message);
       console.log(`Received message ${message.data}`);
       switch (message.data) {
           case SocketMessages.RUNNING:
