@@ -19,8 +19,9 @@ Vue.use(Vuebar);
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  base: '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/',
   routes,
-  mode: 'history'
+  mode: 'hash'
 });
 
 router.beforeEach((to, from, next) => {
