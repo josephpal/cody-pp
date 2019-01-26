@@ -5,19 +5,23 @@
                   type="text"
                   title="IP address:"
                   :placeholder="placeholderIpAddress"
-                  v-model="ip" />
+                  v-model="ip.value"
+                  :errorMessage="ip.errorMessage" />
       <InputField name="ssid"
                   type="text"
                   title="SSID:"
-                  v-model="ssid" />
+                  v-model="ssid.value"
+                  :errorMessage="ssid.errorMessage" />
       <InputField name="password"
                   type="password"
                   title="Password:"
-                  v-model="password" />
+                  v-model="password.value"
+                  :errorMessage="password.errorMessage" />
       <InputField name="passwordConfirmed"
                   type="password"
                   title="Re-enter password:"
-                  v-model="passwordConfirmed" />
+                  v-model="passwordConfirmed.value"
+                  :errorMessage="passwordConfirmed.errorMessage" />
       <div class="button">
         <RoundButton  :icon="icons.ArrowIcon"
                       :enabled="true"
@@ -41,10 +45,22 @@ export default {
 
   data() {
     return {
-      ip: "",
-      ssid: "",
-      password: "",
-      passwordConfirmed: "",
+      ip: {
+        value: "",
+        errorMessage: "",
+      },
+      ssid: {
+        value: "",
+        errorMessage: "",
+      },
+      password: {
+        value: "",
+        errorMessage: "",
+      },
+      passwordConfirmed: {
+        value: "",
+        errorMessage: "",
+      },
       placeholderIpAddress: __DEFAULT_IP__,
 
       //spinner state
@@ -64,18 +80,20 @@ export default {
     onSendDataButtonClicked() {
       //data validation
 
-      if( ( !validateIp(this.ip) || isEmpty(this.ip) )
+      if( ( !validateIp(this.ip.value) || isEmpty(this.ip.value) )
           || isEmpty(this.ssid)
           || (isEmpty(this.password) || isEmpty(this.passwordConfirmed) )
           || ( this.password != this.passwordConfirmed ) ) {
-        console.log("Validation failed.");      
+        console.log("Validation failed.");
+        this.ip.errorMessage = "PENIS";
       }
 
       this.showSendDataBtnSpinner = true;
       setTimeout(() => {
         console.log("Sending data...");
-        this.showSendDataBtnSpinner = false; }, 1000);
-    }
+        this.showSendDataBtnSpinner = false;
+        this.ip.errorMessage = ""; }, 2000);
+      }
   },
 
   components: {
@@ -103,6 +121,7 @@ export default {
 
   .button {
     align: center;
+    padding-top: 20px;
     margin: 0 auto;
   }
 </style>

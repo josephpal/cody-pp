@@ -1,11 +1,16 @@
 <template>
-  <div class="input-field">
+  <div class="input-field-box">
     <p class="title">{{title}}</p>
-    <input  :type="type"
-            :name="name"
-            :placeholder="placeholder"
-            @input="$emit('input', $event.target.value)"
-            :value="value" >
+    <div class="input-field">
+      <input  :type="type"
+              :name="name"
+              :placeholder="placeholder"
+              @input="$emit('input', $event.target.value)"
+              :value="value" >
+      <div class="error-message">
+        <span :class="{ 'error-message-invisible': !errorMessage.length }">{{errorMessage}}</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,15 +37,41 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    errorMessage: {
+      type: String,
+      required: true
     }
   }
 };
 </script>
 
 <style lang="scss">
-.input-field {
+.input-field-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.input-field {
+  position: relative;
+}
+
+.error-message {
+  position: absolute;
+  top: 100%;
+  font-size: 0.8em;
+  color: red;
+}
+
+.error-message-invisible {
+  opacity: 0;
+}
+
+input {
+  background: none;
+  color: white;
+  border: none;
+  border-bottom: 1px solid gray;
 }
 </style>
