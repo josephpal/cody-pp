@@ -31,8 +31,7 @@ export default {
   name: 'BlocklyContainer',
 
   mounted() {
-    console.log(config.assetsPublicPath);
-    const blocklyInstance = Blockly.inject("blockly", {
+    const blocklyWorkspace = Blockly.inject("blockly", {
       toolbox: Blockly.Xml.textToDom(xml),
       media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
       zoom: {
@@ -46,7 +45,7 @@ export default {
       trashcan: true
     });
 
-    this.$emit('registerBlockly', blocklyInstance);
+    this.$emit('registerBlockly', blocklyWorkspace);
   }
 };
 </script>

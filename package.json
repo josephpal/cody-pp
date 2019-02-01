@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production NODE_APP_MODE=app webpack --progress --hide-modules",
     "demo": "cross-env NODE_ENV=production MODE=demo NODE_APP_MODE=app webpack --progress --hide-modules",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
-    "test": "npm run unit"
+    "test": "npm run unit",
+    "svg": "node ./build/svg.js"
   },
   "dependencies": {
     "highlight.js": "^9.12.0",
@@ -51,6 +52,7 @@
     "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.18.2",
+    "svgstore": "^3.0.0-2",
     "url-loader": "^0.5.9",
     "vue-loader": "^13.0.4",
     "vue-template-compiler": "2.5.21",

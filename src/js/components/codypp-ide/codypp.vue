@@ -2,7 +2,7 @@
   <div id="codypp">
      <main>
       <BlocklyContainer @registerBlockly="registerBlockly" />
-      <CodePreview :blocklyInstance="blocklyInstance" />
+      <CodePreview :blocklyWorkspace="blocklyWorkspace" />
      </main>
   </div>
 </template>
@@ -16,13 +16,13 @@ export default {
 
   data() {
     return {
-      blocklyInstance: null
+      blocklyWorkspace: null
     };
   },
 
   methods: {
     registerBlockly(instance) {
-      this.blocklyInstance = instance;
+      this.blocklyWorkspace = instance;
     }
   },
 

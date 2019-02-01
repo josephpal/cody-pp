@@ -2,13 +2,14 @@
   <div class="round-button" :class="{ disabled: !enabled }" @click="onClicked">
     <Spinner v-if="showSpinner"/>
     <svg class="icon" v-else>
-      <use :href="`${icon}#Layer_1`"></use>
+      <use :href="iconPath"></use>
     </svg>
   </div>
 </template>
 
 <script>
   import Spinner from './Spinner';
+  import sprites from '../../../assets/svg/sprites.svg';
 
   export default {
     name: 'RoundButton',
@@ -26,6 +27,12 @@
           type: Boolean,
           default: false,
         },
+    },
+
+    computed: {
+      iconPath() {
+        return `${sprites}#${this.icon}`;
+      }
     },
 
     methods: {
@@ -71,7 +78,7 @@
 
     &.disabled {
       background-color: rgba($colorMediumGrey, .4);
-      color: $colorDarkestGrey;
+      color: hsla(0, 0, 0, .4);
       cursor: default;
     }
 

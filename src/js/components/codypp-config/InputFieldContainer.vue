@@ -23,7 +23,7 @@
                   v-model="passwordConfirmed.value"
                   :errorMessage="passwordConfirmed.errorMessage" />
       <div class="button">
-        <RoundButton  :icon="icons.ArrowIcon"
+        <RoundButton  icon="arrow"
                       :enabled="true"
                       @click="onSendDataButtonClicked"
                       :showSpinner="showSendDataBtnSpinner" />
@@ -37,7 +37,6 @@
 
 import InputField from './InputField'
 import RoundButton from '../codypp-ide/RoundButton'
-import ArrowIcon from '../../../assets/svg/arrow.svg';
 import { validateIp, isEmpty } from '../../utils/validationUtils'
 
 import { asyncWebSocketRequest } from '../../utils/socketUtils';
@@ -72,14 +71,6 @@ export default {
       //spinner state
       showSendDataBtnSpinner: false
     };
-  },
-
-  computed: {
-    icons() {
-      return {
-        ArrowIcon
-      };
-    },
   },
 
   beforeDestroy() {
