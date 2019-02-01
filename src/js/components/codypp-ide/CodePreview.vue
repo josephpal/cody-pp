@@ -99,12 +99,13 @@
     mounted() {
       this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.0.61:90');
 
-      this.socket.addEventListener('open', () => (this.webSocketReady = true));
+      this.socket.addEventListener('open', this.onSocketReady);
       this.socket.addEventListener('message', this.onSocketMessage);
     },
 
     beforeDestroy() {
       this.socket.removeEventListener('message', this.onSocketMessage);
+      this.socket.removeEventListener('open', this.onSocketReady);
     },
 
     watch: {
@@ -268,6 +269,10 @@
 
         const blob = file.slice(0, file.size);
         reader.readAsBinaryString(blob);
+      },
+
+      onSocketReady() {
+        this.webSocketReady = true;
       },
 
       onSocketMessage(message) {
