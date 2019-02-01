@@ -3,13 +3,13 @@
     <div class="inputFields">
       <InputField name="ip"
                   type="text"
-                  title="IP address:"
+                  title="FT32 IP address:"
                   :placeholder="placeholderIpAddress"
                   v-model="ip.value"
                   :errorMessage="ip.errorMessage" />
       <InputField name="ssid"
                   type="text"
-                  title="SSID:"
+                  title="Network name:"
                   v-model="ssid.value"
                   :errorMessage="ssid.errorMessage" />
       <InputField name="password"
@@ -163,13 +163,17 @@ export default {
     },
 
     openWebsocketConnection(ip) {
+      this.showSendDataBtnSpinner = true;
+
       this.socket = new WebSocket(`ws://${ip}:90`);
       this.socket.addEventListener('open', () => {
         this.webSocketReady = true;
+        this.showSendDataBtnSpinner = false;
         this.sendConfig;
       });
       this.socket.addEventListener('message', this.onSocketMessage);
       this.socket.addEventListener('error', () => {
+        this.showSendDataBtnSpinner = false;
         this.ip.errorMessage = `${this.ip.value} not reacheable!`;
       });
     },

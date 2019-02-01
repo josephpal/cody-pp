@@ -1,5 +1,6 @@
 <template>
   <div class="code-preview">
+    <input name="fileSaver" id="fileSaver" type ="file"/>
     <DropDown
       :options="languages"
       :selected="selectedLanguage"
@@ -16,6 +17,8 @@
       <RoundButton :icon="icons.ArrowIcon" :enabled="webSocketReady && !isRunning" @click="onSendButtonClicked" :showSpinner="showSendBtnSpinner" />
       <RoundButton :icon="icons.StopIcon" :enabled="webSocketReady && isRunning" @click="onStopButtonClicked" :showSpinner="showStopBtnSpinner" />
       <RoundButton :icon="playButtonIcon" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked" :showSpinner="showPlayBtnSpinner" />
+      <RoundButton :icon="icons.LoadIcon" :enabled="!isRunning" @click="onLoadButtonClicked" :showSpinner="showLoadBtnSpinner" />
+      <RoundButton :icon="icons.SaveIcon" :enabled="!isRunning" @click="onSaveButtonClicked" :showSpinner="showSaveBtnSpinner" />
     </div>
   </div>
 </template>
@@ -33,7 +36,11 @@ import PlayIcon from '../../../assets/svg/play.svg';
 import StopIcon from '../../../assets/svg/stop.svg';
 import PauseIcon from '../../../assets/svg/pause.svg';
 import ArrowIcon from '../../../assets/svg/arrow.svg';
+import LoadIcon from '../../../assets/svg/load.svg';
+import SaveIcon from '../../../assets/svg/save.svg';
 import SocketMessages from "../../enum/SocketMessageTypes";
+
+import saveAs from '../../utils/FileSaver';
 
 export default {
   name: 'CodePreview',
@@ -75,6 +82,8 @@ export default {
       showPlayBtnSpinner: false,
       showStopBtnSpinner: false,
       showSendBtnSpinner: false,
+      showSaveBtnSpinner: false,
+      showLoadBtnSpinner: false
     }
   },
 
@@ -134,7 +143,9 @@ export default {
       return {
         PlayIcon,
         StopIcon,
-        ArrowIcon
+        ArrowIcon,
+        SaveIcon,
+        LoadIcon
       };
     },
 
@@ -224,6 +235,60 @@ export default {
       ).then(() => (this.showSendBtnSpinner = false)).catch(() => (this.showSendBtnSpinner = false));
     },
 
+    onSaveButtonClicked() {   //save Button Funktion
+      this.showSaveBtnSpinner = true;
+      var xml1 = Blockly.Xml.workspaceToDom(Blockly.getMainWorkspace());
+      var xml_text = Blockly.Xml.domToPrettyText(xml1);
+      //BlocklyStorage.link();
+      console.log(xml_text);
+      //Exportieren der Datei auf einen lokalen Speicherort
+
+      var blob = new Blob([xml_text], {type: 'text/plain'});
+      saveAs(blob, "Cody_pp.xml");
+      console.log("backuped");
+      //funktioniert!
+      //Blockly.mainWorkspace.clear(); //könnte auch den mainWorkspace vorher holen, wie in Funktion onLoadButtonclicked
+      this.showSaveBtnSpinner = false;
+    },
+
+    onLoadButtonClicked() {   //load Button Funktion
+      this.showLoadBtnSpinner = true;
+
+      // trigger input field event
+      document.getElementById('fileSaver').click();
+
+      // event listener on "file open dialog confirmed"
+      document.getElementById('fileSaver').addEventListener('change', () => {
+        var files = document.getElementById('fileSaver').files;
+
+        if (!files.length){
+          alert('Zuerst Datei zum Laden auswählen!');
+          this.showLoadBtnSpinner = false;
+          return;
+        }
+
+        var file = files[0];
+        var reader = new FileReader();
+        var input;
+
+        reader.onloadend = function (evt){
+          if (evt.target.readyState === FileReader.DONE){
+            input = evt.target.result;
+            //console.log(input);
+            let workspace = Blockly.getMainWorkspace();
+            workspace.clear();
+            var xml = Blockly.Xml.textToDom(input);
+            Blockly.Xml.domToWorkspace(xml,workspace);
+          }
+        };
+
+        var blob = file.slice(0, file.size);
+        reader.readAsBinaryString(blob);
+
+        this.showLoadBtnSpinner = false;
+      });
+    },
+
     onSocketMessage(message) {
       console.warn(message);
       console.log(`Received message ${message.data}`);
@@ -266,6 +331,10 @@ export default {
 <style lang="scss">
   @import '../../../scss/variables/colors';
   @import '../../../scss/mixins/breakpoints';
+
+  #fileSaver {
+    display: none;
+  }
 
   .code-preview {
     width: 40%;
