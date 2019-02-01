@@ -6,6 +6,7 @@
       type="file"
       ref="fileInput"
       @change="onFileUpload"
+      accept=".xml"
     />
     <DropDown
       :options="languages"
