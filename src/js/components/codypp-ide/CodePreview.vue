@@ -25,7 +25,7 @@
                    :showSpinner="showSendBtnSpinner" />
       <RoundButton icon="stop" :enabled="webSocketReady && isRunning" @click="onStopButtonClicked"
                    :showSpinner="showStopBtnSpinner" />
-      <RoundButton icon="play" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked"
+      <RoundButton :icon="playButtonIcon" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked"
                    :showSpinner="showPlayBtnSpinner" />
       <RoundButton icon="load" :enabled="!isRunning" @click="onLoadButtonClicked" :showSpinner="showLoadBtnSpinner" />
       <RoundButton icon="save" :enabled="!isRunning" @click="onSaveButtonClicked" :showSpinner="showSaveBtnSpinner" />
@@ -98,7 +98,7 @@
     },
 
     mounted() {
-      this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.0.61:90');
+      this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
 
       this.socket.addEventListener('open', this.onSocketReady);
       this.socket.addEventListener('message', this.onSocketMessage);
@@ -145,7 +145,7 @@
       },
 
       playButtonIcon() {
-        return !this.isRunning || this.isPaused ? PlayIcon : PauseIcon;
+        return !this.isRunning || this.isPaused ? 'play' : 'pause';
       }
     },
 
