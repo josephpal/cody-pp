@@ -12,7 +12,7 @@ export const xml = `<xml id="toolbox" style="display: none">
         <category name="Actuator">
             <block type="motor"></block>
             <block type="lamp"></block>
-            <block type="servo"></block>
+            <!--<block type="servo"></block>-->
             <!--<block type="digital_out"></block>-->
         </category>
 
