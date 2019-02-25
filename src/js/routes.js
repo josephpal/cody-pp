@@ -2,6 +2,7 @@ import codyppRoute from './components/codypp-ide/codypp'
 import configRoute from './components/codypp-config/config'
 
 export default [
+
   {
     path: '/',
     name: 'codypp',
