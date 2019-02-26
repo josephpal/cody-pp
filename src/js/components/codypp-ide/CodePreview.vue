@@ -289,7 +289,7 @@
             this.openWebsocketConnection(this.ip.value);
           }
         } else {
-          this.socket.close;
+            this.closeWebsocketConnection();
         }
       },
 
@@ -306,6 +306,21 @@
           this.showConnectBtnSpinner = false;
           this.ip.errorMessage = `Not reacheable!`;
         });
+      },
+
+      closeWebsocketConnection() {
+        this.showConnectBtnSpinner = true;
+
+        this.socket.close();
+        this.socket.removeEventListener('message', this.onSocketMessage);
+        this.socket.removeEventListener('open', this.onSocketReady);
+        this.socket.removeEventListener('error', () => {
+          this.showConnectBtnSpinner = false;
+          this.ip.errorMessage = `Not reacheable!`;
+        });
+        this.webSocketReady = false;
+
+        this.showConnectBtnSpinner = false;
       },
 
       onFileUpload() {
