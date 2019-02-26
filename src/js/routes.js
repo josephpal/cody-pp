@@ -14,5 +14,9 @@ export default [
     name: 'config',
     component: configRoute,
     meta: { title: 'Cody++ Configuration' }
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ];
