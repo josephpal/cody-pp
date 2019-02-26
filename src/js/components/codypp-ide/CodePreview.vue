@@ -1,5 +1,22 @@
 <template>
   <div class="code-preview">
+    <div class="connect-container">
+      <div class="input-fields">
+        <InputField name="ip"
+          type="text"
+          title="FT32 IP Address:"
+          :placeholder="placeholderIpAddress"
+          v-model="ip.value"
+          :errorMessage="ip.errorMessage" />
+      </div>
+      <div class="connect-button">
+        <RoundButton  :icon="connectButtonIcon"
+                      :enabled="true"
+                      @click="onConnectButtonClicked"
+                      :showSpinner="showConnectBtnSpinner" />
+      </div>
+    </div>
+
     <input
       name="fileSaver"
       id="fileSaver"
@@ -8,6 +25,7 @@
       @change="onFileUpload"
       accept=".xml"
     />
+
     <DropDown
       :options="languages"
       :selected="selectedLanguage"
@@ -34,6 +52,7 @@
 </template>
 
 <script>
+  import InputField from '../codypp-config/InputField'
   import DropDown from './DropDown';
   import RoundButton from './RoundButton';
   import Languages from '../../enum/Languages';
@@ -45,37 +64,42 @@
   import SocketMessages from '../../enum/SocketMessageTypes';
 
   import saveAs from '../../utils/FileSaver';
+  import { validateIp, isEmpty } from '../../utils/validationUtils'
 
   export default {
     name: 'CodePreview',
 
     data() {
       return {
+        ip: {
+          value: "",
+          errorMessage: "",
+        },
         code: '',
         languages: [{
           id: Languages.CPP,
           name: 'C++'
         },
-          {
-            id: Languages.ARDUINOCPP,
-            name: 'C++ (Arduino)'
-          },
-          {
-            id: Languages.BASIC,
-            name: 'Pseudo Code'
-          },
-          /*{
-            id: Languages.BASIC_GER,
-            name: 'Pseudo Code (De)'
-          },
-          {
-            id: Languages.JAVASCRIPT,
-            name: 'Javascript'
-          },*/
-          {
-            id: Languages.INTERNAL,
-            name: 'Internal Code'
-          }],
+        {
+          id: Languages.ARDUINOCPP,
+          name: 'C++ (Arduino)'
+        },
+        {
+          id: Languages.BASIC,
+          name: 'Pseudo Code'
+        },
+        /*{
+          id: Languages.BASIC_GER,
+          name: 'Pseudo Code (De)'
+        },
+        {
+          id: Languages.JAVASCRIPT,
+          name: 'Javascript'
+        },*/
+        {
+          id: Languages.INTERNAL,
+          name: 'Internal Code'
+        }],
         selectedLanguage: Languages.ARDUINOCPP,
         isRunning: false,
         isPaused: false,
@@ -87,7 +111,10 @@
         showStopBtnSpinner: false,
         showSendBtnSpinner: false,
         showSaveBtnSpinner: false,
-        showLoadBtnSpinner: false
+        showLoadBtnSpinner: false,
+        showConnectBtnSpinner: false,
+
+        placeholderIpAddress: __DEFAULT_IP__
       };
     },
 
@@ -98,10 +125,9 @@
     },
 
     mounted() {
-      this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
-
+      /*this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
       this.socket.addEventListener('open', this.onSocketReady);
-      this.socket.addEventListener('message', this.onSocketMessage);
+      this.socket.addEventListener('message', this.onSocketMessage);*/
     },
 
     beforeDestroy() {
@@ -146,6 +172,10 @@
 
       playButtonIcon() {
         return !this.isRunning || this.isPaused ? 'play' : 'pause';
+      },
+
+      connectButtonIcon() {
+        return this.webSocketReady ? 'disconnect' : 'connect';
       }
     },
 
@@ -247,6 +277,37 @@
         }
       },
 
+      onConnectButtonClicked() {
+        //reset error messages
+        this.ip.errorMessage = "";
+
+        if( this.webSocketReady == false ) {
+          if( !validateIp(this.ip.value) ) {
+            //IP adress is not valid
+            this.ip.errorMessage = "Invalid IP address!";
+          } else {
+            this.openWebsocketConnection(this.ip.value);
+          }
+        } else {
+          this.socket.close;
+        }
+      },
+
+      openWebsocketConnection(ip) {
+        this.showConnectBtnSpinner = true;
+
+        this.socket = new WebSocket(`ws://${ip}:90`);
+        this.socket.addEventListener('open', () => {
+          this.webSocketReady = true;
+          this.showConnectBtnSpinner = false;
+        });
+        this.socket.addEventListener('message', this.onSocketMessage);
+        this.socket.addEventListener('error', () => {
+          this.showConnectBtnSpinner = false;
+          this.ip.errorMessage = `Not reacheable!`;
+        });
+      },
+
       onFileUpload() {
         const files = this.$refs.fileInput.files;
 
@@ -310,7 +371,8 @@
 
     components: {
       DropDown,
-      RoundButton
+      RoundButton,
+      InputField
     }
   };
 </script>
@@ -326,6 +388,53 @@
   .code-preview {
     width: 40%;
     position: relative;
+
+    .connect-container {
+      position: absolute;
+      left: -265px;
+      top: calc(-0.5 * #{$headerHeight} - 25.5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .connect-button {
+        position: relative;
+        left: 7px;
+
+        .round-button {
+          width: 30px;
+          height: 30px;
+          background-color: rgba($colorMediumGrey, .2);
+          box-shadow: 1px 1px 8px $colorDarkestGrey;
+
+          &:hover {
+            border: 0;
+            background-color: $colorRed;
+          }
+
+          .icon {
+            width: auto;
+            height: 15px;
+          }
+
+          .spinner {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+
+    .input-fields {
+      display: flex;
+      flex-direction: column;
+      width: 225px;
+
+      input {
+        text-align: center;
+        width: 100px;
+      }
+    }
 
     .code-container {
       .scrollable {
