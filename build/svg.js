@@ -12,6 +12,8 @@ const add = (name) => {
 };
 
 add('arrow');
+add('connect');
+add('disconnect');
 add('load');
 add('logo');
 add('pause');
