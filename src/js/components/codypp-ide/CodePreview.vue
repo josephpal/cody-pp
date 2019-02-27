@@ -304,6 +304,9 @@
         this.socket.addEventListener('message', this.onSocketMessage);
         this.socket.addEventListener('error', () => {
           this.showConnectBtnSpinner = false;
+          this.webSocketReady = false;
+          this.isRunning = false;
+          this.isReady = false;
           this.ip.errorMessage = `Not reacheable!`;
         });
       },
@@ -319,6 +322,8 @@
           this.ip.errorMessage = `Not reacheable!`;
         });
         this.webSocketReady = false;
+        this.isRunning = false;
+        this.isReady = false;
 
         this.showConnectBtnSpinner = false;
       },
