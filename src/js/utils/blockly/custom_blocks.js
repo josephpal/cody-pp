@@ -51,10 +51,29 @@ Blockly.Blocks['motor'] = {
  this.setHelpUrl("");
   }
 };
+
 /*
  *
  */
+Blockly.Blocks['servo'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set servo")
+        //.appendField(new Blockly.FieldDropdown([["S0","0"], ["S1","1"], ["S2","2"], ["S3","3"]]), "servoNumber")
+        .appendField(new Blockly.FieldDropdown([["S0","0"]]), "servoNumber")
+        .appendField("to position")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 1), "position")
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("Move servo motor to position");
+ this.setHelpUrl("");
+  }
+};
 
+/*
+ *
+ */
 Blockly.Blocks['digital_out'] = {
   init: function() {
     this.appendDummyInput()

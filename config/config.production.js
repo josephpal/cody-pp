@@ -12,7 +12,8 @@ module.exports = {
   //assetsSubDirectory: 'assets',
   assetsSubDirectory: '',
   //assetsPublicPath: '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.0/',
-  assetsPublicPath: process.env.MODE === 'demo' ? '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.0/' : '/',
+  //assetsPublicPath: process.env.MODE === 'demo' ? '/hit-info/info-ws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/' : '/',
+  assetsPublicPath: process.env.MODE === 'demo' ? '/hit-info/FT32/codypp_beta/' : '/',
   // Gzip off by default as many popular static hosts such as
   // Surge or Netlify already gzip all static assets for you.
   // Before setting to `true`, make sure to:

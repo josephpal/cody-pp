@@ -8,6 +8,7 @@ const defaults = {
   'process.env.NODE_ENV': `"${config.env}"`,
   __APP_MODE__: `"${config.appMode}"`,
   __PUBLIC_PATH__: JSON.stringify(process.env.MODE === 'demo' ? config.assetsPublicPath : '/'),
+  __DEFAULT_IP__: JSON.stringify(process.env.MODE === 'demo' ? "0.0.0.0" : '192.168.4.1'),
 };
 
 const webpackConfig = {

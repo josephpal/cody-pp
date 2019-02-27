@@ -8,31 +8,30 @@
 /* global __PUBLIC_PATH__ */
 
 import Blockly from 'node-blockly/browser';
-import '../utils/blockly/custom_blocks';
-import '../utils/blockly/lua';
+import '../../utils/blockly/custom_blocks';
+import '../../utils/blockly/lua';
 
-import '../utils/blockly/cpp';
-import '../utils/blockly/arduinocpp';
-import '../utils/blockly/basic';
-import '../utils/blockly/basicger';
-import '../utils/blockly/javascript';
-import '../utils/blockly/interncode';
+import '../../utils/blockly/cpp';
+import '../../utils/blockly/arduinocpp';
+import '../../utils/blockly/basic';
+import '../../utils/blockly/basicger';
+import '../../utils/blockly/javascript';
+import '../../utils/blockly/interncode';
 
-import '../utils/blockly/dart';
-import '../utils/blockly/math';
-import '../utils/blockly/logic';
-import '../utils/blockly/loops';
-import '../utils/blockly/text';
-import '../utils/blockly/custom_blocks_syntax';
-import { xml } from '../utils/blockly/toolbox';
-import config from '../../../config';
+import '../../utils/blockly/dart';
+import '../../utils/blockly/math';
+import '../../utils/blockly/logic';
+import '../../utils/blockly/loops';
+import '../../utils/blockly/text';
+import '../../utils/blockly/custom_blocks_syntax';
+import { xml } from '../../utils/blockly/toolbox';
+import config from '../../../../config';
 
 export default {
   name: 'BlocklyContainer',
 
   mounted() {
-      console.log(config.assetsPublicPath);
-    const blocklyInstance = Blockly.inject("blockly", {
+    const blocklyWorkspace = Blockly.inject("blockly", {
       toolbox: Blockly.Xml.textToDom(xml),
       media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
       zoom: {
@@ -46,13 +45,13 @@ export default {
       trashcan: true
     });
 
-    this.$emit('registerBlockly', blocklyInstance);
+    this.$emit('registerBlockly', blocklyWorkspace);
   }
 };
 </script>
 
 <style lang="scss">
-  @import '../../scss/variables/colors';
+  @import '../../../scss/variables/colors';
 
   $boxShadow: 0 0 10px $colorDarkestGrey;
 

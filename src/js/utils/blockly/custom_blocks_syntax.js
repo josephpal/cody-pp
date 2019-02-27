@@ -219,6 +219,51 @@ Blockly.JavaScript['lamp'] = function(block) {
   return code;
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Blockly.interncode['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = '#N,' + dropdown_servoNumber + ',' + number_position + ';\n';
+  return code;
+};
+
+Blockly.Cpp['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = 'mServoArray[Servo_' + dropdown_servoNumber + '].setValues(' + number_position + ');\n';
+  return code;
+};
+
+
+Blockly.ArduinoCpp['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = 'mServoArray[Servo_' + dropdown_servoNumber + '].setValues(' + number_position + ');\n';
+  return code;
+};
+
+Blockly.basic['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = 'set Servo on Port ' + dropdown_servoNumber + ' to position ' + number_position + '\n';
+  return code;
+};
+
+Blockly.basicger['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = 'setze Servo an Port ' + dropdown_servoNumber + ' auf Position ' + number_position + '\n';
+  return code;
+};
+
+Blockly.JavaScript['servo'] = function(block) {
+  var dropdown_servoNumber = block.getFieldValue('servoNumber');
+  var number_position = block.getFieldValue('position');
+  var code = 'set Servo on Port ' + dropdown_servoNumber + ' to position ' + number_position + '\n';
+  return code;
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 Blockly.interncode['digital_out'] = function(block) {
@@ -266,5 +311,37 @@ Blockly.JavaScript['digital_out'] = function(block) {
   var dropdown_name = block.getFieldValue('NAME');
   // TODO: Assemble JavaScript into code variable.
   var code = '...;\n';
+  return code;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+Blockly.interncode['text_print'] = function(block) {
+  var code = "";
+  return code;
+};
+
+Blockly.Cpp['text_print'] = function(block) {
+  var code = "";
+  return code;
+};
+
+Blockly.ArduinoCpp['text_print'] = function(block) {
+  var code = "";
+  return code;
+};
+
+Blockly.basic['text_print'] = function(block) {
+  var code = "";
+  return code;
+};
+
+Blockly.basicger['text_print'] = function(block) {
+  var code = "";
+  return code;
+};
+
+Blockly.JavaScript['text_print'] = function(block) {
+  var code = "";
   return code;
 };

@@ -191,6 +191,7 @@ Blockly.interncode.scrub_ = function(block, code) {
       }
     }
   }
+  commentCode = '';
   var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
   var nextCode = Blockly.interncode.blockToCode(nextBlock);
   return commentCode + code + nextCode;
