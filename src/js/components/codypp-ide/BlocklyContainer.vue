@@ -42,7 +42,8 @@ export default {
         minScale: 0.3,
         scaleSpeed: 1.2
       },
-      trashcan: true
+      trashcan: true,
+      sounds: false
     });
 
     this.$emit('registerBlockly', blocklyWorkspace);
