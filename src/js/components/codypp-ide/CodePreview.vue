@@ -131,8 +131,9 @@
     },
 
     beforeDestroy() {
-      this.socket.removeEventListener('message', this.onSocketMessage);
-      this.socket.removeEventListener('open', this.onSocketReady);
+      if( this.socket != null ) {
+        this.closeWebsocketConnection();
+      }
     },
 
     watch: {
@@ -304,11 +305,16 @@
         this.socket.addEventListener('message', this.onSocketMessage);
         this.socket.addEventListener('error', () => {
           this.showConnectBtnSpinner = false;
+          this.webSocketReady = false;
+          this.isRunning = false;
+          this.isReady = false;
           this.ip.errorMessage = `Not reacheable!`;
         });
       },
 
       closeWebsocketConnection() {
+        console.log('Closing connection');
+        
         this.showConnectBtnSpinner = true;
 
         this.socket.close();
@@ -319,6 +325,14 @@
           this.ip.errorMessage = `Not reacheable!`;
         });
         this.webSocketReady = false;
+        this.isRunning = false;
+        this.isReady = false;
+
+        this.showPlayBtnSpinner = false;
+        this.showStopBtnSpinner = false;
+        this.showSendBtnSpinner = false;
+        this.showSaveBtnSpinner = false;
+        this.howLoadBtnSpinner = false;
 
         this.showConnectBtnSpinner = false;
       },
