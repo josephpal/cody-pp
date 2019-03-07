@@ -74,7 +74,9 @@ export default {
   },
 
   beforeDestroy() {
-      this.socket.removeEventListener('message', this.onSocketMessage);
+    if( this.socket != null ) {
+      this.closeWebsocketConnection();
+    }
   },
 
   methods: {
@@ -123,9 +125,64 @@ export default {
         && !isEmpty(this.password.value)
         && !isEmpty(this.passwordConfirmed.value)
         && (this.passwordConfirmed.value == this.password.value) ) {
-
           this.openWebsocketConnection(this.ip.value);
       }
+    },
+
+    openWebsocketConnection(ip) {
+      this.showSendDataBtnSpinner = true;
+
+      this.socket = new WebSocket(`ws://${ip}:90`);
+      this.socket.addEventListener('open', () => {
+        this.webSocketReady = true;
+        this.showSendDataBtnSpinner = false;
+
+        this.sendConfig();
+      });
+      this.socket.addEventListener('message', this.onSocketMessage);
+      this.socket.addEventListener('error', () => {
+        this.showSendDataBtnSpinner = false;
+        this.ip.errorMessage = `${this.ip.value} not reacheable!`;
+      });
+    },
+
+    sendConfig() {
+
+      console.log(`Sending config: ${this.prepareConfig()}`);
+
+      this.showSendDataBtnSpinner = true;
+
+      return asyncWebSocketRequest(
+        this.socket,
+        SocketMessages.CONFIG,
+        this.prepareConfig(),
+        SocketMessages.RECEIVED,
+      ).then(() => {
+        this.showSendDataBtnSpinner = false;
+        console.log('config successfully sended.');
+      }).catch(() => {
+        this.showSendDataBtnSpinner = false;
+        console.log('config could not be sended.');
+      });
+    },
+
+    prepareConfig() {
+      return this.ssid.value.concat('\n').concat(this.password.value);
+    },
+
+    closeWebsocketConnection() {
+      console.log('Closing connection');
+
+      this.socket.close();
+      this.socket.removeEventListener('message', this.onSocketMessage);
+      this.socket.removeEventListener('open', () => {
+        this.webSocketReady = true;
+        this.showSendDataBtnSpinner = false;
+      });
+      this.socket.removeEventListener('error', () => {
+        this.showSendDataBtnSpinner = false;
+        this.ip.errorMessage = `${this.ip.value} not reacheable!`;
+      });
     },
 
     onSocketMessage(message) {
@@ -144,6 +201,9 @@ export default {
           case SocketMessages.READY:
 
               break;
+          case SocketMessages.RECEIVED:
+              this.closeWebsocketConnection();
+              break;
           case SocketMessages.ERROR:
               console.error('Server error');
               break;
@@ -151,33 +211,6 @@ export default {
               console.warn('Unknown socket message');
               break;
       }
-    },
-
-    openWebsocketConnection(ip) {
-      this.showSendDataBtnSpinner = true;
-
-      this.socket = new WebSocket(`ws://${ip}:90`);
-      this.socket.addEventListener('open', () => {
-        this.webSocketReady = true;
-        this.showSendDataBtnSpinner = false;
-        this.sendConfig;
-      });
-      this.socket.addEventListener('message', this.onSocketMessage);
-      this.socket.addEventListener('error', () => {
-        this.showSendDataBtnSpinner = false;
-        this.ip.errorMessage = `${this.ip.value} not reacheable!`;
-      });
-    },
-
-    sendConfig() {
-      this.showSendDataBtnSpinner = true;
-
-      return asyncWebSocketRequest(
-        this.socket,
-        SocketMessages.SEND,
-        'TEST',
-        SocketMessages.READY,
-      ).then(() => (this.showSendDataBtnSpinner = false)).catch(() => (this.showSendDataBtnSpinner = false));
     },
   },
 
