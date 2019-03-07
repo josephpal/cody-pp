@@ -131,8 +131,9 @@
     },
 
     beforeDestroy() {
-      this.socket.removeEventListener('message', this.onSocketMessage);
-      this.socket.removeEventListener('open', this.onSocketReady);
+      if( this.socket != null ) {
+        this.closeWebsocketConnection();
+      }
     },
 
     watch: {
@@ -312,6 +313,8 @@
       },
 
       closeWebsocketConnection() {
+        console.log('Closing connection');
+        
         this.showConnectBtnSpinner = true;
 
         this.socket.close();
@@ -324,6 +327,12 @@
         this.webSocketReady = false;
         this.isRunning = false;
         this.isReady = false;
+
+        this.showPlayBtnSpinner = false;
+        this.showStopBtnSpinner = false;
+        this.showSendBtnSpinner = false;
+        this.showSaveBtnSpinner = false;
+        this.howLoadBtnSpinner = false;
 
         this.showConnectBtnSpinner = false;
       },
