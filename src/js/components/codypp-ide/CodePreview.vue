@@ -128,6 +128,8 @@
       /*this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
       this.socket.addEventListener('open', this.onSocketReady);
       this.socket.addEventListener('message', this.onSocketMessage);*/
+
+      window.addEventListener('beforeunload', this.beforePageDestroyed());
     },
 
     beforeDestroy() {
@@ -181,6 +183,12 @@
     },
 
     methods: {
+      beforePageDestroyed() {
+         if( this.socket != null ) {
+           this.closeWebsocketConnection();
+         }
+      },
+
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
