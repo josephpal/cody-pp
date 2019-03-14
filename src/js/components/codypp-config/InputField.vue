@@ -59,23 +59,23 @@
     position: relative;
   }
 
-  .error-message {
-    position: absolute;
-    top: 100%;
-    padding-top: 2px;
-    font-size: 0.8em;
-    color: $colorRed;
-    opacity: 90%;
-  }
-
-  .error-message-invisible {
-    opacity: 0;
-  }
-
   input {
     background: none;
     color: white;
     border: none;
     border-bottom: 1px solid gray;
+  }
+
+  .error-message {
+    position: absolute;
+    top: 100%;
+    padding-top: 2px;
+    font-size: 0.8em;
+    color: $colorDarkRed;
+    opacity: 1;
+  }
+
+  .error-message-invisible {
+    opacity: 0;
   }
 </style>

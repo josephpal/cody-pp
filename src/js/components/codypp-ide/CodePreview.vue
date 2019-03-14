@@ -314,7 +314,7 @@
 
       closeWebsocketConnection() {
         console.log('Closing connection');
-        
+
         this.showConnectBtnSpinner = true;
 
         this.socket.close();
@@ -420,7 +420,7 @@
 
     .connect-container {
       position: absolute;
-      left: -265px;
+      left: -313px;
       top: calc(-0.5 * #{$headerHeight} - 25.5px);
       display: flex;
       justify-content: center;
@@ -457,11 +457,11 @@
     .input-fields {
       display: flex;
       flex-direction: column;
-      width: 225px;
+      width: 240px;
 
       input {
         text-align: center;
-        width: 100px;
+        width: 110px;
       }
     }
 
