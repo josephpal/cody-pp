@@ -11,7 +11,7 @@
       </div>
       <div class="connect-button">
         <RoundButton  :icon="connectButtonIcon"
-                      :enabled="true"
+                      :enabled="!webSocketConnecting"
                       @click="onConnectButtonClicked"
                       :showSpinner="showConnectBtnSpinner" />
       </div>
@@ -105,6 +105,7 @@
         isPaused: false,
         isReady: false,
         webSocketReady: false,
+        webSocketConnecting: false,
 
         // spinner state
         showPlayBtnSpinner: false,
@@ -128,6 +129,8 @@
       /*this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
       this.socket.addEventListener('open', this.onSocketReady);
       this.socket.addEventListener('message', this.onSocketMessage);*/
+
+      window.addEventListener('beforeunload', this.beforePageDestroyed());
     },
 
     beforeDestroy() {
@@ -181,6 +184,12 @@
     },
 
     methods: {
+      beforePageDestroyed() {
+         if( this.socket != null ) {
+           this.closeWebsocketConnection();
+         }
+      },
+
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
@@ -286,11 +295,19 @@
           if( !validateIp(this.ip.value) ) {
             //IP adress is not valid
             this.ip.errorMessage = "Invalid IP address!";
+            this.webSocketConnecting = false;
           } else {
-            this.openWebsocketConnection(this.ip.value);
+            if( this.webSocketConnecting != true ) {
+              this.webSocketConnecting = true;
+              console.log('Connect to websocket ...');
+              this.openWebsocketConnection(this.ip.value);
+            } else {
+              console.log('Connection process still running!');
+            }
           }
         } else {
             this.closeWebsocketConnection();
+            this.webSocketConnecting = false;
         }
       },
 
@@ -301,6 +318,7 @@
         this.socket.addEventListener('open', () => {
           this.webSocketReady = true;
           this.showConnectBtnSpinner = false;
+          this.webSocketConnecting = false;
         });
         this.socket.addEventListener('message', this.onSocketMessage);
         this.socket.addEventListener('error', () => {
@@ -309,12 +327,13 @@
           this.isRunning = false;
           this.isReady = false;
           this.ip.errorMessage = `Not reacheable!`;
+          this.webSocketConnecting = false;
         });
       },
 
       closeWebsocketConnection() {
         console.log('Closing connection');
-        
+
         this.showConnectBtnSpinner = true;
 
         this.socket.close();
@@ -367,8 +386,8 @@
       },
 
       onSocketMessage(message) {
-        console.warn(message);
-        console.log(`Received message ${message.data}`);
+        //console.warn(message);
+        console.log(`Received message: ${message.data}`);
         switch (message.data) {
           case SocketMessages.RUNNING:
             this.isReady = true;
@@ -420,7 +439,7 @@
 
     .connect-container {
       position: absolute;
-      left: -265px;
+      left: -313px;
       top: calc(-0.5 * #{$headerHeight} - 25.5px);
       display: flex;
       justify-content: center;
@@ -457,11 +476,11 @@
     .input-fields {
       display: flex;
       flex-direction: column;
-      width: 225px;
+      width: 240px;
 
       input {
         text-align: center;
-        width: 100px;
+        width: 110px;
       }
     }
 
