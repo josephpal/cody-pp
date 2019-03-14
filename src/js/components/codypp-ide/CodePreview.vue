@@ -11,7 +11,7 @@
       </div>
       <div class="connect-button">
         <RoundButton  :icon="connectButtonIcon"
-                      :enabled="true"
+                      :enabled="!webSocketConnecting"
                       @click="onConnectButtonClicked"
                       :showSpinner="showConnectBtnSpinner" />
       </div>
@@ -105,6 +105,7 @@
         isPaused: false,
         isReady: false,
         webSocketReady: false,
+        webSocketConnecting: false,
 
         // spinner state
         showPlayBtnSpinner: false,
@@ -294,11 +295,19 @@
           if( !validateIp(this.ip.value) ) {
             //IP adress is not valid
             this.ip.errorMessage = "Invalid IP address!";
+            this.webSocketConnecting = false;
           } else {
-            this.openWebsocketConnection(this.ip.value);
+            if( this.webSocketConnecting != true ) {
+              this.webSocketConnecting = true;
+              console.log('Connect to websocket ...');
+              this.openWebsocketConnection(this.ip.value);
+            } else {
+              console.log('Connection process still running!');
+            }
           }
         } else {
             this.closeWebsocketConnection();
+            this.webSocketConnecting = false;
         }
       },
 
@@ -309,6 +318,7 @@
         this.socket.addEventListener('open', () => {
           this.webSocketReady = true;
           this.showConnectBtnSpinner = false;
+          this.webSocketConnecting = false;
         });
         this.socket.addEventListener('message', this.onSocketMessage);
         this.socket.addEventListener('error', () => {
@@ -317,6 +327,7 @@
           this.isRunning = false;
           this.isReady = false;
           this.ip.errorMessage = `Not reacheable!`;
+          this.webSocketConnecting = false;
         });
       },
 
@@ -375,8 +386,8 @@
       },
 
       onSocketMessage(message) {
-        console.warn(message);
-        console.log(`Received message ${message.data}`);
+        //console.warn(message);
+        console.log(`Received message: ${message.data}`);
         switch (message.data) {
           case SocketMessages.RUNNING:
             this.isReady = true;
