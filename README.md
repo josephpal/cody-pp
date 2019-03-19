@@ -15,9 +15,10 @@ Checkout the [demo](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fische
 So far, no installation instructions are needed. Feel free to use the hosted demo. To use our generated code you have to install several libraries in [arduino](https://www.arduino.cc/en/Main/Software). You can install them after you open the Arduino IDE and search for them under Tools -> Manage Libraries. 
 
 The following libraries should be installed:
-- Adafruit SSD1306
-- Adafruit-GFX-Library
-- SparkFun SX1509
+
+- Adafruit SSD1306 (works only with version 1.1.2, not 1.2.x)
+- Adafruit-GFX-Library (latest version, tested with 1.3.4)
+- SparkFun SX1509 (latest version, tested with 2.0.1)
 
 We also have to make sure that the ESP core is installed correctly. If you have a linux based oprating system, it is quite simple. Open an terminal enter the following commands:
 
@@ -51,7 +52,7 @@ Confirm the window, wait until all neccessary files are installed and set up and
 
 ## Generate and use Cody++ to build a program for the ESP32
 
-Generate the arduino code with the hosted [Cody++ IDE](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/index.html). After that, open your Arduino IDE and create a new blank sketch and paste the generated code into it. Now you only have to copy the neccessary headers - you find these files in the direcotry /lib - in the same directory where your arduino project is located. Compiling your first arduino project made with Cody++ should now be very easy. Its time to flash your ESP32. To do so, upload the compiled sketch to the ESP32 which should be connected with a usb cabel to your computer. The following settings are neccessary:
+Generate the arduino code with the hosted [Cody++ IDE](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/index.html). After that, open your Arduino IDE and create a new blank sketch and paste the generated code into it. Now you only have to copy the neccessary "ft_ESP32_IOobjects.h" headers - you find these files in the direcotry [/lib](./lib), updated files can be found [here](https://github.com/hama1067/ft32/tree/master/ft32) - in the same directory where your arduino project is located. Compiling your first arduino project made with Cody++ should now be very easy. Its time to flash your ESP32. To do so, upload the compiled sketch to the ESP32 which should be connected with a usb cabel to your computer. The following settings are neccessary:
 
 <p align="center"><img width="65%" src="arduino-flash.png"></p>
 
