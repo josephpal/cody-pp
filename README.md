@@ -50,17 +50,37 @@ If you are under windows, you have to install python first. Therefore you have t
 
 Confirm the window, wait until all neccessary files are installed and set up and proceed with the next steps.
 
-## Generate and use Cody++ to build a program for the ESP32
+### Generate and use Cody++ to build a program for the ESP32
 
 Generate the arduino code with the hosted [Cody++ IDE](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/index.html). After that, open your Arduino IDE and create a new blank sketch and paste the generated code into it. Now you only have to copy the neccessary headers (ft_ESP32_IOobjects.h, ft_ESP32_IOobjects.cpp) - you find these files in the direcotry [/lib](./libs), updated files can be found [here](https://github.com/hama1067/ft32/tree/master/ft32) - in the same directory where your arduino project is located. Compiling your first arduino project made with Cody++ should now be very easy. Its time to flash your ESP32. To do so, upload the compiled sketch to the ESP32 which should be connected with a usb cabel to your computer. The following settings are neccessary:
 
 <p align="center"><img width="65%" src="arduino-flash.png"></p>
 
-Only a few steps are left to program your ESP32. Beside our Cody++ software and the Arduino IDE, you will need the correct [ESP32 hardware](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0203StandDerTechnik.html). There are two possible hardware platfroms mentioned on our offical [documentation page](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0406Layout.html). I would prefer the smaller [one](http://www.hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/FT%5FESP32%5FHWK/0401AusgewaehlteLoesung.html). To setup the ESP32 correctly please visit the ft32 github page.
+Only a few steps are left to program your ESP32. Beside our Cody++ software and the Arduino IDE, you will need the correct [ESP32 hardware](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0203StandDerTechnik.html). There are two possible hardware platfroms mentioned on our offical [documentation page](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0406Layout.html). I would prefer the smaller [one](http://www.hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/FT%5FESP32%5FHWK/0401AusgewaehlteLoesung.html). To setup the ESP32 correctly please visit the [ft32](https://github.com/hama1067/ft32) github page.
+
+## Cody++ (with FT32 robots) in use
+
+Video dokumentation (in german): 
+- [FT32-Codypp Pre-relase Video Dez. 2017](https://youtu.be/Vb2udfsyRjI?list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw)
+
+German pubils testing our Robots: 
+- [Hector-Seminar-Video](https://www.youtube.com/watch?v=EfkDjtZDj-Y&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=2)
+- [Drawing a flower with Codypp and FT32](https://www.youtube.com/watch?v=YJIpydJqEwY&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=8)
 
 ## Environment Setup
 
-If you want to take part or to modify and use the project on your own, you have to setup your operating system properly. I am currently using [Linux Mint 19](https://linuxmint.com/) and the following instructions are related to this operating system. Other Linux distributions are possible, but the commands may variant. It is also possible to setup and VM with [virtual box](https://www.virtualbox.org/).
+If you want to take part or to modify and use the project on your own, you have to setup your operating system properly. I am currently using [Linux Mint 19](https://linuxmint.com/) and the following instructions are related to this operating system. Other Linux distributions are possible, but the commands may variant. It is also possible to setup and VM with [virtual box](https://www.virtualbox.org/). 
 
 1)  Download and install Linux Mint 19.
-2)  ...
+2)  Make sure the latest updates are installed:
+    ``` bash
+    sudo apt-get update && sudo apt-get dist-upgrade --yes
+    ```
+3)  Download and install [Atom](https://atom.io/) (my favourite integrated development environment tool)
+4)  Setup Atom IDE for syntax highlighting, language and github support:
+    Launch Atom -> Edit -> Preferences -> Install:
+    ``` bash
+    Install packages: atom-ide-ui, ide-vue, Language-vue
+    ```
+5)  Install npm package manager:
+    ...
