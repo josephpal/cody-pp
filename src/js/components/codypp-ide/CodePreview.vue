@@ -1,20 +1,21 @@
 <template>
   <div class="code-preview">
     <div class="connect-container">
-      <div class="input-fields">
-        <InputField name="ip"
-          type="text"
-          title="FT32 IP Address:"
-          :placeholder="placeholderIpAddress"
-          v-model="ip.value"
-          :errorMessage="ip.errorMessage" />
-      </div>
-      <div class="connect-button">
-        <RoundButton  :icon="connectButtonIcon"
-                      :enabled="!webSocketConnecting"
-                      @click="onConnectButtonClicked"
-                      :showSpinner="showConnectBtnSpinner" />
-      </div>
+      <form @submit.prevent="onConnectButtonClicked">
+        <div class="input-fields">
+          <InputField name="ip"
+            type="text"
+            title="FT32 IP Address:"
+            :placeholder="placeholderIpAddress"
+            v-model="ip.value"
+            :errorMessage="ip.errorMessage" />
+        </div>
+        <div class="connect-button">
+          <RoundButton  :icon="connectButtonIcon"
+                        :enabled="!webSocketConnecting"
+                        :showSpinner="showConnectBtnSpinner" />
+        </div>
+      </form>
     </div>
 
     <input
@@ -136,6 +137,12 @@
     beforeDestroy() {
       if( this.socket != null ) {
         this.closeWebsocketConnection();
+      }
+      if( this.pingPongInterval ) {
+        clearInterval(this.pingPongInterval);
+      }
+      if( this.pingPongTimeout ) {
+        clearTimeout(this.pingPongTimeout);
       }
     },
 
@@ -319,6 +326,21 @@
           this.webSocketReady = true;
           this.showConnectBtnSpinner = false;
           this.webSocketConnecting = false;
+
+          this.pingPongInterval = setInterval(() => {
+            // this.socket.send(SocketMessages.PING);
+
+            return asyncWebSocketRequest(
+              this.socket,
+              SocketMessages.PING,
+              '',
+              SocketMessages.PONG
+            ).then(() => (console.log("Sending: PING"))).catch(() => (console.err("Can not send ping!")));
+
+            this.pingPongTimeout = setTimeout(() => {
+              this.closeWebsocketConnection();
+            }, 1000);
+          }, 5000);
         });
         this.socket.addEventListener('message', this.onSocketMessage);
         this.socket.addEventListener('error', () => {
@@ -335,6 +357,14 @@
         console.log('Closing connection');
 
         this.showConnectBtnSpinner = true;
+
+        if( this.pingPongTimeout ) {
+          clearTimeout(this.pingPongTimeout);
+        }
+
+        if( this.pingPongInterval ) {
+          clearInterval(this.pingPongInterval);
+        }
 
         this.socket.close();
         this.socket.removeEventListener('message', this.onSocketMessage);
@@ -389,6 +419,12 @@
         //console.warn(message);
         console.log(`Received message: ${message.data}`);
         switch (message.data) {
+          case SocketMessages.PONG:
+            if (this.pingPongTimeout) {
+              console.log("Clearing timeout ...");
+              clearTimeout(this.pingPongTimeout);
+            }
+            break;
           case SocketMessages.RUNNING:
             this.isReady = true;
             this.isRunning = true;
@@ -441,9 +477,12 @@
       position: absolute;
       left: -313px;
       top: calc(-0.5 * #{$headerHeight} - 25.5px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
       .connect-button {
         position: relative;
@@ -481,6 +520,7 @@
       input {
         text-align: center;
         width: 110px;
+        background: none;
       }
     }
 
