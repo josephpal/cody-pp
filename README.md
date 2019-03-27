@@ -58,6 +58,12 @@ Generate the arduino code with the hosted [Cody++ IDE](http://www.hit.hs-karlsru
 
 Only a few steps are left to program your ESP32. Beside our Cody++ software and the Arduino IDE, you will need the correct [ESP32 hardware](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0203StandDerTechnik.html). There are two possible hardware platfroms mentioned on our offical [documentation page](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0406Layout.html). I would prefer the smaller [one](http://www.hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/FT%5FESP32%5FHWK/0401AusgewaehlteLoesung.html). To setup the ESP32 correctly please visit the [ft32](https://github.com/hama1067/ft32) github page.
 
+## Web documentation
+
+For further information to this project visit our official documentation [webpage](http://hit-karlsruhe.de/hit-info/info-ws17/Fischertechnik/).
+
+<p align="center"><img width="35%" src="./FT32-robot.jpg"></p>
+
 ## Cody++ (with FT32 robots) in use
 
 Video dokumentation (in german): 
