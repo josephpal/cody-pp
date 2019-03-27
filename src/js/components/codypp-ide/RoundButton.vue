@@ -1,10 +1,10 @@
 <template>
-  <div class="round-button" :class="{ disabled: !enabled }" @click="onClicked">
+  <button class="round-button" :class="{ disabled: !enabled }" @click="onClicked">
     <Spinner v-if="showSpinner"/>
     <svg class="icon" v-else>
       <use :href="iconPath"></use>
     </svg>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -61,6 +61,8 @@
     height: 64px;
     border-radius: 100%;
     border: 0;
+    outline: 0;
+    color: #fff;
     cursor: pointer;
     box-shadow: 2px 2px 10px $colorDarkestGrey;
     background-color: rgba($colorRed, .8);
