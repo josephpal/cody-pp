@@ -13,4 +13,8 @@ export default {
   READY: 'ready',
   RECEIVED: 'received',
   ERROR: 'error',
+
+  // universal
+  PING: 'ping',
+  PONG: 'pong',
 };
