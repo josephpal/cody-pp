@@ -328,18 +328,18 @@
           this.webSocketConnecting = false;
 
           this.pingPongInterval = setInterval(() => {
-            // this.socket.send(SocketMessages.PING);
+            this.pingPongTimeout = setTimeout(() => {
+              console.error("Websocket server connection timed out!")
+              this.closeWebsocketConnection();
+            }, 1000);
 
             return asyncWebSocketRequest(
               this.socket,
               SocketMessages.PING,
               '',
               SocketMessages.PONG
-            ).then(() => (console.log("Sending: PING"))).catch(() => (console.err("Can not send ping!")));
+            ).then(() => (console.log("Sending: PING"))).catch(() => (console.error("Can not send ping!")));
 
-            this.pingPongTimeout = setTimeout(() => {
-              this.closeWebsocketConnection();
-            }, 1000);
           }, 5000);
         });
         this.socket.addEventListener('message', this.onSocketMessage);
