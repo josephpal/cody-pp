@@ -489,8 +489,8 @@
         left: 7px;
 
         .round-button {
-          width: 30px;
-          height: 30px;
+          width: 32px;
+          height: 32px;
           background-color: rgba($colorMediumGrey, .2);
           box-shadow: 1px 1px 8px $colorDarkestGrey;
 
@@ -505,8 +505,10 @@
           }
 
           .spinner {
-            width: 20px;
-            height: 20px;
+            svg  {
+              width: 80%;
+              height: 100%;
+            }
           }
         }
       }
