@@ -111,11 +111,22 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      /deep/ .input-field input {
+        background: none;
+        width: 110px;
+        text-align: center;
+      }
     }
 
     .connect-button {
       position: relative;
       left: 7px;
+
+      /deep/ .icon {
+        width: auto;
+        height: 45%;
+      }
 
       .round-button {
         background-color: rgba($colorMediumGrey, .2);
