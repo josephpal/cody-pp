@@ -391,14 +391,14 @@
       display: flex;
       flex-direction: row-reverse;
 
-      @include respond-to(tablet) {
+      @media (max-width: 1200px) {
         flex-direction: column;
       }
 
       .round-button {
         margin-left: 20px;
 
-        @include respond-to(tablet) {
+        @media (max-width: 1200px) {
           margin-top: 10px;
         }
       }
