@@ -46,13 +46,18 @@ export default {
       align-items: center;
       height: 100%;
 
+      float: left;
+      position: relative;
+      width: 60%;
+
       .logo {
         height: 70%;
         width: auto;
       }
 
       .ft-connector {
-        margin-left: 2em;
+        position: absolute;
+        right: 38px;
       }
     }
   }
