@@ -39,8 +39,10 @@ import InputField from './InputField'
 import RoundButton from '../codypp-ide/RoundButton'
 import { validateIp, isEmpty } from '../../utils/validationUtils'
 
-import { asyncWebSocketRequest } from '../../utils/socketUtils';
+//import { asyncWebSocketRequest } from '../../utils/socketUtils';
 import SocketMessages from "../../enum/SocketMessageTypes";
+const asyncWebSocketRequest = () => {} // FIXME
+
 
 export default {
   name: 'InputFieldContainer',
