@@ -96,7 +96,7 @@
       width: 64px;
       height: 64px;
 
-      @include respond-to(tablet) {
+      @media (max-width: 1200px) {
         width: 50px;
         height: 50px;
       }
@@ -104,11 +104,14 @@
 
     .icon {
       fill: #fff;
-
       width: auto;
       height: 80%;
-
       max-height: 20px;
+
+      @media (max-width: 1200px) {
+        width: auto;
+        height: 35%;
+      }
     }
   }
 </style>
