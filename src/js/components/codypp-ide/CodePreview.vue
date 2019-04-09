@@ -1,23 +1,5 @@
 <template>
   <div class="code-preview">
-    <div class="connect-container">
-      <form @submit.prevent="onConnectButtonClicked">
-        <div class="input-fields">
-          <InputField name="ip"
-            type="text"
-            title="FT32 IP Address:"
-            :placeholder="placeholderIpAddress"
-            v-model="ip.value"
-            :errorMessage="ip.errorMessage" />
-        </div>
-        <div class="connect-button">
-          <RoundButton  :icon="connectButtonIcon"
-                        :enabled="!webSocketConnecting"
-                        :showSpinner="showConnectBtnSpinner" />
-        </div>
-      </form>
-    </div>
-
     <input
       name="fileSaver"
       id="fileSaver"
@@ -53,29 +35,24 @@
 </template>
 
 <script>
-  import InputField from '../codypp-config/InputField'
   import DropDown from './DropDown';
   import RoundButton from './RoundButton';
   import Languages from '../../enum/Languages';
   import Blockly from 'node-blockly/browser';
   import { resetLogicCounterVar } from '../../utils/blockly/logic';
   import { resetLoopsCounterVar } from '../../utils/blockly/loops';
-  import { asyncWebSocketRequest } from '../../utils/socketUtils';
 
   import SocketMessages from '../../enum/SocketMessageTypes';
 
   import saveAs from '../../utils/FileSaver';
-  import { validateIp, isEmpty } from '../../utils/validationUtils'
+
+  import socketConnector from '../../socketConnector';
 
   export default {
     name: 'CodePreview',
 
     data() {
       return {
-        ip: {
-          value: "",
-          errorMessage: "",
-        },
         code: '',
         languages: [{
           id: Languages.CPP,
@@ -105,18 +82,15 @@
         isRunning: false,
         isPaused: false,
         isReady: false,
+
         webSocketReady: false,
-        webSocketConnecting: false,
 
         // spinner state
         showPlayBtnSpinner: false,
         showStopBtnSpinner: false,
         showSendBtnSpinner: false,
         showSaveBtnSpinner: false,
-        showLoadBtnSpinner: false,
-        showConnectBtnSpinner: false,
-
-        placeholderIpAddress: __DEFAULT_IP__
+        showLoadBtnSpinner: false
       };
     },
 
@@ -127,23 +101,9 @@
     },
 
     mounted() {
-      /*this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
-      this.socket.addEventListener('open', this.onSocketReady);
-      this.socket.addEventListener('message', this.onSocketMessage);*/
-
-      window.addEventListener('beforeunload', this.beforePageDestroyed());
-    },
-
-    beforeDestroy() {
-      if( this.socket != null ) {
-        this.closeWebsocketConnection();
-      }
-      if( this.pingPongInterval ) {
-        clearInterval(this.pingPongInterval);
-      }
-      if( this.pingPongTimeout ) {
-        clearTimeout(this.pingPongTimeout);
-      }
+      socketConnector.onClose(this.onSocketClose);
+      socketConnector.onOpen(this.onSocketOpen);
+      socketConnector.onMessage(this.onSocketMessage);
     },
 
     watch: {
@@ -183,20 +143,10 @@
 
       playButtonIcon() {
         return !this.isRunning || this.isPaused ? 'play' : 'pause';
-      },
-
-      connectButtonIcon() {
-        return this.webSocketReady ? 'disconnect' : 'connect';
       }
     },
 
     methods: {
-      beforePageDestroyed() {
-         if( this.socket != null ) {
-           this.closeWebsocketConnection();
-         }
-      },
-
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
@@ -247,34 +197,34 @@
       onPlayButtonClicked() {
         this.showPlayBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           this.isRunning && !this.isPaused ? SocketMessages.PAUSE : SocketMessages.START,
           '',
           this.isRunning && !this.isPaused ? SocketMessages.PAUSED : SocketMessages.RUNNING
-        ).then(() => (this.showPlayBtnSpinner = false)).catch(() => (this.showPlayBtnSpinner = false));
+        ).then(() => (this.showPlayBtnSpinner = false))
+        .catch(() => (this.showPlayBtnSpinner = false));
       },
 
       onStopButtonClicked() {
         this.showStopBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           SocketMessages.STOP,
           '',
           SocketMessages.STOPPED
-        ).then(() => (this.showStopBtnSpinner = false)).catch(() => (this.showStopBtnSpinner = false));
+        ).then(() => (this.showStopBtnSpinner = false))
+        .catch(() => (this.showStopBtnSpinner = false));
       },
 
       onSendButtonClicked() {
         this.showSendBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           SocketMessages.SEND,
           this.prepareInternalCode(),
           SocketMessages.READY
-        ).then(() => (this.showSendBtnSpinner = false)).catch(() => (this.showSendBtnSpinner = false));
+        ).then(() => (this.showSendBtnSpinner = false))
+        .catch(() => (this.showSendBtnSpinner = false));
       },
 
       onSaveButtonClicked() {
@@ -294,85 +244,13 @@
         }
       },
 
-      onConnectButtonClicked() {
-        //reset error messages
-        this.ip.errorMessage = "";
 
-        if( this.webSocketReady == false ) {
-          if( !validateIp(this.ip.value) ) {
-            //IP adress is not valid
-            this.ip.errorMessage = "Invalid IP address!";
-            this.webSocketConnecting = false;
-          } else {
-            if( this.webSocketConnecting != true ) {
-              this.webSocketConnecting = true;
-              console.log('Connect to websocket ...');
-              this.openWebsocketConnection(this.ip.value);
-            } else {
-              console.log('Connection process still running!');
-            }
-          }
-        } else {
-            this.closeWebsocketConnection();
-            this.webSocketConnecting = false;
-        }
-      },
 
-      openWebsocketConnection(ip) {
-        this.showConnectBtnSpinner = true;
-
-        this.socket = new WebSocket(`ws://${ip}:90`);
-        this.socket.addEventListener('open', () => {
-          this.webSocketReady = true;
-          this.showConnectBtnSpinner = false;
-          this.webSocketConnecting = false;
-
-          this.pingPongInterval = setInterval(() => {
-            this.pingPongTimeout = setTimeout(() => {
-              console.error("Websocket server connection timed out!")
-              this.closeWebsocketConnection();
-            }, 1000);
-
-            return asyncWebSocketRequest(
-              this.socket,
-              SocketMessages.PING,
-              '',
-              SocketMessages.PONG
-            ).then(() => (console.log("Sending: PING"))).catch(() => (console.error("Can not send ping!")));
-
-          }, 5000);
-        });
-        this.socket.addEventListener('message', this.onSocketMessage);
-        this.socket.addEventListener('error', () => {
-          this.showConnectBtnSpinner = false;
-          this.webSocketReady = false;
-          this.isRunning = false;
-          this.isReady = false;
-          this.ip.errorMessage = `Not reacheable!`;
-          this.webSocketConnecting = false;
-        });
-      },
-
-      closeWebsocketConnection() {
+      onSocketClose() {
         console.log('Closing connection');
 
         this.showConnectBtnSpinner = true;
 
-        if( this.pingPongTimeout ) {
-          clearTimeout(this.pingPongTimeout);
-        }
-
-        if( this.pingPongInterval ) {
-          clearInterval(this.pingPongInterval);
-        }
-
-        this.socket.close();
-        this.socket.removeEventListener('message', this.onSocketMessage);
-        this.socket.removeEventListener('open', this.onSocketReady);
-        this.socket.removeEventListener('error', () => {
-          this.showConnectBtnSpinner = false;
-          this.ip.errorMessage = `Not reacheable!`;
-        });
         this.webSocketReady = false;
         this.isRunning = false;
         this.isReady = false;
@@ -411,20 +289,14 @@
         reader.readAsBinaryString(blob);
       },
 
-      onSocketReady() {
+      onSocketOpen() {
         this.webSocketReady = true;
       },
 
       onSocketMessage(message) {
         //console.warn(message);
-        console.log(`Received message: ${message.data}`);
-        switch (message.data) {
-          case SocketMessages.PONG:
-            if (this.pingPongTimeout) {
-              console.log("Clearing timeout ...");
-              clearTimeout(this.pingPongTimeout);
-            }
-            break;
+        console.log(`Received message: ${message}`);
+        switch (message) {
           case SocketMessages.RUNNING:
             this.isReady = true;
             this.isRunning = true;
@@ -456,7 +328,6 @@
     components: {
       DropDown,
       RoundButton,
-      InputField
     }
   };
 </script>
@@ -472,59 +343,6 @@
   .code-preview {
     width: 40%;
     position: relative;
-
-    .connect-container {
-      position: absolute;
-      left: -313px;
-      top: calc(-0.5 * #{$headerHeight} - 25.5px);
-
-      form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .connect-button {
-        position: relative;
-        left: 7px;
-
-        .round-button {
-          width: 32px;
-          height: 32px;
-          background-color: rgba($colorMediumGrey, .2);
-          box-shadow: 1px 1px 8px $colorDarkestGrey;
-
-          &:hover {
-            border: 0;
-            background-color: $colorRed;
-          }
-
-          .icon {
-            width: auto;
-            height: 15px;
-          }
-
-          .spinner {
-            svg  {
-              width: 80%;
-              height: 100%;
-            }
-          }
-        }
-      }
-    }
-
-    .input-fields {
-      display: flex;
-      flex-direction: column;
-      width: 240px;
-
-      input {
-        text-align: center;
-        width: 110px;
-        background: none;
-      }
-    }
 
     .code-container {
       .scrollable {

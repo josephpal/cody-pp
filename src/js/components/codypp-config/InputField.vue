@@ -57,6 +57,7 @@
   }
 
   .input-field {
+    margin-left: 5px;
     position: relative;
   }
 
