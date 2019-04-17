@@ -1,12 +1,10 @@
 <template>
   <header>
+    <link rel="icon" type="image/png" href="/static/favicon.png"/>
     <div class="inner">
       <img class="logo" src="../../assets/svg/logo.svg" />
-
       <FTConnector v-if="showConnector" />
     </div>
-
-
     <p>&#169; Copyright {{(new Date()).getFullYear()}}, T. Tränkel, F.J. Pal</p>
   </header>
 </template>
