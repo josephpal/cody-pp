@@ -104,6 +104,15 @@
       socketConnector.onClose(this.onSocketClose);
       socketConnector.onOpen(this.onSocketOpen);
       socketConnector.onMessage(this.onSocketMessage);
+
+      window.addEventListener('beforeunload', this.beforePageDestroyed());
+    },
+
+    beforeDestroy() {
+      console.log("beforeDestroy");
+      if ( socketConnector != null ) {
+          socketConnector.close();
+      }
     },
 
     watch: {
@@ -147,6 +156,13 @@
     },
 
     methods: {
+      beforePageDestroyed() {
+        console.log("beforePageDestroyed");
+        if ( socketConnector != null ) {
+            socketConnector.close();
+        }
+      },
+
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
@@ -193,6 +209,7 @@
           .replace(/\n|\s/g, '')
           .concat(';');
       },
+
 
       onPlayButtonClicked() {
         this.showPlayBtnSpinner = true;
@@ -245,10 +262,7 @@
       },
 
 
-
       onSocketClose() {
-        console.log('Closing connection');
-
         this.showConnectBtnSpinner = true;
 
         this.webSocketReady = false;
@@ -259,7 +273,7 @@
         this.showStopBtnSpinner = false;
         this.showSendBtnSpinner = false;
         this.showSaveBtnSpinner = false;
-        this.howLoadBtnSpinner = false;
+        this.showLoadBtnSpinner = false;
 
         this.showConnectBtnSpinner = false;
       },
