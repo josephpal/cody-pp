@@ -57,6 +57,8 @@ class SocketConnector {
   }
 
   close() {
+    console.log('Closing connection');
+
     if( this.pingPongTimeout ) {
       clearTimeout(this.pingPongTimeout);
     }
@@ -71,8 +73,10 @@ class SocketConnector {
       }
     }
 
-    this.socket.close();
-    this.socket.removeEventListener('message', this._handleMessage);
+    if (this.socket) {
+      this.socket.close();
+      this.socket.removeEventListener('message', this._handleMessage);
+    }
   }
 
   onOpen(listener) {
@@ -112,7 +116,7 @@ class SocketConnector {
         })
         .catch((err) => (console.error("Can not send ping!", err)));
 
-    }, 5000);
+    }, 3250);
   }
 }
 

@@ -40,8 +40,8 @@ import RoundButton from '../codypp-ide/RoundButton'
 import { validateIp, isEmpty } from '../../utils/validationUtils'
 
 //import { asyncWebSocketRequest } from '../../utils/socketUtils';
-import SocketMessages from "../../enum/SocketMessageTypes";
-const asyncWebSocketRequest = () => {} // FIXME
+import SocketMessages from '../../enum/SocketMessageTypes';
+import socketConnector from '../../socketConnector';
 
 
 export default {
@@ -50,11 +50,11 @@ export default {
   data() {
     return {
       ip: {
-        value: "",
+        value: "192.168.4.1",
         errorMessage: "",
       },
       ssid: {
-        value: "",
+        value: "HIT-FRITZBOX-7490",
         errorMessage: "",
       },
       password: {
@@ -75,9 +75,14 @@ export default {
     };
   },
 
+  mounted() {
+    socketConnector.onMessage(this.onSocketMessage);
+  },
+
   beforeDestroy() {
-    if( this.socket != null ) {
-      this.closeWebsocketConnection();
+    console.log("beforeDestroy");
+    if ( socketConnector != null ) {
+        socketConnector.close();
     }
   },
 
@@ -134,37 +139,37 @@ export default {
     openWebsocketConnection(ip) {
       this.showSendDataBtnSpinner = true;
 
-      this.socket = new WebSocket(`ws://${ip}:90`);
-      this.socket.addEventListener('open', () => {
+      socketConnector.connect(ip).then(() => {
         this.webSocketReady = true;
         this.showSendDataBtnSpinner = false;
 
+        console.log("Connected!");
+
+        //TODO send
         this.sendConfig();
-      });
-      this.socket.addEventListener('message', this.onSocketMessage);
-      this.socket.addEventListener('error', () => {
+      }).catch(() => {
         this.showSendDataBtnSpinner = false;
+        this.webSocketReady = false;
         this.ip.errorMessage = `${this.ip.value} not reacheable!`;
       });
     },
 
     sendConfig() {
 
-      console.log(`Sending config: ${this.prepareConfig()}`);
+      console.log(`Sending config: ${this.ssid.value}; ${this.password.value}`);
 
       this.showSendDataBtnSpinner = true;
 
-      return asyncWebSocketRequest(
-        this.socket,
+      socketConnector.send(
         SocketMessages.CONFIG,
         this.prepareConfig(),
-        SocketMessages.RECEIVED,
+        SocketMessages.RECEIVED
       ).then(() => {
         this.showSendDataBtnSpinner = false;
         console.log('config successfully sended.');
       }).catch(() => {
         this.showSendDataBtnSpinner = false;
-        console.log('config could not be sended.');
+        console.error('config could not be sended.');
       });
     },
 
@@ -173,24 +178,15 @@ export default {
     },
 
     closeWebsocketConnection() {
-      console.log('Closing connection');
-
-      this.socket.close();
-      this.socket.removeEventListener('message', this.onSocketMessage);
-      this.socket.removeEventListener('open', () => {
-        this.webSocketReady = true;
-        this.showSendDataBtnSpinner = false;
-      });
-      this.socket.removeEventListener('error', () => {
-        this.showSendDataBtnSpinner = false;
-        this.ip.errorMessage = `${this.ip.value} not reacheable!`;
-      });
+      if ( socketConnector != null ) {
+          socketConnector.close();
+      }
     },
 
     onSocketMessage(message) {
-      console.warn(message);
-      console.log(`Received message ${message.data}`);
-      switch (message.data) {
+      //console.warn(message);
+      console.log(`Received message: ${message}`);
+      switch (message) {
           case SocketMessages.RUNNING:
 
               break;
