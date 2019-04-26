@@ -27,6 +27,11 @@ export const xml = `<xml id="toolbox" style="display: none">
             <block type="controls_whileuntil1"></block>
         </category>
 
+        <category name="Movements">
+          <block type="rotateleft"></block>
+          <block type="rotateright"></block>
+        </category>
+
         <category name="Branching">
             <block type="controls_if1"></block>
             <block type="controls_ifelse1"></block>

@@ -116,7 +116,7 @@ class SocketConnector {
         })
         .catch((err) => (console.error("Can not send ping!", err)));
 
-    }, 3250);
+    }, 3000);
   }
 }
 

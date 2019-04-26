@@ -66,6 +66,10 @@
           id: Languages.BASIC,
           name: 'Pseudo Code'
         },
+        {
+          id: Languages.BLANK,
+          name: 'Preview Off'
+        },
         /*{
           id: Languages.BASIC_GER,
           name: 'Pseudo Code (De)'
@@ -73,12 +77,12 @@
         {
           id: Languages.JAVASCRIPT,
           name: 'Javascript'
-        },*/
+        },
         {
           id: Languages.INTERNAL,
           name: 'Internal Code'
-        }],
-        selectedLanguage: Languages.ARDUINOCPP,
+        }*/],
+        selectedLanguage: Languages.BLANK,
         isRunning: false,
         isPaused: false,
         isReady: false,

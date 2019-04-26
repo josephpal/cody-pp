@@ -215,3 +215,31 @@ Blockly.Blocks['controls_ifelse1'] = {
  this.setHelpUrl("");
   }
 };
+
+Blockly.Blocks['rotateleft'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Rotate left by")
+        .appendField(new Blockly.FieldDropdown([["90°","angleOne"], ["180°","angleTwo"], ["270°","agnleThree"]]), "angle");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['rotateright'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Rotate right by")
+        .appendField(new Blockly.FieldDropdown([["90°","angleOne"], ["180°","angleTwo"], ["270°","agnleThree"]]), "angle");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
