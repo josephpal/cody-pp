@@ -1,6 +1,6 @@
 <template>
   <header>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
     <div class="inner">
       <img class="logo" src="../../assets/svg/logo.svg" />
       <FTConnector v-if="showConnector" />
