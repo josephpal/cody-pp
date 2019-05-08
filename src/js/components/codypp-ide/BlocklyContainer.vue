@@ -1,6 +1,6 @@
 <template>
-  <div class="blockly-container">
-    <div id="blockly" />
+  <div ref="blocklyContainer" class="blockly-container" :class="size">
+    <div ref="blockly" id="blockly"/>
   </div>
 </template>
 
@@ -30,23 +30,52 @@ import config from '../../../../config';
 export default {
   name: 'BlocklyContainer',
 
-  mounted() {
-    const blocklyWorkspace = Blockly.inject("blockly", {
-      toolbox: Blockly.Xml.textToDom(xml),
-      media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
-      zoom: {
-        controls: true,
-        wheel: true,
-        startScale: 1.0,
-        maxScale: 3,
-        minScale: 0.3,
-        scaleSpeed: 1.2
-      },
-      trashcan: true,
-      sounds: false
-    });
+  props: {
+    size: {
+      type: String,
+      default: "sm",
+      validator: (value) => ( ["sm","bg"].includes(value) )
+    }
+  },
 
-    this.$emit('registerBlockly', blocklyWorkspace);
+  mounted() {
+    this.createBlockly();
+  },
+
+  watch: {
+    size() {
+      // console.log("watch: " + this.size);
+      this.updateBlockly();
+    }
+  },
+
+  methods: {
+    updateBlockly() {
+      // console.log("Updating blockly instance");
+      // this seems to be unnecessary, but without the timeout, the svg elements wont be resized
+      setTimeout(() => {
+        Blockly.svgResize(Blockly.getMainWorkspace());
+      }, 0);
+    },
+
+    createBlockly() {
+      const blocklyWorkspace = Blockly.inject("blockly", {
+        toolbox: Blockly.Xml.textToDom(xml),
+        media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
+        zoom: {
+          controls: true,
+          wheel: true,
+          startScale: 1.0,
+          maxScale: 3,
+          minScale: 0.3,
+          scaleSpeed: 1.2
+        },
+        trashcan: true,
+        sounds: false
+      });
+
+      this.$emit('registerBlockly', blocklyWorkspace);
+    }
   }
 };
 </script>
@@ -57,11 +86,25 @@ export default {
   $boxShadow: 0 0 10px $colorDarkestGrey;
 
   .blockly-container {
-    width: 60%;
+    position: relative;
     height: calc(100vh - #{$headerHeight});
 
+    &.sm {
+      width: 70%;
+    }
+
+    &.bg {
+      width: 100%;
+    }
+
     #blockly {
-      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      width: 100%;
     }
 
     .blocklyToolboxDiv {
