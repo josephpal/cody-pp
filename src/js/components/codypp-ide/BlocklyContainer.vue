@@ -1,6 +1,11 @@
 <template>
-  <div ref="blocklyContainer" class="blockly-container" :class="size">
-    <div ref="blockly" id="blockly"/>
+  <div class="blockly-container" :class="size">
+    <div id="blockly"/>
+
+    <div class="hide-button">
+      <SemiCircleButton icon="arrow"
+                        :enabled="true" />
+    </div>
   </div>
 </template>
 
@@ -8,6 +13,7 @@
 /* global __PUBLIC_PATH__ */
 
 import Blockly from 'node-blockly/browser';
+import SemiCircleButton from './SemiCircleButton';
 import '../../utils/blockly/custom_blocks';
 import '../../utils/blockly/lua';
 
@@ -75,7 +81,11 @@ export default {
       });
 
       this.$emit('registerBlockly', blocklyWorkspace);
-    }
+    },
+  },
+
+  components: {
+    SemiCircleButton
   }
 };
 </script>
@@ -90,7 +100,7 @@ export default {
     height: calc(100vh - #{$headerHeight});
 
     &.sm {
-      width: 70%;
+      width: 60%;
     }
 
     &.bg {
@@ -159,6 +169,33 @@ export default {
 
     .blocklyTreeLabel, .blocklyText {
       font-family: 'Roboto', sans-serif;
+    }
+  }
+
+  .hide-button {
+    position: absolute;
+    right: 0px;
+    width: 64px;
+
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: calc(100vh - #{$headerHeight});
+
+    .semicircle-button {
+      margin-left: auto;
+      opacity: 0;
+      transition: opacity 0.3s linear;
+    }
+
+    &:hover {
+      .semicircle-button {
+        margin-left: auto;
+        opacity: 1;
+        transition: opacity 0.3s linear;
+      }
     }
   }
 </style>

@@ -109,7 +109,7 @@
       socketConnector.onOpen(this.onSocketOpen);
       socketConnector.onMessage(this.onSocketMessage);
 
-      window.addEventListener('beforeunload', this.beforePageDestroyed());
+      window.addEventListener('beforeunload', this.beforePageDestroyed);
     },
 
     beforeDestroy() {
