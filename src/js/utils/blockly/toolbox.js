@@ -3,17 +3,20 @@ export const xml = `<xml id="toolbox" style="display: none">
             <block type="start"></block>
         </category>
 
-        <category name="Input">
-            <block type="math_number"></block>
-            <block type="digital_logic_compare"></block>
-            <block type="analog_logic_compare"></block>
-        </category>
-
-        <category name="Actuator">
+        <category name="Actions">
             <block type="motor"></block>
             <block type="lamp"></block>
             <block type="servo"></block>
             <!--<block type="digital_out"></block>-->
+        </category>
+
+        <category name="Movements">
+          <block type="rotateleft"></block>
+          <block type="rotateright"></block>
+        </category>
+
+        <category name="Timing">
+            <block type="wait"></block>
         </category>
 
         <category name="Loops">
@@ -27,21 +30,18 @@ export const xml = `<xml id="toolbox" style="display: none">
             <block type="controls_whileuntil1"></block>
         </category>
 
-        <category name="Movements">
-          <block type="rotateleft"></block>
-          <block type="rotateright"></block>
-        </category>
-
-        <category name="Branching">
+        <category name="Decisions">
             <block type="controls_if1"></block>
             <block type="controls_ifelse1"></block>
         </category>
 
-        <category name="Delay">
-            <block type="wait"></block>
+        <category name="Input">
+            <block type="math_number"></block>
+            <block type="digital_logic_compare"></block>
+            <block type="analog_logic_compare"></block>
         </category>
 
-        <category name="Debuging">
+        <!--<category name="Debuging">
             <block type="text_print">
                 <value name="TEXT">
                     <block type="text">
@@ -49,11 +49,13 @@ export const xml = `<xml id="toolbox" style="display: none">
                     </block>
                 </value>
             </block>
-        </category>
+        </category>-->
 
         <category name="Examples">
            <block type="start">
-           <comment pinned="true" h="80" w="160">Dodges obstacles</comment>
+            <comment pinned="true" h="77" w="222">Who:  F.J.Pal
+When: 2019-05-22
+What: Dodges obstacles</comment>
               <value name="state">
                    <block type="controls_whileuntil1">
                        <value name="BOOL">
@@ -178,7 +180,9 @@ export const xml = `<xml id="toolbox" style="display: none">
            </block>
 
            <block type="start">
-             <comment pinned="true" h="80" w="160">Draws a flower</comment>
+             <comment pinned="true" h="77" w="222">Who:  F.J.Pal
+When: 2019-05-22
+What: Draws a flower</comment>
              <statement name="state">
                <block type="controls_repeat_ext">
                  <value name="TIMES">
