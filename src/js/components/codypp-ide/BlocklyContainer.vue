@@ -1,11 +1,10 @@
 <template>
   <div class="blockly-container" :class="size">
-    <div id="blockly"/>
-
     <div class="hide-button">
-      <SemiCircleButton icon="arrow"
-                        :enabled="true" />
+      <SemiCircleButton @click="onHideButtonClicked" />
     </div>
+
+    <div id="blockly"/>
   </div>
 </template>
 
@@ -36,13 +35,13 @@ import config from '../../../../config';
 export default {
   name: 'BlocklyContainer',
 
-  props: {
-    size: {
-      type: String,
-      default: "sm",
-      validator: (value) => ( ["sm","bg"].includes(value) )
-    }
+  data() {
+    return {
+      size: "sm",
+    };
   },
+
+
 
   mounted() {
     this.createBlockly();
@@ -57,8 +56,9 @@ export default {
 
   methods: {
     updateBlockly() {
-      // console.log("Updating blockly instance");
       // this seems to be unnecessary, but without the timeout, the svg elements wont be resized
+      // TODO: maybe we have to update the svg element with the next vm.nextTick() render step ?!
+
       setTimeout(() => {
         Blockly.svgResize(Blockly.getMainWorkspace());
       }, 0);
@@ -82,6 +82,16 @@ export default {
 
       this.$emit('registerBlockly', blocklyWorkspace);
     },
+
+    onHideButtonClicked() {
+      if( this.size === "sm" ) {
+        this.size = "bg";
+      } else {
+        this.size = "sm";
+      }
+
+      this.$emit('resized');
+    }
   },
 
   components: {
@@ -107,8 +117,37 @@ export default {
       width: 100%;
     }
 
+    .hide-button {
+      position: absolute;
+      right: 0px;
+      width: 64px;
+
+      float: right;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      height: calc(100vh - #{$headerHeight});
+
+      .semicircle-button {
+        z-index: 2 !important;
+        margin-left: auto;
+        opacity: 0;
+        transition: ease-out .2s;
+        transition-delay: .2s;
+
+        &:hover {
+          margin-left: auto;
+          opacity: 1;
+          transition: ease-in .2s;
+        }
+      }
+    }
+
     #blockly {
       position: absolute;
+      z-index: 1;
+
       top: 0;
       left: 0;
       right: 0;
@@ -169,33 +208,6 @@ export default {
 
     .blocklyTreeLabel, .blocklyText {
       font-family: 'Roboto', sans-serif;
-    }
-  }
-
-  .hide-button {
-    position: absolute;
-    right: 0px;
-    width: 64px;
-
-    float: right;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: calc(100vh - #{$headerHeight});
-
-    .semicircle-button {
-      margin-left: auto;
-      opacity: 0;
-      transition: opacity 0.3s linear;
-    }
-
-    &:hover {
-      .semicircle-button {
-        margin-left: auto;
-        opacity: 1;
-        transition: opacity 0.3s linear;
-      }
     }
   }
 </style>

@@ -1,35 +1,49 @@
 <template>
-  <div class="code-preview">
-    <input
-      name="fileSaver"
-      id="fileSaver"
-      type="file"
-      ref="fileInput"
-      @change="onFileUpload"
-      accept=".xml"
-    />
+  <div class="code-preview" :class="display">
+    <div class="preview-container">
+      <input  name="fileSaver"
+              id="fileSaver"
+              type="file"
+              ref="fileInput"
+              @change="onFileUpload"
+              accept=".xml" />
 
-    <DropDown
-      :options="languages"
-      :selected="selectedLanguage"
-      @change="onLanguageChange"
-    />
+      <DropDown :options="languages"
+                :selected="selectedLanguage"
+                @change="onLanguageChange" />
 
-    <div class="code-container" v-bar>
-      <div class="scrollable">
-        <pre v-highlightjs="code"><code :class="languageClass"></code></pre>
+      <div class="code-container" v-bar>
+        <div class="scrollable">
+          <pre v-highlightjs="code"><code :class="languageClass"></code></pre>
+        </div>
       </div>
     </div>
 
-    <div class="buttons">
-      <RoundButton icon="arrow" :enabled="webSocketReady && !isRunning" @click="onSendButtonClicked"
-                   :showSpinner="showSendBtnSpinner" />
-      <RoundButton icon="stop" :enabled="webSocketReady && isRunning" @click="onStopButtonClicked"
-                   :showSpinner="showStopBtnSpinner" />
-      <RoundButton :icon="playButtonIcon" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked"
-                   :showSpinner="showPlayBtnSpinner" />
-      <RoundButton icon="load" :enabled="!isRunning" @click="onLoadButtonClicked" :showSpinner="showLoadBtnSpinner" />
-      <RoundButton icon="save" :enabled="!isRunning" @click="onSaveButtonClicked" :showSpinner="showSaveBtnSpinner" />
+    <div class="buttons" :class="this.display === 'invisible' ? 'right-offset' : ''">
+      <RoundButton  class="send-button"
+                    icon="arrow"
+                    :enabled="webSocketReady && !isRunning"
+                    @click="onSendButtonClicked"
+                    :showSpinner="showSendBtnSpinner" />
+      <RoundButton  class="stop-button"
+                    icon="stop"
+                    :enabled="webSocketReady && isRunning" @click="onStopButtonClicked"
+                    :showSpinner="showStopBtnSpinner" />
+      <RoundButton  class="play-button"
+                    :icon="playButtonIcon"
+                    :enabled="webSocketReady && isReady"
+                    @click="onPlayButtonClicked"
+                    :showSpinner="showPlayBtnSpinner" />
+      <RoundButton  class="load-button"
+                    icon="load"
+                    :enabled="!isRunning"
+                    @click="onLoadButtonClicked"
+                    :showSpinner="showLoadBtnSpinner" />
+      <RoundButton  class="save-button"
+                    icon="save"
+                    :enabled="!isRunning"
+                    @click="onSaveButtonClicked"
+                    :showSpinner="showSaveBtnSpinner" />
     </div>
   </div>
 </template>
@@ -82,7 +96,7 @@
           id: Languages.INTERNAL,
           name: 'Internal Code'
         }*/],
-        selectedLanguage: Languages.BLANK,
+        selectedLanguage: Languages.ARDUINOCPP,
         isRunning: false,
         isPaused: false,
         isReady: false,
@@ -94,13 +108,19 @@
         showStopBtnSpinner: false,
         showSendBtnSpinner: false,
         showSaveBtnSpinner: false,
-        showLoadBtnSpinner: false
+        showLoadBtnSpinner: false,
       };
     },
 
     props: {
       blocklyWorkspace: {
         type: Object
+      },
+
+      display: {
+        type: String,
+        default: "visible",
+        validator: (value) => ( ["visible","invisible"].includes(value) )
       }
     },
 
@@ -359,46 +379,61 @@
   }
 
   .code-preview {
-    width: 40%;
     position: relative;
 
-    .code-container {
-      .scrollable {
-        padding: 60px 20px;
-        max-height: calc(100vh - #{$headerHeight});
+    &.visible {
+      width: 40%;
+    }
+
+    &.invisible {
+      .preview-container {
+          display: none;
+      }
+    }
+
+    .preview-container {
+      .code-container {
+        .scrollable {
+          padding: 60px 20px;
+          max-height: calc(100vh - #{$headerHeight});
+        }
+
+        .vb-dragger {
+          z-index: 5;
+          width: 12px;
+          right: 0;
+          padding: 12px 0;
+        }
+
+        .vb-dragger > .vb-dragger-styler {
+          border-radius: 5px;
+          height: 100%;
+          display: block;
+          width: 10px;
+          background-color: rgba($colorMediumGrey, .4);
+
+          &:hover {
+            background-color: rgba($colorMediumGrey, .6);
+          }
+        }
+
       }
 
-      .vb-dragger {
-        z-index: 5;
-        width: 12px;
-        right: 0;
-        padding: 12px 0;
-      }
-
-      .vb-dragger > .vb-dragger-styler {
-        border-radius: 5px;
-        height: 100%;
-        display: block;
-        width: 10px;
-        background-color: rgba($colorMediumGrey, .4);
+      .drop-down {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1;
+        opacity: .8;
+        transition: opacity .3s;
 
         &:hover {
-          background-color: rgba($colorMediumGrey, .6);
+          opacity: 1;
         }
       }
 
-    }
-
-    .drop-down {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 1;
-      opacity: .8;
-      transition: opacity .3s;
-
-      &:hover {
-        opacity: 1;
+      .hljs {
+        background: transparent;
       }
     }
 
@@ -408,6 +443,13 @@
       right: 32px;
       display: flex;
       flex-direction: row-reverse;
+      transition: ease-in 0.2s;
+
+      &.right-offset {
+        bottom: 31px;
+        right: 100px;
+        transition: ease-out 0.2s;
+      }
 
       @media (max-width: 1200px) {
         flex-direction: column;
@@ -420,10 +462,17 @@
           margin-top: 10px;
         }
       }
+
+      .save-button {  }
+
+      .load-button {  }
+
+      .play-button {  }
+
+      .stop-button {  }
+
+      .send-button {  }
     }
 
-    .hljs {
-      background: transparent;
-    }
   }
 </style>

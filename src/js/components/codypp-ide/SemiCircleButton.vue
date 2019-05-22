@@ -1,35 +1,29 @@
 <template>
-  <button class="semicircle-button" :class="!enabled ? 'disabled' : ''" @click="onClicked">
+  <button class="semicircle-button"
+          :class="{ 'isHided': isHided }"
+          @click.stop="isHided = !isHided"
+          @click="onClicked">
+
     <div class="arrow" />
   </button>
+  <!--<div class="origin"></div>-->
 </template>
 
 <script>
   export default {
     name: 'SemiCircleButton',
 
-    props: {
-      enabled: {
-        type: Boolean,
-        default: true,
-      },
-      icon: {
-        type: String,
-        required: true
-      }
+    data() {
+      return {
+        isHided: false
+      };
     },
 
-    computed: {
-      iconPath() {
-        return `${sprites}#${this.icon}`;
-      }
-    },
+    props: { },
 
     methods: {
       onClicked() {
-        if (this.enabled) {
-          this.$emit('click');
-        }
+        this.$emit('click');
       }
     },
 
@@ -44,53 +38,90 @@
   $transparentWhite: rgba($colorWhite, .4);
 
   .semicircle-button {
+    width: 32px;
+    height: 64px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 64px;
+
     border-top-left-radius: 32px;
     border-bottom-left-radius: 32px;
     border: 0;
+
     outline: 0;
-    color: #fff;
     cursor: pointer;
     box-shadow: 2px 2px 10px $colorDarkestGrey;
-    background-color: rgba($colorMediumGrey, .2);
-    transition: background-color .3s;
+    background-color: rgba($colorDarkBlue, .2);
+
+    &.isHided {
+      .arrow {
+        left: 4px;
+        transform:  rotate(-180deg);
+      }
+    }
 
     &:hover {
       border: 0;
-      background-color: rgba($colorBlocklyGreyActive, 0.65);
-    }
-
-    &.disabled {
-      background-color: rgba($colorMediumGrey, .4);
-      color: hsla(0, 0, 0, .4);
-      cursor: default;
+      background-color: rgba($colorDarkBlue, 0.65);
     }
 
     .arrow {
-      height: 10px;
-      width: 10px;
-      left: 3px;
       position: relative;
-      transition: transform .2s;
+      height: 12px;
+      width: 12px;
 
+      transform-origin: center center;
+      transition: transform .3s;
+
+      &:before,
       &:after {
-        content: '';
         position: absolute;
+        width: 100%;
+        height: 100%;
+        display: block;
         top: 0;
         left: 0px;
-        right: 0;
-        margin: auto;
-        width: 10px;
-        height: 10px;
+
+        content: '';
+        box-sizing: border-box;
         border: 2px solid $transparentWhite;
         border-left: 0;
         border-top: 0;
-        transform: rotate(135deg);
+
+        transform:  rotate(-45deg);
       }
     }
+
+    /*.arrow {
+      position: relative;
+      top: 0;
+      left: 0;
+      height: 16px;
+      width: 16px;
+      border: 2px solid $transparentWhite;
+      background-color: yellow;
+
+      transition: transform .5s;
+
+      &:before,
+      &:after {
+        position: absolute;
+        //display: block;
+        content: '';
+        top: 0;
+        left: 0;
+        width: 16px;
+        height: 16px;
+
+        background-color: red;
+        border-left: 0;
+        border-top: 0;
+
+        transform-origin: 50% 50%;
+        transform: rotate(135deg);
+
+      }
+    }*/
   }
 </style>
