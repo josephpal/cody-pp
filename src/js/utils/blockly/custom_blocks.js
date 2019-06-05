@@ -9,8 +9,10 @@ import Blockly from 'node-blockly/browser';
         .appendField("Start");
     this.appendStatementInput("state");
     this.setColour(65);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Every program has to be surrounded with this block.");
+ // + "It initializes all necessary objects which are needed by the robot."
+ // + "A similar code example is the standard main function in all common programming languages."
+ this.setHelpUrl("https://en.wikipedia.org/wiki/Entry_point");
  Blockly.BlockSvg.START_HAT = true;
   }
 };
@@ -27,7 +29,7 @@ Blockly.Blocks['wait'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(260);
- this.setTooltip("");
+ this.setTooltip("Perform current action for x seconds.");
  this.setHelpUrl("");
   }
 };
@@ -47,7 +49,7 @@ Blockly.Blocks['motor'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("");
+ this.setTooltip("Set a specific motor direction (right/left) and a motor speed.");
  this.setHelpUrl("");
   }
 };
@@ -66,8 +68,8 @@ Blockly.Blocks['servo'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("Move servo motor to position");
- this.setHelpUrl("");
+ this.setTooltip("Move the servo motor to a specific position (0 -> bottom, 100 -> top).");
+ this.setHelpUrl("https://en.wikipedia.org/wiki/Servomotor");
   }
 };
 
@@ -83,8 +85,8 @@ Blockly.Blocks['digital_out'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
 	this.setColour(230);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Set a specific port to high (digital 1) ot low (digital 0).");
+ this.setHelpUrl("https://en.wikipedia.org/wiki/Input/output");
   }
 };
 
@@ -101,7 +103,7 @@ Blockly.Blocks['lamp'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("");
+ this.setTooltip("Turn on a connected lamp.");
  this.setHelpUrl("");
   }
 };
@@ -135,8 +137,8 @@ Blockly.Blocks['analog_logic_compare'] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour(0);
- this.setTooltip("Analog Compare");
- this.setHelpUrl("");
+ this.setTooltip("Check wether an analog input value from a specific port is lower, grather or equal to 0-128.");
+ this.setHelpUrl("https://wiki.analytica.com/index.php?title=Comparison_Operators");
   }
 };
 
@@ -152,8 +154,8 @@ Blockly.Blocks['digital_logic_compare'] = {
     this.setInputsInline(true);
     this.setOutput(true, "Boolean");
     this.setColour(0);
- this.setTooltip("Digital Compare");
- this.setHelpUrl("");
+ this.setTooltip("Check wether an digital input value from a specific port is equal to 0/1.");
+ this.setHelpUrl("https://wiki.analytica.com/index.php?title=Comparison_Operators");
   }
 };
 
@@ -172,8 +174,8 @@ Blockly.Blocks['controls_if1'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Do an action if the passed statement (analog/digital compare) is true.");
+ this.setHelpUrl("https://en.wikipedia.org/wiki/Conditional_(computer_programming)#If%E2%80%93then(%E2%80%93else)");
   }
 };
 
@@ -211,8 +213,8 @@ Blockly.Blocks['controls_ifelse1'] = {
 	this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Do an action if the passed statement (analog/digital compare) is true. Otherwise the else case will be reached.");
+ this.setHelpUrl("https://en.wikipedia.org/wiki/Conditional_(computer_programming)#If%E2%80%93then(%E2%80%93else)");
   }
 };
 

@@ -30,22 +30,24 @@ goog.require('Blockly.JavaScript');
 Blockly.interncode['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   // TODO: Assemble basic into code variable.
-  var number = number_seconds;
+  var numberArray = number_seconds.split(".");
+  var integers = '0';
+  var decimalPlace = '00';
 
-  if((number_seconds.length) > 4) {
-    number = number_seconds.substring(0,4);
+  console.log(numberArray);
+
+  if((numberArray.length) == 2) {
+    // expected format: XX.XX
+    integers = numberArray[0];
+    decimalPlace = numberArray[1].substring(0,2);
   }
-  if((number_seconds.length) == 1) {
-    number = number_seconds + '.00';
-  }
-  if((number_seconds.length) == 3) {
-    number = number_seconds + '0';
-  }
-  if((number_seconds.length) == 4) {
-    number = number_seconds;
+  if((numberArray.length) == 1) {
+    // expected format: XX
+    integers = numberArray[0];
+    decimalPlace = '00';
   }
 
-  var code = '#S' + ',' + number + ';' +'\n';
+  var code = '#S' + ',' + integers + '.' + decimalPlace + ';' +'\n';
   return code;
 };
 
