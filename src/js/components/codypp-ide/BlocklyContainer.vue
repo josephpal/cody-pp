@@ -132,7 +132,7 @@ export default {
       .semicircle-button {
         z-index: 2 !important;
         margin-left: auto;
-        opacity: 0;
+        opacity: 1;
         transition: ease-out .2s;
         transition-delay: .2s;
 
