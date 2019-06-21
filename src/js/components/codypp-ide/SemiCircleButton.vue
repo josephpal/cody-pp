@@ -52,7 +52,7 @@
     outline: 0;
     cursor: pointer;
     box-shadow: 2px 2px 10px $colorDarkestGrey;
-    background-color: rgba($colorDarkBlue, .2);
+    background-color: rgba($colorDarkBlue, .4);
 
     &.isHided {
       .arrow {

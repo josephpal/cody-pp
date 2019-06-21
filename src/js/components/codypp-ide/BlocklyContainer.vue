@@ -209,5 +209,10 @@ export default {
     .blocklyTreeLabel, .blocklyText {
       font-family: 'Roboto', sans-serif;
     }
+
+    .toolboxLabelStyle > .blocklyFlyoutLabelText {
+      font-family: 'Roboto', sans-serif;
+      fill: white;
+    }
   }
 </style>
