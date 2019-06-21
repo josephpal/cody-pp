@@ -1,4 +1,5 @@
 import SocketMessageTypes from './enum/SocketMessageTypes'
+import { browserType } from './utils/validationUtils'
 
 class SocketConnector {
   constructor() {
@@ -6,19 +7,44 @@ class SocketConnector {
     this.closeListeners = [];
     this.openListeners = [];
     this.socket = null;
+    this.connected = false;
 
     window.addEventListener('beforeunload', () => {
       if (this.socket) {
+        this.socket.close();
         this.close();
       }
+
+      /*let counter = 0;
+
+      if( browserType() === "Firefox" ) {
+        while( counter < 1000 ) {
+          // TODO: dummy wait loop until websocket connection is closed correctly
+          // waiting for this.connected === false would be much better and more efficient;
+          counter = counter + 1;
+        }
+      } else {
+        while( this.connected === true ) { }
+      }*/
+
     });
+  }
+
+  getStatus() {
+    return this.connected;
   }
 
   connect(ip) {
     return new Promise((resolve, reject) => {
       this.socket = new WebSocket(`ws://${ip}:90`);
 
+      this.socket.onclose = function() {
+        this.connected = false;
+      };
+
       this.socket.addEventListener('open', () => {
+        this.connected = true;
+
         this.socket.addEventListener('message', this._handleMessage.bind(this));
 
         this._startPingPong();
@@ -104,7 +130,7 @@ class SocketConnector {
       this.pingPongTimeout = setTimeout(() => {
         console.error("Websocket server connection timed out!")
         this.close();
-      }, 1000);
+      }, 1500);
 
       return this.send(SocketMessageTypes.PING, '', SocketMessageTypes.PONG)
         .then(() => {
