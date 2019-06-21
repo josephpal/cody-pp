@@ -62,7 +62,7 @@
     position: relative;
     cursor: pointer;
     display: inline-block;
-    min-width: 160px;
+    min-width: 210px;
     font-size: 1em;
     background-color: $colorDarkestBlue;
 
