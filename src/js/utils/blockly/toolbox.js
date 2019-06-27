@@ -1,25 +1,41 @@
 export const xml = `<xml id="toolbox" style="display: none">
         <category name="Start">
-            <block type="start"></block>
+            <block type="start">
+             <comment pinned="true" h="77" w="222">Who:  NAME
+When: DATE
+What: DESCRIPTION</comment>
+            </block>
         </category>
 
         <category name="Actions">
+            <label text="motor operations:" web-class="toolboxLabelStyle"></label>
             <block type="motor"></block>
+            <block type="stop_motors"></block>
+
+            <label text="turn a lamp on/off:" web-class="toolboxLabelStyle"></label>
             <block type="lamp"></block>
+
+            <label text="move a servo up/down:" web-class="toolboxLabelStyle"></label>
             <block type="servo"></block>
+
             <!--<block type="digital_out"></block>-->
         </category>
 
-        <category name="Movements">
+        <!--<category name="Movements">
+          <label text="angle operations:" web-class="toolboxLabelStyle"></label>
           <block type="rotateleft"></block>
           <block type="rotateright"></block>
-        </category>
+
+          <label text="driving operations:" web-class="toolboxLabelStyle"></label>
+        </category>-->
 
         <category name="Timing">
             <block type="wait"></block>
+            <block type="perform_action"></block>
         </category>
 
         <category name="Loops">
+            <label text="counter loops:" web-class="toolboxLabelStyle"></label>
             <block type="controls_repeat_ext">
                 <value name="TIMES">
                     <block type="math_number">
@@ -27,6 +43,7 @@ export const xml = `<xml id="toolbox" style="display: none">
                     </block>
                 </value>
             </block>
+            <label text="continuous loops:" web-class="toolboxLabelStyle"></label>
             <block type="controls_whileuntil1"></block>
         </category>
 
@@ -36,7 +53,10 @@ export const xml = `<xml id="toolbox" style="display: none">
         </category>
 
         <category name="Input">
+            <label text="variables/numbers:" web-class="toolboxLabelStyle"></label>
             <block type="math_number"></block>
+
+            <label text="analog/digital input:" web-class="toolboxLabelStyle"></label>
             <block type="digital_logic_compare"></block>
             <block type="analog_logic_compare"></block>
         </category>
