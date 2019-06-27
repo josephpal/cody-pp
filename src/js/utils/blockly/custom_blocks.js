@@ -23,13 +23,49 @@ import Blockly from 'node-blockly/browser';
 Blockly.Blocks['wait'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("wait")
+        .appendField("delay")
         .appendField(new Blockly.FieldNumber(0, 0, 255, 0.01), "seconds")
-        .appendField("seconds");
+        .appendField("second(s)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(260);
  this.setTooltip("Perform current action for x seconds.");
+ this.setHelpUrl("");
+  }
+};
+
+/*
+ *
+ */
+ Blockly.Blocks['perform_action'] = {
+   init: function() {
+     this.appendDummyInput()
+         .appendField("do for")
+         .appendField(new Blockly.FieldNumber(0, 0, 255, 0.01), "seconds")
+         .appendField("second(s)");
+     this.appendStatementInput("actuator_input")
+         .setCheck("wait");
+     this.setPreviousStatement(true, null);
+     this.setNextStatement(true, null);
+     this.setColour(260);
+  this.setTooltip("Perform current action(s) for x second(s).");
+  this.setHelpUrl("");
+   }
+ };
+
+ /*
+  *
+  */
+Blockly.Blocks['stop_motors'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("stop")
+        .appendField(new Blockly.FieldDropdown([["all","option_all"], ["M0","motor_0"], ["M1","motor_1"], ["M2","motor_2"], ["M3","motor_3"]]), "option")
+        .appendField("motor(s)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("Stop specific motor(s).");
  this.setHelpUrl("");
   }
 };
@@ -49,8 +85,8 @@ Blockly.Blocks['motor'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("Set a specific motor direction (right/left) and a motor speed.");
- this.setHelpUrl("");
+    this.setTooltip("Set a specific motor direction (right/left) and a motor speed.");
+    this.setHelpUrl("");
   }
 };
 
