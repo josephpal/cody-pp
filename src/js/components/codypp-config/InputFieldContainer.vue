@@ -54,7 +54,7 @@ export default {
         errorMessage: "",
       },
       ssid: {
-        value: "HIT-FRITZBOX-7490",
+        value: "FT32-Codypp-Network",
         errorMessage: "",
       },
       password: {

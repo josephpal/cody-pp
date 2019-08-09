@@ -34,12 +34,16 @@ Blockly.interncode['wait'] = function(block) {
   // TODO: Assemble basic into code variable.
   var numberArray = number_seconds.split(".");
   var integers = '0';
-  var decimalPlace = '00';
+  var decimalPlace = "";
 
   if((numberArray.length) == 2) {
     // expected format: XX.XX
     integers = numberArray[0];
     decimalPlace = numberArray[1].substring(0,2);
+
+    if( (decimalPlace.length) < 2 ) {
+      decimalPlace = decimalPlace.concat("0");
+    }
   }
   if((numberArray.length) == 1) {
     // expected format: XX
@@ -112,12 +116,16 @@ Blockly.interncode['perform_action'] = function(block) {
   let number_seconds = block.getFieldValue('seconds');
   let numberArray = number_seconds.split(".");
   let integers = '0';
-  let decimalPlace = '00';
+  let decimalPlace = "";
 
   if((numberArray.length) == 2) {
     // expected format: XX.XX
     integers = numberArray[0];
     decimalPlace = numberArray[1].substring(0,2);
+
+    if( (decimalPlace.length) < 2 ) {
+      decimalPlace = decimalPlace.concat("0");
+    }
   }
   if((numberArray.length) == 1) {
     // expected format: XX
@@ -197,8 +205,7 @@ Blockly.interncode['stop_motors'] = function(block) {
   let code;
 
   switch (String(dropdown_option)) {
-      case 'option_all': code = '#M,0,0,0;' + '\n' + '#M,1,0,0;' + '\n' + '#M,2,0,0;' + '\n'
-                              + '#M,3,0,0;' + '\n';
+      case 'option_all': code = '#M,0,0,0;' + '\n' + '#M,1,0,0;' + '\n'; // + '#M,2,0,0;' + '\n' + '#M,3,0,0;' + '\n';
       break;
 
       case 'option_M0': code = '#M,0,0,0;' + '\n';

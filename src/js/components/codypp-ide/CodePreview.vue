@@ -68,13 +68,13 @@
     data() {
       return {
         code: '',
-        languages: [{
+        languages: [/*{
           id: Languages.CPP,
           name: 'C++'
-        },
+        },*/
         {
           id: Languages.ARDUINOCPP,
-          name: 'C++ (Arduino)'
+          name: 'C++ (Arduino for FT32)'
         },
         {
           id: Languages.BASIC,
@@ -91,11 +91,11 @@
         {
           id: Languages.JAVASCRIPT,
           name: 'Javascript'
-        },
+        },*/
         {
           id: Languages.INTERNAL,
           name: 'Internal Code'
-        }*/],
+        }],
         selectedLanguage: Languages.ARDUINOCPP,
         isRunning: false,
         isPaused: false,
@@ -129,14 +129,7 @@
       socketConnector.onOpen(this.onSocketOpen);
       socketConnector.onMessage(this.onSocketMessage);
 
-      window.addEventListener('beforeunload', this.beforePageDestroyed);
-    },
-
-    beforeDestroy() {
-      console.log("beforeDestroy");
-      if ( socketConnector != null ) {
-          socketConnector.close();
-      }
+      // window.addEventListener('beforeunload', this.beforePageDestroyed);
     },
 
     watch: {
@@ -180,13 +173,6 @@
     },
 
     methods: {
-      beforePageDestroyed() {
-        console.log("beforePageDestroyed");
-        if ( socketConnector != null ) {
-            socketConnector.close();
-        }
-      },
-
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
@@ -393,9 +379,12 @@
 
     .preview-container {
       .code-container {
+        height: calc(100vh - #{$headerHeight});
+        overflow-y: scroll;
+
         .scrollable {
           padding: 60px 20px;
-          max-height: calc(100vh - #{$headerHeight});
+          //max-height: auto;
         }
 
         .vb-dragger {
