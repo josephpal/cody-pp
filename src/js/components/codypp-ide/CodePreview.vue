@@ -76,10 +76,10 @@
           id: Languages.ARDUINOCPP,
           name: 'C++ (Arduino for FT32)'
         },
-        {
+        /*{
           id: Languages.BASIC,
           name: 'Pseudo Code'
-        },
+        },*/
         {
           id: Languages.BLANK,
           name: 'Preview Off'
@@ -438,6 +438,10 @@
         bottom: 31px;
         right: 100px;
         transition: ease-out 0.2s;
+
+        @media (max-width: 1200px) {
+          bottom: 36px;
+        }
       }
 
       @media (max-width: 1200px) {
