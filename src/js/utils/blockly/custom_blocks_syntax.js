@@ -55,6 +55,8 @@ Blockly.interncode['wait'] = function(block) {
   return code;
 };
 
+Blockly.interncode['waitGer'] = Blockly.interncode['wait'];
+
 Blockly.Cpp['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   var number = number_seconds;
@@ -65,6 +67,8 @@ Blockly.Cpp['wait'] = function(block) {
   var code = 'sleep(' + number + ');' +'\n';
   return code;
 };
+
+Blockly.Cpp['waitGer'] = Blockly.Cpp['wait'];
 
 Blockly.ArduinoCpp['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
@@ -77,6 +81,8 @@ Blockly.ArduinoCpp['wait'] = function(block) {
   return code;
 };
 
+Blockly.ArduinoCpp['waitGer'] = Blockly.ArduinoCpp['wait'];
+
 Blockly.basic['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   var number = number_seconds;
@@ -87,6 +93,8 @@ Blockly.basic['wait'] = function(block) {
   var code = 'sleep for ' + number + 's\n';
   return code;
 };
+
+Blockly.basic['waitGer'] = Blockly.basic['wait'];
 
 Blockly.basicger['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
@@ -99,6 +107,8 @@ Blockly.basicger['wait'] = function(block) {
   return code;
 };
 
+Blockly.basicger['waitGer'] = Blockly.basicger['wait'];
+
 Blockly.JavaScript['wait'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   var number = number_seconds;
@@ -109,6 +119,8 @@ Blockly.JavaScript['wait'] = function(block) {
   var code = 'await sleep (' + number + ')\n';
   return code;
 };
+
+Blockly.JavaScript['waitGer'] = Blockly.JavaScript['wait'];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -140,6 +152,8 @@ Blockly.interncode['perform_action'] = function(block) {
   return code;
 };
 
+Blockly.interncode['perform_actionGer'] = Blockly.interncode['perform_action'];
+
 Blockly.Cpp['perform_action'] = function(block) {
   let number_seconds = block.getFieldValue('seconds');
 
@@ -153,6 +167,8 @@ Blockly.Cpp['perform_action'] = function(block) {
 
   return code;
 };
+
+Blockly.Cpp['perform_actionGer'] = Blockly.Cpp['perform_action'];
 
 Blockly.ArduinoCpp['perform_action'] = function(block) {
   let number_seconds = block.getFieldValue('seconds');
@@ -168,6 +184,8 @@ Blockly.ArduinoCpp['perform_action'] = function(block) {
   return code;
 };
 
+Blockly.ArduinoCpp['perform_actionGer'] = Blockly.ArduinoCpp['perform_action'];
+
 Blockly.basic['perform_action'] = function(block) {
   let number_seconds = block.getFieldValue('seconds');
 
@@ -182,6 +200,8 @@ Blockly.basic['perform_action'] = function(block) {
   return code;
 };
 
+Blockly.basic['perform_actionGer'] = Blockly.basic['perform_action'];
+
 Blockly.basicger['perform_action'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   var statements_actuator_input = Blockly.JavaScript.statementToCode(block, 'actuator_input');
@@ -190,6 +210,8 @@ Blockly.basicger['perform_action'] = function(block) {
   return code;
 };
 
+Blockly.basicger['perform_actionGer'] = Blockly.basicger['perform_action'];
+
 Blockly.JavaScript['perform_action'] = function(block) {
   var number_seconds = block.getFieldValue('seconds');
   var statements_actuator_input = Blockly.JavaScript.statementToCode(block, 'actuator_input');
@@ -197,6 +219,8 @@ Blockly.JavaScript['perform_action'] = function(block) {
   var code = '...;\n';
   return code;
 };
+
+Blockly.JavaScript['perform_actionGer'] = Blockly.JavaScript['perform_action'];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -225,6 +249,8 @@ Blockly.interncode['stop_motors'] = function(block) {
 
   return code; //'#S,0.1;' + '\n'
 };
+
+Blockly.interncode['stop_motorsGer'] = Blockly.interncode['stop_motors'];
 
 Blockly.Cpp['stop_motors'] = function(block) {
   let dropdown_option = block.getFieldValue('option');
@@ -255,6 +281,8 @@ Blockly.Cpp['stop_motors'] = function(block) {
   return code; //'sleep(0.1);' + '\n'
 };
 
+Blockly.Cpp['stop_motorsGer'] = Blockly.Cpp['stop_motors'];
+
 Blockly.ArduinoCpp['stop_motors'] = function(block) {
   let dropdown_option = block.getFieldValue('option');
   let code;
@@ -283,6 +311,8 @@ Blockly.ArduinoCpp['stop_motors'] = function(block) {
 
   return code; //'delay(1000);' + '\n'
 };
+
+Blockly.ArduinoCpp['stop_motorsGer'] = Blockly.ArduinoCpp['stop_motors'];
 
 Blockly.basic['stop_motors'] = function(block) {
   let dropdown_option = block.getFieldValue('option');
@@ -313,17 +343,23 @@ Blockly.basic['stop_motors'] = function(block) {
   return code + '\n'; //'sleep for 0.1s'
 };
 
+Blockly.basic['stop_motorsGer'] = Blockly.basic['stop_motors'];
+
 Blockly.basicger['stop_motors'] = function(block) {
   var code = '...;\n';
 
   return code;
 };
 
+Blockly.basicger['stop_motorsGer'] = Blockly.basicger['stop_motors'];
+
 Blockly.JavaScript['stop_motors'] = function(block) {
   var code = '...;\n';
 
   return code;
 };
+
+Blockly.JavaScript['stop_motorsGer'] = Blockly.JavaScript['stop_motors'];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -336,6 +372,8 @@ Blockly.interncode['motor'] = function(block) {
   return code;
 };
 
+Blockly.interncode['motorGer'] = Blockly.interncode['motor'];
+
 Blockly.Cpp['motor'] = function(block) {
   var dropdown_motornumber = block.getFieldValue('motorNumber');
   var dropdown_motordirection = block.getFieldValue('motorDirection');
@@ -345,6 +383,8 @@ Blockly.Cpp['motor'] = function(block) {
   return code;
 };
 
+Blockly.Cpp['motorGer'] = Blockly.Cpp['motor'];
+
 Blockly.ArduinoCpp['motor'] = function(block) {
   var dropdown_motornumber = block.getFieldValue('motorNumber');
   var dropdown_motordirection = block.getFieldValue('motorDirection');
@@ -353,6 +393,8 @@ Blockly.ArduinoCpp['motor'] = function(block) {
   var code = 'mMotorArray[Motor_' + dropdown_motornumber + '].setValues(' + dropdown_motordirection + ',' + dropdown_motorspeed + ');' + '\n';
   return code;
 };
+
+Blockly.ArduinoCpp['motorGer'] = Blockly.ArduinoCpp['motor'];
 
 Blockly.basic['motor'] = function(block) {
   var dropdown_motornumber = block.getFieldValue('motorNumber');
@@ -366,6 +408,8 @@ Blockly.basic['motor'] = function(block) {
   return code;
 };
 
+Blockly.basic['motorGer'] = Blockly.basic['motor'];
+
 Blockly.basicger['motor'] = function(block) {
   var dropdown_motornumber = block.getFieldValue('motorNumber');
   var dropdown_motordirection = block.getFieldValue('motorDirection');
@@ -377,10 +421,14 @@ Blockly.basicger['motor'] = function(block) {
   // TODO: Assemble basic into code variable.
   return code;
 };
+
+Blockly.basicger['motorGer'] = Blockly.basicger['motor'];
+
 /*
  * Motor und Lampe müssen noch für JavaScript geschrieben werden
  * zusätzlich noch alle weiteren Funktionen in logic.js loops.js math.js und text.js
  */
+
 Blockly.JavaScript['motor'] = function(block) {
   var dropdown_motornumber = block.getFieldValue('motorNumber');
   var dropdown_motordirection = block.getFieldValue('motorDirection');
@@ -393,6 +441,8 @@ Blockly.JavaScript['motor'] = function(block) {
   return code;
 };
 
+Blockly.JavaScript['motorGer'] = Blockly.JavaScript['motor'];
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Blockly.interncode['lamp'] = function(block) {
@@ -402,6 +452,8 @@ Blockly.interncode['lamp'] = function(block) {
   return code;
 };
 
+Blockly.interncode['lampGer'] = Blockly.interncode['lamp'];
+
 Blockly.Cpp['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
   var dropdown_state = block.getFieldValue('state');
@@ -409,6 +461,7 @@ Blockly.Cpp['lamp'] = function(block) {
   return code;
 };
 
+Blockly.Cpp['lampGer'] = Blockly.Cpp['lamp'];
 
 Blockly.ArduinoCpp['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
@@ -417,12 +470,16 @@ Blockly.ArduinoCpp['lamp'] = function(block) {
   return code;
 };
 
+Blockly.ArduinoCpp['lampGer'] = Blockly.ArduinoCpp['lamp'];
+
 Blockly.basic['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
   var dropdown_state = block.getFieldValue('state');
   var code = 'set Lamp on Port ' + dropdown_lampnumber + ' to brithness ' + dropdown_state + '\n';
   return code;
 };
+
+Blockly.basic['lampGer'] = Blockly.basic['lamp'];
 
 Blockly.basicger['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
@@ -431,12 +488,16 @@ Blockly.basicger['lamp'] = function(block) {
   return code;
 };
 
+Blockly.basicger['lampGer'] = Blockly.basicger['lamp'];
+
 Blockly.JavaScript['lamp'] = function(block) {
   var dropdown_lampnumber = block.getFieldValue('lampNumber');
   var dropdown_state = block.getFieldValue('state');
   var code = 'set Lamp on Port ' + dropdown_lampnumber + ' to brithness ' + dropdown_state + '\n';
   return code;
 };
+
+Blockly.JavaScript['lampGer'] = Blockly.JavaScript['lamp'];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -447,6 +508,8 @@ Blockly.interncode['servo'] = function(block) {
   return code;
 };
 
+Blockly.interncode['servoGer'] = Blockly.interncode['servo'];
+
 Blockly.Cpp['servo'] = function(block) {
   var dropdown_servoNumber = block.getFieldValue('servoNumber');
   var number_position = block.getFieldValue('position');
@@ -454,6 +517,7 @@ Blockly.Cpp['servo'] = function(block) {
   return code;
 };
 
+Blockly.Cpp['servoGer'] = Blockly.Cpp['servo'];
 
 Blockly.ArduinoCpp['servo'] = function(block) {
   var dropdown_servoNumber = block.getFieldValue('servoNumber');
@@ -462,12 +526,16 @@ Blockly.ArduinoCpp['servo'] = function(block) {
   return code;
 };
 
+Blockly.ArduinoCpp['servoGer'] = Blockly.ArduinoCpp['servo'];
+
 Blockly.basic['servo'] = function(block) {
   var dropdown_servoNumber = block.getFieldValue('servoNumber');
   var number_position = block.getFieldValue('position');
   var code = 'set Servo on Port ' + dropdown_servoNumber + ' to position ' + number_position + '\n';
   return code;
 };
+
+Blockly.basic['servoGer'] = Blockly.basic['servo'];
 
 Blockly.basicger['servo'] = function(block) {
   var dropdown_servoNumber = block.getFieldValue('servoNumber');
@@ -476,12 +544,16 @@ Blockly.basicger['servo'] = function(block) {
   return code;
 };
 
+Blockly.basicger['servoGer'] = Blockly.basicger['servo'];
+
 Blockly.JavaScript['servo'] = function(block) {
   var dropdown_servoNumber = block.getFieldValue('servoNumber');
   var number_position = block.getFieldValue('position');
   var code = 'set Servo on Port ' + dropdown_servoNumber + ' to position ' + number_position + '\n';
   return code;
 };
+
+Blockly.JavaScript['servoGer'] = Blockly.JavaScript['servo'];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -493,6 +565,8 @@ Blockly.interncode['digital_out'] = function(block) {
   return code;
 };
 
+Blockly.interncode['digital_outGer'] = Blockly.interncode['digital_out'];
+
 Blockly.Cpp['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
@@ -500,6 +574,8 @@ Blockly.Cpp['digital_out'] = function(block) {
   var code = '...;\n';
   return code;
 };
+
+Blockly.Cpp['digital_outGer'] = Blockly.Cpp['digital_out'];
 
 Blockly.ArduinoCpp['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
@@ -509,6 +585,8 @@ Blockly.ArduinoCpp['digital_out'] = function(block) {
   return code;
 };
 
+Blockly.ArduinoCpp['digital_outGer'] = Blockly.ArduinoCpp['digital_out'];
+
 Blockly.basic['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
@@ -516,6 +594,8 @@ Blockly.basic['digital_out'] = function(block) {
   var code = 'set digital Port ' + dropdown_Port + ' to ' + dropdown_name + '\n';
   return code;
 };
+
+Blockly.basic['digital_outGer'] = Blockly.basic['digital_out'];
 
 Blockly.basicger['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
@@ -525,6 +605,8 @@ Blockly.basicger['digital_out'] = function(block) {
   return code;
 };
 
+Blockly.basicger['digital_outGer'] = Blockly.basicger['digital_out'];
+
 Blockly.JavaScript['digital_out'] = function(block) {
   var dropdown_Port = block.getFieldValue('Port');
   var dropdown_name = block.getFieldValue('NAME');
@@ -532,6 +614,8 @@ Blockly.JavaScript['digital_out'] = function(block) {
   var code = '...;\n';
   return code;
 };
+
+Blockly.JavaScript['digital_outGer'] = Blockly.JavaScript['digital_out'];
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -564,3 +648,5 @@ Blockly.JavaScript['text_print'] = function(block) {
   var code = "";
   return code;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////
