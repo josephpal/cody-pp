@@ -4,6 +4,13 @@
       <SemiCircleButton @click="onHideButtonClicked" />
     </div>
 
+    <div class="language-button">
+      <toggle-button @change="onChangeEventHandler"
+                     :value="this.languageSelect"
+                     :color="{checked: '#4e5156', unchecked: '#4e5156'}"
+                     :labels="{checked: 'EN', unchecked: 'DE'}" />
+    </div>
+
     <div id="blockly"/>
   </div>
 </template>
@@ -11,7 +18,9 @@
 <script>
 /* global __PUBLIC_PATH__ */
 
+import Vue from 'vue';
 import Blockly from 'node-blockly/browser';
+import { ToggleButton } from 'vue-js-toggle-button';
 import SemiCircleButton from './SemiCircleButton';
 import '../../utils/blockly/custom_blocks';
 import '../../utils/blockly/lua';
@@ -29,7 +38,8 @@ import '../../utils/blockly/logic';
 import '../../utils/blockly/loops';
 import '../../utils/blockly/text';
 import '../../utils/blockly/custom_blocks_syntax';
-import { xml } from '../../utils/blockly/toolbox';
+import { xmlGer } from '../../utils/blockly/toolbox';
+import { xmlEng } from '../../utils/blockly/toolbox';
 import config from '../../../../config';
 
 export default {
@@ -38,6 +48,7 @@ export default {
   data() {
     return {
       size: "sm",
+      languageSelect: false,
     };
   },
 
@@ -55,6 +66,18 @@ export default {
   },
 
   methods: {
+    onChangeEventHandler() {
+      this.languageSelect = !this.languageSelect;
+
+      const workspace = Blockly.getMainWorkspace();
+      if ( this.languageSelect ) {
+        workspace.updateToolbox(xmlEng);
+      } else {
+        workspace.updateToolbox(xmlGer);
+      }
+
+    },
+
     updateBlockly() {
       // this seems to be unnecessary, but without the timeout, the svg elements wont be resized
       // TODO: maybe we have to update the svg element with the next vm.nextTick() render step ?!
@@ -66,7 +89,7 @@ export default {
 
     createBlockly() {
       const blocklyWorkspace = Blockly.inject("blockly", {
-        toolbox: Blockly.Xml.textToDom(xml),
+        toolbox: Blockly.Xml.textToDom(!this.languageSelect ? xmlGer : xmlEng),
         media: process.env.NODE_ENV === 'production' ? __PUBLIC_PATH__ : '/static/',
         zoom: {
           controls: true,
@@ -95,7 +118,8 @@ export default {
   },
 
   components: {
-    SemiCircleButton
+    SemiCircleButton,
+    ToggleButton
   }
 };
 </script>
@@ -144,6 +168,13 @@ export default {
       }
     }
 
+    .language-button {
+      position: absolute;
+      z-index: 2 !important;
+      left: 31px;
+      bottom: 20px;
+    }
+
     #blockly {
       position: absolute;
       z-index: 1;
@@ -159,6 +190,7 @@ export default {
     .blocklyToolboxDiv {
       background-color: $colorDarkBlue;
       box-shadow: $boxShadow;
+      min-width: 111px;
 
       .blocklyTreeRoot {
         padding: 0;
@@ -214,5 +246,15 @@ export default {
       font-family: 'Roboto', sans-serif;
       fill: white;
     }
+  }
+
+  .vue-js-switch .v-switch-label.v-left {
+    font-family: 'Roboto', sans-serif;
+    fill: white;
+  }
+
+  .vue-js-switch .v-switch-label.v-right {
+    font-family: 'Roboto', sans-serif;
+    fill: white;
   }
 </style>
