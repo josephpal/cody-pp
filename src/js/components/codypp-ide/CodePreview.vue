@@ -1,92 +1,88 @@
 <template>
-  <div class="code-preview">
-    <div class="connect-container">
-      <div class="input-fields">
-        <InputField name="ip"
-          type="text"
-          title="FT32 IP Address:"
-          :placeholder="placeholderIpAddress"
-          v-model="ip.value"
-          :errorMessage="ip.errorMessage" />
-      </div>
-      <div class="connect-button">
-        <RoundButton  :icon="connectButtonIcon"
-                      :enabled="!webSocketConnecting"
-                      @click="onConnectButtonClicked"
-                      :showSpinner="showConnectBtnSpinner" />
-      </div>
-    </div>
+  <div class="code-preview" :class="display">
+    <div class="preview-container">
+      <input  name="fileSaver"
+              id="fileSaver"
+              type="file"
+              ref="fileInput"
+              @change="onFileUpload"
+              accept=".xml" />
 
-    <input
-      name="fileSaver"
-      id="fileSaver"
-      type="file"
-      ref="fileInput"
-      @change="onFileUpload"
-      accept=".xml"
-    />
+      <DropDown :options="languages"
+                :selected="selectedLanguage"
+                @change="onLanguageChange" />
 
-    <DropDown
-      :options="languages"
-      :selected="selectedLanguage"
-      @change="onLanguageChange"
-    />
-
-    <div class="code-container" v-bar>
-      <div class="scrollable">
-        <pre v-highlightjs="code"><code :class="languageClass"></code></pre>
+      <div class="code-container" v-bar>
+        <div class="scrollable">
+          <pre v-highlightjs="code"><code :class="languageClass"></code></pre>
+        </div>
       </div>
     </div>
 
-    <div class="buttons">
-      <RoundButton icon="arrow" :enabled="webSocketReady && !isRunning" @click="onSendButtonClicked"
-                   :showSpinner="showSendBtnSpinner" />
-      <RoundButton icon="stop" :enabled="webSocketReady && isRunning" @click="onStopButtonClicked"
-                   :showSpinner="showStopBtnSpinner" />
-      <RoundButton :icon="playButtonIcon" :enabled="webSocketReady && isReady" @click="onPlayButtonClicked"
-                   :showSpinner="showPlayBtnSpinner" />
-      <RoundButton icon="load" :enabled="!isRunning" @click="onLoadButtonClicked" :showSpinner="showLoadBtnSpinner" />
-      <RoundButton icon="save" :enabled="!isRunning" @click="onSaveButtonClicked" :showSpinner="showSaveBtnSpinner" />
+    <div class="buttons" :class="this.display === 'invisible' ? 'right-offset' : ''">
+      <RoundButton  class="send-button"
+                    icon="arrow"
+                    :enabled="webSocketReady && !isRunning"
+                    @click="onSendButtonClicked"
+                    :showSpinner="showSendBtnSpinner" />
+      <RoundButton  class="stop-button"
+                    icon="stop"
+                    :enabled="webSocketReady && isRunning" @click="onStopButtonClicked"
+                    :showSpinner="showStopBtnSpinner" />
+      <RoundButton  class="play-button"
+                    :icon="playButtonIcon"
+                    :enabled="webSocketReady && isReady"
+                    @click="onPlayButtonClicked"
+                    :showSpinner="showPlayBtnSpinner" />
+      <RoundButton  class="load-button"
+                    icon="load"
+                    :enabled="!isRunning"
+                    @click="onLoadButtonClicked"
+                    :showSpinner="showLoadBtnSpinner" />
+      <RoundButton  class="save-button"
+                    icon="save"
+                    :enabled="!isRunning"
+                    @click="onSaveButtonClicked"
+                    :showSpinner="showSaveBtnSpinner" />
     </div>
   </div>
 </template>
 
 <script>
-  import InputField from '../codypp-config/InputField'
   import DropDown from './DropDown';
   import RoundButton from './RoundButton';
   import Languages from '../../enum/Languages';
   import Blockly from 'node-blockly/browser';
   import { resetLogicCounterVar } from '../../utils/blockly/logic';
   import { resetLoopsCounterVar } from '../../utils/blockly/loops';
-  import { asyncWebSocketRequest } from '../../utils/socketUtils';
 
   import SocketMessages from '../../enum/SocketMessageTypes';
 
   import saveAs from '../../utils/FileSaver';
-  import { validateIp, isEmpty } from '../../utils/validationUtils'
+
+  import socketConnector from '../../socketConnector';
 
   export default {
     name: 'CodePreview',
 
     data() {
       return {
-        ip: {
-          value: "",
-          errorMessage: "",
-        },
         code: '',
-        languages: [{
+        languages: [/*{
           id: Languages.CPP,
           name: 'C++'
-        },
+        },*/
         {
           id: Languages.ARDUINOCPP,
-          name: 'C++ (Arduino)'
+          name: 'C++ (Arduino for FT32)'
         },
-        {
+        /*{
           id: Languages.BASIC,
           name: 'Pseudo Code'
+        },*/
+        {
+          id: Languages.BLANK,
+          name: 'Preview Off'
         },
         /*{
           id: Languages.BASIC_GER,
@@ -104,8 +100,8 @@
         isRunning: false,
         isPaused: false,
         isReady: false,
+
         webSocketReady: false,
-        webSocketConnecting: false,
 
         // spinner state
         showPlayBtnSpinner: false,
@@ -113,30 +109,27 @@
         showSendBtnSpinner: false,
         showSaveBtnSpinner: false,
         showLoadBtnSpinner: false,
-        showConnectBtnSpinner: false,
-
-        placeholderIpAddress: __DEFAULT_IP__
       };
     },
 
     props: {
       blocklyWorkspace: {
         type: Object
+      },
+
+      display: {
+        type: String,
+        default: "visible",
+        validator: (value) => ( ["visible","invisible"].includes(value) )
       }
     },
 
     mounted() {
-      /*this.socket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://192.168.4.1:90' : 'ws://192.168.4.1:90');
-      this.socket.addEventListener('open', this.onSocketReady);
-      this.socket.addEventListener('message', this.onSocketMessage);*/
+      socketConnector.onClose(this.onSocketClose);
+      socketConnector.onOpen(this.onSocketOpen);
+      socketConnector.onMessage(this.onSocketMessage);
 
-      window.addEventListener('beforeunload', this.beforePageDestroyed());
-    },
-
-    beforeDestroy() {
-      if( this.socket != null ) {
-        this.closeWebsocketConnection();
-      }
+      // window.addEventListener('beforeunload', this.beforePageDestroyed);
     },
 
     watch: {
@@ -176,20 +169,10 @@
 
       playButtonIcon() {
         return !this.isRunning || this.isPaused ? 'play' : 'pause';
-      },
-
-      connectButtonIcon() {
-        return this.webSocketReady ? 'disconnect' : 'connect';
       }
     },
 
     methods: {
-      beforePageDestroyed() {
-         if( this.socket != null ) {
-           this.closeWebsocketConnection();
-         }
-      },
-
       onLanguageChange(id) {
         this.selectedLanguage = id;
       },
@@ -237,37 +220,38 @@
           .concat(';');
       },
 
+
       onPlayButtonClicked() {
         this.showPlayBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           this.isRunning && !this.isPaused ? SocketMessages.PAUSE : SocketMessages.START,
           '',
           this.isRunning && !this.isPaused ? SocketMessages.PAUSED : SocketMessages.RUNNING
-        ).then(() => (this.showPlayBtnSpinner = false)).catch(() => (this.showPlayBtnSpinner = false));
+        ).then(() => (this.showPlayBtnSpinner = false))
+        .catch(() => (this.showPlayBtnSpinner = false));
       },
 
       onStopButtonClicked() {
         this.showStopBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           SocketMessages.STOP,
           '',
           SocketMessages.STOPPED
-        ).then(() => (this.showStopBtnSpinner = false)).catch(() => (this.showStopBtnSpinner = false));
+        ).then(() => (this.showStopBtnSpinner = false))
+        .catch(() => (this.showStopBtnSpinner = false));
       },
 
       onSendButtonClicked() {
         this.showSendBtnSpinner = true;
 
-        return asyncWebSocketRequest(
-          this.socket,
+        socketConnector.send(
           SocketMessages.SEND,
           this.prepareInternalCode(),
           SocketMessages.READY
-        ).then(() => (this.showSendBtnSpinner = false)).catch(() => (this.showSendBtnSpinner = false));
+        ).then(() => (this.showSendBtnSpinner = false))
+        .catch(() => (this.showSendBtnSpinner = false));
       },
 
       onSaveButtonClicked() {
@@ -287,62 +271,10 @@
         }
       },
 
-      onConnectButtonClicked() {
-        //reset error messages
-        this.ip.errorMessage = "";
 
-        if( this.webSocketReady == false ) {
-          if( !validateIp(this.ip.value) ) {
-            //IP adress is not valid
-            this.ip.errorMessage = "Invalid IP address!";
-            this.webSocketConnecting = false;
-          } else {
-            if( this.webSocketConnecting != true ) {
-              this.webSocketConnecting = true;
-              console.log('Connect to websocket ...');
-              this.openWebsocketConnection(this.ip.value);
-            } else {
-              console.log('Connection process still running!');
-            }
-          }
-        } else {
-            this.closeWebsocketConnection();
-            this.webSocketConnecting = false;
-        }
-      },
-
-      openWebsocketConnection(ip) {
+      onSocketClose() {
         this.showConnectBtnSpinner = true;
 
-        this.socket = new WebSocket(`ws://${ip}:90`);
-        this.socket.addEventListener('open', () => {
-          this.webSocketReady = true;
-          this.showConnectBtnSpinner = false;
-          this.webSocketConnecting = false;
-        });
-        this.socket.addEventListener('message', this.onSocketMessage);
-        this.socket.addEventListener('error', () => {
-          this.showConnectBtnSpinner = false;
-          this.webSocketReady = false;
-          this.isRunning = false;
-          this.isReady = false;
-          this.ip.errorMessage = `Not reacheable!`;
-          this.webSocketConnecting = false;
-        });
-      },
-
-      closeWebsocketConnection() {
-        console.log('Closing connection');
-
-        this.showConnectBtnSpinner = true;
-
-        this.socket.close();
-        this.socket.removeEventListener('message', this.onSocketMessage);
-        this.socket.removeEventListener('open', this.onSocketReady);
-        this.socket.removeEventListener('error', () => {
-          this.showConnectBtnSpinner = false;
-          this.ip.errorMessage = `Not reacheable!`;
-        });
         this.webSocketReady = false;
         this.isRunning = false;
         this.isReady = false;
@@ -351,7 +283,7 @@
         this.showStopBtnSpinner = false;
         this.showSendBtnSpinner = false;
         this.showSaveBtnSpinner = false;
-        this.howLoadBtnSpinner = false;
+        this.showLoadBtnSpinner = false;
 
         this.showConnectBtnSpinner = false;
       },
@@ -381,14 +313,14 @@
         reader.readAsBinaryString(blob);
       },
 
-      onSocketReady() {
+      onSocketOpen() {
         this.webSocketReady = true;
       },
 
       onSocketMessage(message) {
         //console.warn(message);
-        console.log(`Received message: ${message.data}`);
-        switch (message.data) {
+        console.log(`Received message: ${message}`);
+        switch (message) {
           case SocketMessages.RUNNING:
             this.isReady = true;
             this.isRunning = true;
@@ -420,7 +352,6 @@
     components: {
       DropDown,
       RoundButton,
-      InputField
     }
   };
 </script>
@@ -434,93 +365,64 @@
   }
 
   .code-preview {
-    width: 40%;
     position: relative;
 
-    .connect-container {
-      position: absolute;
-      left: -313px;
-      top: calc(-0.5 * #{$headerHeight} - 25.5px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    &.visible {
+      width: 40%;
+    }
 
-      .connect-button {
-        position: relative;
-        left: 7px;
+    &.invisible {
+      .preview-container {
+          display: none;
+      }
+    }
 
-        .round-button {
-          width: 30px;
-          height: 30px;
-          background-color: rgba($colorMediumGrey, .2);
-          box-shadow: 1px 1px 8px $colorDarkestGrey;
+    .preview-container {
+      .code-container {
+        height: calc(100vh - #{$headerHeight});
+        overflow-y: scroll;
+
+        .scrollable {
+          padding: 60px 20px;
+          //max-height: auto;
+        }
+
+        .vb-dragger {
+          z-index: 5;
+          width: 12px;
+          right: 0;
+          padding: 12px 0;
+        }
+
+        .vb-dragger > .vb-dragger-styler {
+          border-radius: 5px;
+          height: 100%;
+          display: block;
+          width: 10px;
+          background-color: rgba($colorMediumGrey, .4);
 
           &:hover {
-            border: 0;
-            background-color: $colorRed;
-          }
-
-          .icon {
-            width: auto;
-            height: 15px;
-          }
-
-          .spinner {
-            width: 20px;
-            height: 20px;
+            background-color: rgba($colorMediumGrey, .6);
           }
         }
-      }
-    }
 
-    .input-fields {
-      display: flex;
-      flex-direction: column;
-      width: 240px;
-
-      input {
-        text-align: center;
-        width: 110px;
-      }
-    }
-
-    .code-container {
-      .scrollable {
-        padding: 60px 20px;
-        max-height: calc(100vh - #{$headerHeight});
       }
 
-      .vb-dragger {
-        z-index: 5;
-        width: 12px;
-        right: 0;
-        padding: 12px 0;
-      }
-
-      .vb-dragger > .vb-dragger-styler {
-        border-radius: 5px;
-        height: 100%;
-        display: block;
-        width: 10px;
-        background-color: rgba($colorMediumGrey, .4);
+      .drop-down {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1;
+        opacity: .8;
+        transition: opacity .3s;
 
         &:hover {
-          background-color: rgba($colorMediumGrey, .6);
+          opacity: 1;
         }
       }
 
-    }
-
-    .drop-down {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 1;
-      opacity: .8;
-      transition: opacity .3s;
-
-      &:hover {
-        opacity: 1;
+      .hljs {
+        background: transparent;
       }
     }
 
@@ -530,22 +432,40 @@
       right: 32px;
       display: flex;
       flex-direction: row-reverse;
+      transition: ease-in 0.2s;
 
-      @include respond-to(tablet) {
+      &.right-offset {
+        bottom: 31px;
+        right: 100px;
+        transition: ease-out 0.2s;
+
+        @media (max-width: 1200px) {
+          bottom: 36px;
+        }
+      }
+
+      @media (max-width: 1200px) {
         flex-direction: column;
       }
 
       .round-button {
         margin-left: 20px;
 
-        @include respond-to(tablet) {
+        @media (max-width: 1200px) {
           margin-top: 10px;
         }
       }
+
+      .save-button {  }
+
+      .load-button {  }
+
+      .play-button {  }
+
+      .stop-button {  }
+
+      .send-button {  }
     }
 
-    .hljs {
-      background: transparent;
-    }
   }
 </style>

@@ -110,8 +110,8 @@ Blockly.basicger.addContinueLabel = function(branch) {
   }
 };
 
-////////////////////////////////////////////////////////////////
-//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['controls_repeat_ext'] = function(block) {
 
   // Repeat n times (external number).
@@ -132,6 +132,8 @@ Blockly.interncode['controls_repeat_ext'] = function(block) {
   return code;
 };
 
+Blockly.interncode['controls_repeat_extGer'] = Blockly.interncode['controls_repeat_ext'];
+
 Blockly.Cpp['controls_repeat_ext'] = function(block) {
 
   // Repeat n times (external number).
@@ -150,6 +152,8 @@ Blockly.Cpp['controls_repeat_ext'] = function(block) {
   var code = 'for (int i = 0; i<' + repeats + ';i++) {\n' + branch + '}\n';
   return code;
 };
+
+Blockly.Cpp['controls_repeat_extGer'] = Blockly.Cpp['controls_repeat_ext'];
 
 Blockly.basic['controls_repeat_ext'] = function(block) {
 
@@ -170,6 +174,8 @@ Blockly.basic['controls_repeat_ext'] = function(block) {
   return code;
 };
 
+Blockly.basic['controls_repeat_extGer'] = Blockly.basic['controls_repeat_ext'];
+
 Blockly.basicger['controls_repeat_ext'] = function(block) {
 
   // Repeat n times (external number).
@@ -188,6 +194,8 @@ Blockly.basicger['controls_repeat_ext'] = function(block) {
   var code = 'wiederhole ' + repeats + ' mal \n' + branch;
   return code;
 };
+
+Blockly.basicger['controls_repeat_extGer'] = Blockly.basicger['controls_repeat_ext'];
 
 Blockly.ArduinoCpp['controls_repeat_ext'] = function(block) {
 
@@ -208,9 +216,10 @@ Blockly.ArduinoCpp['controls_repeat_ext'] = function(block) {
   return code;
 };
 
-//
-/////////////////////////////////////////////////////////////
-//
+Blockly.ArduinoCpp['controls_repeat_extGer'] = Blockly.ArduinoCpp['controls_repeat_ext'];
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
@@ -226,6 +235,8 @@ Blockly.interncode['controls_whileuntil1'] = function(block) {
   ++b;
   return '#W,' + argument0 + ',' + b + ';\n' + branch + '#X,' + b + ';\n';
 };
+
+Blockly.interncode['controls_whileuntil1Ger'] = Blockly.interncode['controls_whileuntil1'];
 
 Blockly.Cpp['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
@@ -243,6 +254,8 @@ Blockly.Cpp['controls_whileuntil1'] = function(block) {
   return 'while (' + argument0 + ') {\n' + branch + '}\n';
 };
 
+Blockly.Cpp['controls_whileuntil1Ger'] = Blockly.Cpp['controls_whileuntil1'];
+
 Blockly.basic['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
@@ -258,6 +271,8 @@ Blockly.basic['controls_whileuntil1'] = function(block) {
   ++b;
   return 'while ' + argument0 + '\n' + branch;
 };
+
+Blockly.basic['controls_whileuntil1Ger'] = Blockly.basic['controls_whileuntil1'];
 
 Blockly.basicger['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
@@ -275,6 +290,7 @@ Blockly.basicger['controls_whileuntil1'] = function(block) {
   return 'solange ' + argument0 + '\n' + branch;
 };
 
+Blockly.basicger['controls_whileuntil1Ger'] = Blockly.basicger['controls_whileuntil1'];
 
 Blockly.ArduinoCpp['controls_whileuntil1'] = function(block) {
   // Do while/until loop.
@@ -292,8 +308,9 @@ Blockly.ArduinoCpp['controls_whileuntil1'] = function(block) {
   return 'while (' + argument0 + ') {\n' + branch + '}\n';
 };
 
-//
-/////////////////////////////////////////////////////////
+Blockly.ArduinoCpp['controls_whileuntil1Ger'] = Blockly.ArduinoCpp['controls_whileuntil1'];
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Blockly.interncode['start'] = function(block) {
   var branch = Blockly.interncode.statementToCode(block, 'state') || '\n';
@@ -302,6 +319,8 @@ Blockly.interncode['start'] = function(block) {
   var code = '#Start;\n' + branch + '#Stop;\n';
   return code;
 };
+
+Blockly.interncode['startGer'] = Blockly.interncode['start'];
 
 Blockly.Cpp['start'] = function(block) {
   var branch = Blockly.Cpp.statementToCode(block, 'state') || '\n';
@@ -342,6 +361,8 @@ Blockly.Cpp['start'] = function(block) {
   return code;
 };
 
+Blockly.Cpp['startGer'] = Blockly.Cpp['start'];
+
 Blockly.basic['start'] = function(block) {
   var branch = Blockly.basic.statementToCode(block, 'state') || '\n';
   branch = Blockly.basic.addLoopTrap(branch, block.id);
@@ -350,6 +371,8 @@ Blockly.basic['start'] = function(block) {
   return code;
 };
 
+Blockly.basic['startGer'] = Blockly.basic['start'];
+
 Blockly.basicger['start'] = function(block) {
   var branch = Blockly.basicger.statementToCode(block, 'state') || '\n';
   branch = Blockly.basicger.addLoopTrap(branch, block.id);
@@ -357,6 +380,8 @@ Blockly.basicger['start'] = function(block) {
   var code = "Starte Programm\n" + branch + "Stoppe Programm";
   return code;
 };
+
+Blockly.basicger['startGer'] = Blockly.basicger['start'];
 
 Blockly.ArduinoCpp['start'] = function(block) {
   var branch = Blockly.ArduinoCpp.statementToCode(block, 'state') || '\n';
@@ -401,3 +426,7 @@ Blockly.ArduinoCpp['start'] = function(block) {
   + "}";
   return code;
 };
+
+Blockly.ArduinoCpp['startGer'] = Blockly.ArduinoCpp['start'];
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

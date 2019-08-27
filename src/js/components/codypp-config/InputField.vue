@@ -6,7 +6,8 @@
               :name="name"
               :placeholder="placeholder"
               @input="$emit('input', $event.target.value)"
-              :value="value" >
+              :value="value"
+              autocomplete="off" >
       <div class="error-message">
         <span :class="{ 'error-message-invisible': !errorMessage.length }">{{errorMessage}}</span>
       </div>
@@ -56,6 +57,7 @@
   }
 
   .input-field {
+    margin-left: 5px;
     position: relative;
   }
 

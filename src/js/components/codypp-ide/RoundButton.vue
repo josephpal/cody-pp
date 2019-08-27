@@ -1,10 +1,10 @@
 <template>
-  <div class="round-button" :class="{ disabled: !enabled }" @click="onClicked">
+  <button class="round-button" :class="[!enabled ? 'disabled' : '', size]" @click="onClicked">
     <Spinner v-if="showSpinner"/>
     <svg class="icon" v-else>
       <use :href="iconPath"></use>
     </svg>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -23,10 +23,15 @@
         type: String,
         required: true
       },
-        showSpinner: {
-          type: Boolean,
-          default: false,
-        },
+      showSpinner: {
+        type: Boolean,
+        default: false,
+      },
+      size: {
+        type: String,
+        default: "lg",
+        validator: (value) => ( ["sm","md","lg"].includes(value) )
+      }
     },
 
     computed: {
@@ -57,19 +62,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 64px;
-    height: 64px;
     border-radius: 100%;
     border: 0;
+    outline: 0;
+    color: #fff;
     cursor: pointer;
     box-shadow: 2px 2px 10px $colorDarkestGrey;
     background-color: rgba($colorRed, .8);
     transition: background-color .3s;
-
-    @include respond-to(tablet) {
-      width: 50px;
-      height: 50px;
-    }
 
     &:hover {
       border: 0;
@@ -82,14 +82,35 @@
       cursor: default;
     }
 
-    .icon {
-      width: auto;
-      height: 20px;
-      fill: #fff;
+    &.sm {
+      width: 24px;
+      height: 24px;
+    }
 
-      @include respond-to(tablet) {
+    &.md {
+      width: 32px;
+      height: 32px;
+    }
+
+    &.lg {
+      width: 64px;
+      height: 64px;
+
+      @media (max-width: 1200px) {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    .icon {
+      fill: #fff;
+      width: auto;
+      height: 80%;
+      max-height: 20px;
+
+      @media (max-width: 1200px) {
         width: auto;
-        height: 16px;
+        height: 35%;
       }
     }
   }

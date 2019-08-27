@@ -1,8 +1,9 @@
 export default {
-  CPP: 0,
-  ARDUINOCPP: 1,
-  BASIC: 2,
-  BASIC_GER: 3,
-  JAVASCRIPT: 4,
-  INTERNAL: 5
+  BLANK: 0,
+  CPP: 1,
+  ARDUINOCPP: 2,
+  BASIC: 3,
+  BASIC_GER: 4,
+  JAVASCRIPT: 5,
+  INTERNAL: 6
 };

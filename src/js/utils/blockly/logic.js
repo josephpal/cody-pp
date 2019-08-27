@@ -53,8 +53,8 @@ export const resetLogicCounterVar = () => {
     c = 0;
 };
 
-//////////////////////////////////////////////////////////////
-//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
@@ -78,6 +78,8 @@ Blockly.interncode['controls_if1'] = function(block) {
   return code + '#J,' + temp + ';' + '\n';
 };
 
+Blockly.interncode['controls_if1Ger'] = Blockly.interncode['controls_if1'];
+
 Blockly.Cpp['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
@@ -98,6 +100,8 @@ Blockly.Cpp['controls_if1'] = function(block) {
   }
   return code + '\n';
 };
+
+Blockly.Cpp['controls_if1Ger'] = Blockly.Cpp['controls_if1'];
 
 Blockly.basic['controls_if1'] = function(block) {
   // If/elseif/else condition.
@@ -120,6 +124,8 @@ Blockly.basic['controls_if1'] = function(block) {
   return code;
 };
 
+Blockly.basic['controls_if1Ger'] = Blockly.basic['controls_if1'];
+
 Blockly.basicger['controls_if1'] = function(block) {
   // If/elseif/else condition.
   var n = 0;
@@ -140,6 +146,8 @@ Blockly.basicger['controls_if1'] = function(block) {
   }
   return code;
 };
+
+Blockly.basicger['controls_if1Ger'] = Blockly.basicger['controls_if1'];
 
 Blockly.ArduinoCpp['controls_if1'] = function(block) {
   // If/elseif/else condition.
@@ -162,21 +170,32 @@ Blockly.ArduinoCpp['controls_if1'] = function(block) {
   return code + '\n';
 };
 
-//
-//////////////////////////////////////////////////////////////
-//
+Blockly.ArduinoCpp['controls_if1Ger'] = Blockly.ArduinoCpp['controls_if1'];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['controls_ifelse1'] = Blockly.interncode['controls_if1'];
+
+Blockly.interncode['controls_ifelse1Ger'] = Blockly.interncode['controls_if1'];
 
 Blockly.Cpp['controls_ifelse1'] = Blockly.Cpp['controls_if1'];
 
+Blockly.Cpp['controls_ifelse1Ger'] = Blockly.Cpp['controls_if1'];
+
 Blockly.basic['controls_ifelse1'] = Blockly.basic['controls_if1'];
+
+Blockly.basic['controls_ifelse1Ger'] = Blockly.basic['controls_if1'];
 
 Blockly.basicger['controls_ifelse1'] = Blockly.basicger['controls_if1'];
 
+Blockly.basicger['controls_ifelse1Ger'] = Blockly.basicger['controls_if1'];
+
 Blockly.ArduinoCpp['controls_ifelse1'] = Blockly.ArduinoCpp['controls_if1'];
-//
-////////////////////////////////////////////////////////////
-//
+
+Blockly.ArduinoCpp['controls_ifelse1Ger'] = Blockly.ArduinoCpp['controls_if1'];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['analog_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
@@ -193,6 +212,8 @@ Blockly.interncode['analog_logic_compare'] = function(block) {
   var code = 'A,' + argument0 + ',' + operator + ',' + argument1;
   return [code, Blockly.interncode.ORDER_RELATIONAL];
 };
+
+Blockly.interncode['analog_logic_compareGer'] = Blockly.interncode['analog_logic_compare'];
 
 Blockly.Cpp['analog_logic_compare'] = function(block) {
   // Comparison operator.
@@ -217,6 +238,8 @@ Blockly.Cpp['analog_logic_compare'] = function(block) {
   }
   return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
+
+Blockly.Cpp['analog_logic_compareGer'] = Blockly.Cpp['analog_logic_compare'];
 
 Blockly.ArduinoCpp['analog_logic_compare'] = function(block) {
   // Comparison operator.
@@ -243,6 +266,8 @@ Blockly.ArduinoCpp['analog_logic_compare'] = function(block) {
   return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
 };
 
+Blockly.ArduinoCpp['analog_logic_compareGer'] = Blockly.ArduinoCpp['analog_logic_compare'];
+
 Blockly.basic['analog_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
@@ -264,6 +289,8 @@ Blockly.basic['analog_logic_compare'] = function(block) {
   }
   return [code, Blockly.basic.ORDER_RELATIONAL];
 };
+
+Blockly.basic['analog_logic_compareGer'] = Blockly.basic['analog_logic_compare'];
 
 Blockly.basicger['analog_logic_compare'] = function(block) {
   // Comparison operator.
@@ -287,6 +314,10 @@ Blockly.basicger['analog_logic_compare'] = function(block) {
   return [code, Blockly.basicger.ORDER_RELATIONAL];
 };
 
+Blockly.basicger['analog_logic_compareGer'] = Blockly.basic['analog_logic_compare'];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Blockly.interncode['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
@@ -303,6 +334,8 @@ Blockly.interncode['digital_logic_compare'] = function(block) {
   var code = 'D,' + argument0 + ',' + "=" + ',' + argument1;
   return [code, Blockly.interncode.ORDER_RELATIONAL];
 };
+
+Blockly.interncode['digital_logic_compareGer'] = Blockly.interncode['digital_logic_compare'];
 
 Blockly.Cpp['digital_logic_compare'] = function(block) {
   // Comparison operator.
@@ -321,6 +354,8 @@ Blockly.Cpp['digital_logic_compare'] = function(block) {
   return [code, Blockly.Cpp.ORDER_RELATIONAL];
 };
 
+Blockly.Cpp['digital_logic_compareGer'] = Blockly.Cpp['digital_logic_compare'];
+
 Blockly.ArduinoCpp['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
@@ -337,6 +372,8 @@ Blockly.ArduinoCpp['digital_logic_compare'] = function(block) {
   var code = 'mDAIn[Digital_' + argument0 + '].getValueDigital()' + ' == '  + argument1;
   return [code, Blockly.ArduinoCpp.ORDER_RELATIONAL];
 };
+
+Blockly.ArduinoCpp['digital_logic_compareGer'] = Blockly.ArduinoCpp['digital_logic_compare'];
 
 Blockly.basic['digital_logic_compare'] = function(block) {
   // Comparison operator.
@@ -355,6 +392,8 @@ Blockly.basic['digital_logic_compare'] = function(block) {
   return [code, Blockly.basic.ORDER_RELATIONAL];
 };
 
+Blockly.basic['digital_logic_compareGer'] = Blockly.basic['digital_logic_compare'];
+
 Blockly.basicger['digital_logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
@@ -372,5 +411,6 @@ Blockly.basicger['digital_logic_compare'] = function(block) {
   return [code, Blockly.basicger.ORDER_RELATIONAL];
 };
 
-//
-//////////////////////////////////////////////////////////
+Blockly.basicger['digital_logic_compareGer'] = Blockly.basicger['digital_logic_compare'];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
