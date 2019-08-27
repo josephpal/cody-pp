@@ -4,12 +4,19 @@
       <SemiCircleButton @click="onHideButtonClicked" />
     </div>
 
-    <div class="language-button">
-      <toggle-button @change="onChangeEventHandler"
-                     :value="this.languageSelect"
-                     :color="{checked: '#4e5156', unchecked: '#4e5156'}"
-                     :labels="{checked: 'EN', unchecked: 'DE'}" />
+    <div class="toolbox-footer">
+      <div class="language-button">
+        <toggle-button @change="onChangeEventHandler"
+                       :value="this.languageSelect"
+                       :color="{checked: '#4e5156', unchecked: '#4e5156'}"
+                       :labels="{checked: 'EN', unchecked: 'DE'}" />
+      </div>
+
+      <div class="version-tag">
+        <a>r-1.2</a>
+      </div>
     </div>
+
 
     <div id="blockly"/>
   </div>
@@ -168,11 +175,26 @@ export default {
       }
     }
 
-    .language-button {
+    .toolbox-footer {
       position: absolute;
-      z-index: 2 !important;
-      left: 31px;
+      left: 0px;
       bottom: 20px;
+      width: 111px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 2 !important;
+
+      .language-button {
+        margin: 7px;
+      }
+
+      .version-tag {
+        font-size: 0.85em;
+      }
     }
 
     #blockly {
