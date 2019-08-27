@@ -204,38 +204,45 @@ WAS:  Hindernissen ausweichen</comment>
 WANN: 2019-05-22
 WAS:  Zeichnen einer Blume</comment>
              <statement name="state">
-               <block type="controls_repeat_extGer">
-                 <value name="TIMES">
-                   <block type="math_number">
-                     <field name="NUM">7</field>
-                   </block>
-                 </value>
-                 <statement name="DO">
-                   <block type="motorGer">
-                     <field name="motorNumber">0</field>
-                     <field name="motorDirection">1</field>
-                     <field name="motorSpeed">6</field>
-                     <next>
+                <block type="servoGer">
+                 <next>
+                  <block type="waitGer">
+                    <field name="seconds">0.5</field>
+                    <next>
+                   <block type="controls_repeat_extGer">
+                     <value name="TIMES">
+                       <block type="math_number">
+                         <field name="NUM">7</field>
+                       </block>
+                     </value>
+                     <statement name="DO">
                        <block type="motorGer">
-                         <field name="motorNumber">1</field>
+                         <field name="motorNumber">0</field>
                          <field name="motorDirection">1</field>
                          <field name="motorSpeed">6</field>
                          <next>
-                           <block type="waitGer">
-                             <field name="seconds">0.6</field>
+                           <block type="motorGer">
+                             <field name="motorNumber">1</field>
+                             <field name="motorDirection">1</field>
+                             <field name="motorSpeed">6</field>
                              <next>
-                               <block type="motorGer">
-                                 <field name="motorNumber">0</field>
-                                 <field name="motorDirection">1</field>
-                                 <field name="motorSpeed">6</field>
+                               <block type="waitGer">
+                                 <field name="seconds">0.6</field>
                                  <next>
                                    <block type="motorGer">
-                                     <field name="motorNumber">1</field>
+                                     <field name="motorNumber">0</field>
                                      <field name="motorDirection">1</field>
-                                     <field name="motorSpeed">0</field>
+                                     <field name="motorSpeed">6</field>
                                      <next>
-                                       <block type="waitGer">
-                                         <field name="seconds">1.2</field>
+                                       <block type="motorGer">
+                                         <field name="motorNumber">1</field>
+                                         <field name="motorDirection">1</field>
+                                         <field name="motorSpeed">0</field>
+                                         <next>
+                                           <block type="waitGer">
+                                             <field name="seconds">1.2</field>
+                                           </block>
+                                         </next>
                                        </block>
                                      </next>
                                    </block>
@@ -245,24 +252,26 @@ WAS:  Zeichnen einer Blume</comment>
                            </block>
                          </next>
                        </block>
-                     </next>
-                   </block>
-                 </statement>
-                 <next>
-                   <block type="motorGer">
-                     <field name="motorNumber">0</field>
-                     <field name="motorDirection">1</field>
-                     <field name="motorSpeed">6</field>
+                     </statement>
                      <next>
                        <block type="motorGer">
-                         <field name="motorNumber">1</field>
+                         <field name="motorNumber">0</field>
                          <field name="motorDirection">1</field>
                          <field name="motorSpeed">6</field>
+                         <next>
+                           <block type="motorGer">
+                             <field name="motorNumber">1</field>
+                             <field name="motorDirection">1</field>
+                             <field name="motorSpeed">6</field>
+                           </block>
+                         </next>
                        </block>
                      </next>
                    </block>
-                 </next>
-               </block>
+                  </next>
+                 </block>
+                </next>
+              </block>
              </statement>
            </block>
         </category>
@@ -474,38 +483,45 @@ What: Dodges obstacles</comment>
 When: 2019-05-22
 What: Draws a flower</comment>
              <statement name="state">
-               <block type="controls_repeat_ext">
-                 <value name="TIMES">
-                   <block type="math_number">
-                     <field name="NUM">7</field>
-                   </block>
-                 </value>
-                 <statement name="DO">
-                   <block type="motor">
-                     <field name="motorNumber">0</field>
-                     <field name="motorDirection">1</field>
-                     <field name="motorSpeed">6</field>
-                     <next>
+               <block type="servo">
+                <next>
+                 <block type="wait">
+                   <field name="seconds">0.5</field>
+                   <next>
+                   <block type="controls_repeat_ext">
+                     <value name="TIMES">
+                       <block type="math_number">
+                         <field name="NUM">7</field>
+                       </block>
+                     </value>
+                     <statement name="DO">
                        <block type="motor">
-                         <field name="motorNumber">1</field>
+                         <field name="motorNumber">0</field>
                          <field name="motorDirection">1</field>
                          <field name="motorSpeed">6</field>
                          <next>
-                           <block type="wait">
-                             <field name="seconds">0.6</field>
+                           <block type="motor">
+                             <field name="motorNumber">1</field>
+                             <field name="motorDirection">1</field>
+                             <field name="motorSpeed">6</field>
                              <next>
-                               <block type="motor">
-                                 <field name="motorNumber">0</field>
-                                 <field name="motorDirection">1</field>
-                                 <field name="motorSpeed">6</field>
+                               <block type="wait">
+                                 <field name="seconds">0.6</field>
                                  <next>
                                    <block type="motor">
-                                     <field name="motorNumber">1</field>
+                                     <field name="motorNumber">0</field>
                                      <field name="motorDirection">1</field>
-                                     <field name="motorSpeed">0</field>
+                                     <field name="motorSpeed">6</field>
                                      <next>
-                                       <block type="wait">
-                                         <field name="seconds">1.2</field>
+                                       <block type="motor">
+                                         <field name="motorNumber">1</field>
+                                         <field name="motorDirection">1</field>
+                                         <field name="motorSpeed">0</field>
+                                         <next>
+                                           <block type="wait">
+                                             <field name="seconds">1.2</field>
+                                           </block>
+                                         </next>
                                        </block>
                                      </next>
                                    </block>
@@ -515,24 +531,26 @@ What: Draws a flower</comment>
                            </block>
                          </next>
                        </block>
-                     </next>
-                   </block>
-                 </statement>
-                 <next>
-                   <block type="motor">
-                     <field name="motorNumber">0</field>
-                     <field name="motorDirection">1</field>
-                     <field name="motorSpeed">6</field>
+                     </statement>
                      <next>
                        <block type="motor">
-                         <field name="motorNumber">1</field>
+                         <field name="motorNumber">0</field>
                          <field name="motorDirection">1</field>
                          <field name="motorSpeed">6</field>
+                         <next>
+                           <block type="motor">
+                             <field name="motorNumber">1</field>
+                             <field name="motorDirection">1</field>
+                             <field name="motorSpeed">6</field>
+                           </block>
+                         </next>
                        </block>
                      </next>
                    </block>
-                 </next>
-               </block>
+                  </next>
+                 </block>
+                </next>
+              </block>
              </statement>
            </block>
         </category>
