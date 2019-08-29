@@ -6,7 +6,7 @@ Cody++ is a simple and fast web IDE to create C++ applications for ESP32 microco
 
 ## Demo
 
-Checkout the [demo](http://www.hit.hs-karlsruhe.de/hit%2Dinfo/info%2Dws17/Fischertechnik-Software-HMI/data/webIDEwebversion-1.1/index.html). If you want to take a look at some of the examples mentioned in the menu on the left hand side, feel free to do so.
+Checkout the [demo](http://hit-karlsruhe.de/hit-info/FT32/codypp/#/). If you want to take a look at some of the examples mentioned in the menu on the left hand side, feel free to do so.
 
 <p align="center"><img width="95%" src="demo.png"></p>
 
