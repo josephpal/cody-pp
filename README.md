@@ -69,9 +69,9 @@ For further information to this project visit our official documentation [webpag
 
 Video dokumentation (in german): 
 
-<p align="center"><img src="http://img.youtube.com/vi/Vb2udfsyRjI/0.jpgg" title="FT32-Codypp Pre-relase Video Dez. 2017" ></img></p>
-
-[![FT32-Codypp Pre-relase Video Dez. 2017](http://img.youtube.com/vi/Vb2udfsyRjI/0.jpg)](http://www.youtube.com/watch?v=Vb2udfsyRjI "FT32-Codypp Pre-relase Video Dez. 2017")
+<a align="center" href="http://www.youtube.com/watch?v=Vb2udfsyRjI" target="_blank" >
+<img width="50%" src="https://img.youtube.com/vi/Vb2udfsyRjI/0.jpg" alt="https://img.youtube.com/vi/Vb2udfsyRjI/0.jpg" title="FT32-Codypp Pre-relase Video Dez. 2017" >
+</a>
 
 - [FT32-Codypp Pre-relase Video Dez. 2017](https://youtu.be/Vb2udfsyRjI?list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw)
 
