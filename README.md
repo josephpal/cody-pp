@@ -64,13 +64,15 @@ For further information to this project visit our official documentation [webpag
 
 <p align="center"><img width="35%" src="./FT32-robot.jpg"></p>
 
+
 ## Cody++ (with FT32 robots) in use
 
-<div align="center">
-  <iframe width="560" height="315"src="https://www.youtube.com/embed/MUQfKFzIOeU"></iframe>
-</div>
-
 Video dokumentation (in german): 
+
+<p align="center"><img src="http://img.youtube.com/vi/Vb2udfsyRjI/0.jpgg" title="FT32-Codypp Pre-relase Video Dez. 2017" ></img></p>
+
+[![FT32-Codypp Pre-relase Video Dez. 2017](http://img.youtube.com/vi/Vb2udfsyRjI/0.jpg)](http://www.youtube.com/watch?v=Vb2udfsyRjI "FT32-Codypp Pre-relase Video Dez. 2017")
+
 - [FT32-Codypp Pre-relase Video Dez. 2017](https://youtu.be/Vb2udfsyRjI?list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw)
 
 German pubils testing our Robots: 
