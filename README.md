@@ -85,7 +85,7 @@ German pubils testing our Robots:
 
 <p align="center" >
   <a href="http://www.youtube.com/watch?v=YJIpydJqEwY" target="_blank" >
-    <img width="50%" src="https//img.youtube.com/vi/YJIpydJqEwY/0.jpg" alt="https//img.youtube.com/vi/YJIpydJqEwY/0.jpg" title="Drawing a flower with Codypp and FT32" >
+    <img width="50%" src="https://img.youtube.com/vi/YJIpydJqEwY/0.jpg" alt="https://img.youtube.com/vi/YJIpydJqEwY/0.jpg" title="Drawing a flower with Codypp and FT32" >
   </a>
 </p>
 
