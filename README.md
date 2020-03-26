@@ -66,6 +66,10 @@ For further information to this project visit our official documentation [webpag
 
 ## Cody++ (with FT32 robots) in use
 
+<div align="center">
+  <iframe width="560" height="315"src="https://www.youtube.com/embed/MUQfKFzIOeU"></iframe>
+</div>
+
 Video dokumentation (in german): 
 - [FT32-Codypp Pre-relase Video Dez. 2017](https://youtu.be/Vb2udfsyRjI?list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw)
 
@@ -73,7 +77,7 @@ German pubils testing our Robots:
 - [Hector-Seminar-Video](https://www.youtube.com/watch?v=EfkDjtZDj-Y&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=2)
 - [Drawing a flower with Codypp and FT32](https://www.youtube.com/watch?v=YJIpydJqEwY&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=8)
 
-## Environment Setup
+<!--## Environment Setup
 
 If you want to take part or to modify and use the project on your own, you have to setup your operating system properly. I am currently using [Linux Mint 19](https://linuxmint.com/) and the following instructions are related to this operating system. Other Linux distributions are possible, but the commands may variant. It is also possible to setup and VM with [virtual box](https://www.virtualbox.org/). 
 
@@ -89,4 +93,4 @@ If you want to take part or to modify and use the project on your own, you have 
     Install packages: atom-ide-ui, ide-vue, Language-vue
     ```
 5)  Install npm package manager:
-    ...
+    ...-->
