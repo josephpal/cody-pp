@@ -75,11 +75,19 @@ Video dokumentation (in german):
   </a>
 </p>
 
-- [FT32-Codypp Pre-relase Video Dez. 2017](https://youtu.be/Vb2udfsyRjI?list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw)
-
 German pubils testing our Robots: 
-- [Hector-Seminar-Video](https://www.youtube.com/watch?v=EfkDjtZDj-Y&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=2)
-- [Drawing a flower with Codypp and FT32](https://www.youtube.com/watch?v=YJIpydJqEwY&list=PLPAfNH8UB9_noRanNCsG2tC-wpglnxcxw&index=8)
+
+<p align="center" >
+  <a href="http://www.youtube.com/watch?v=EfkDjtZDj-Y" target="_blank" >
+    <img width="50%" src="https://img.youtube.com/vi/EfkDjtZDj-Y/0.jpg" alt="https://img.youtube.com/vi/EfkDjtZDj-Y/0.jpg" title="Hector-Seminar-Video" >
+  </a>
+</p>
+
+<p align="center" >
+  <a href="http://www.youtube.com/watch?v=YJIpydJqEwY" target="_blank" >
+    <img width="50%" src="https//img.youtube.com/vi/YJIpydJqEwY/0.jpg" alt="https//img.youtube.com/vi/YJIpydJqEwY/0.jpg" title="Drawing a flower with Codypp and FT32" >
+  </a>
+</p>
 
 <!--## Environment Setup
 
