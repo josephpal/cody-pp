@@ -11,22 +11,27 @@ WAS:  BESCHREIBUNG</comment>
             <label text="Motor Operationen:" web-class="toolboxLabelStyle"></label>
             <block type="motorGer"></block>
             <block type="stop_motorsGer"></block>
-
-            <label text="Eine Lame ein- u. ausschalten:" web-class="toolboxLabelStyle"></label>
-            <block type="lampGer"></block>
+            <!--<block type="distanceGer"></block>-->
 
             <label text="Servo-Motor hoch- oder runterfahren:" web-class="toolboxLabelStyle"></label>
             <block type="servoGer"></block>
 
+            <label text="LED Leiste ein- u. ausschalten:" web-class="toolboxLabelStyle"></label>
+            <block type="ledGer"></block>
+            <block type="ledResetGer"></block>
+
+            <!--<label text="Spezialfunktionen:" web-class="toolboxLabelStyle"></label>
+            <block type="returnToHomeGer"></block>-->
+
             <!--<block type="digital_outGer"></block>-->
         </category>
 
-        <!--<category name="Movements">
-          <label text="angle operations:" web-class="toolboxLabelStyle"></label>
-          <block type="rotateleft"></block>
-          <block type="rotateright"></block>
+        <!--<category name="Bewegungen">
+          <label text="Winkeldrehungen:" web-class="toolboxLabelStyle"></label>
+          <block type="rotationGer"></block>
+          <block type="rotateGer"></block>
+          <block type="circleGer"></block>
 
-          <label text="driving operations:" web-class="toolboxLabelStyle"></label>
         </category>-->
 
         <category name="Zeiten">
@@ -290,22 +295,26 @@ What: DESCRIPTION</comment>
             <label text="motor operations:" web-class="toolboxLabelStyle"></label>
             <block type="motor"></block>
             <block type="stop_motors"></block>
-
-            <label text="turn a lamp on/off:" web-class="toolboxLabelStyle"></label>
-            <block type="lamp"></block>
+            <!--<block type="distance"></block>-->
 
             <label text="move a servo up/down:" web-class="toolboxLabelStyle"></label>
             <block type="servo"></block>
+
+            <label text="turn led stripe on/off:" web-class="toolboxLabelStyle"></label>
+            <block type="led"></block>
+            <block type="ledReset"></block>
+
+            <!--<label text="special functions:" web-class="toolboxLabelStyle"></label>
+            <block type="returnToHome"></block>-->
 
             <!--<block type="digital_out"></block>-->
         </category>
 
         <!--<category name="Movements">
           <label text="angle operations:" web-class="toolboxLabelStyle"></label>
-          <block type="rotateleft"></block>
-          <block type="rotateright"></block>
-
-          <label text="driving operations:" web-class="toolboxLabelStyle"></label>
+          <block type="rotation"></block>
+          <block type="rotate"></block>
+          <block type="circle"></block>
         </category>-->
 
         <category name="Timing">
