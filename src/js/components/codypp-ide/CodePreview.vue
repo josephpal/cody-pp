@@ -44,6 +44,12 @@
                     :enabled="!isRunning"
                     @click="onSaveButtonClicked"
                     :showSpinner="showSaveBtnSpinner" />
+      <RoundButton  class="settings-button"
+                    icon="settings"
+                    :enabled="!(webSocketReady && !isRunning)"
+                    @click="onSettingsButtonClicked"
+                    :showSpinner="showSettingsBtnSpinner"
+                    size="lg" />
     </div>
   </div>
 </template>
@@ -61,6 +67,12 @@
   import saveAs from '../../utils/FileSaver';
 
   import socketConnector from '../../socketConnector';
+
+  import { readme } from '../../../../static/Readme.txt'
+  import { ft32_h } from '../../../../static/ft32_IOobjects.h'
+  import { ft32_cpp } from '../../../../static/ft32_IOobjects.cpp'
+
+  import { insert } from '../../utils/String'
 
   export default {
     name: 'CodePreview',
@@ -107,6 +119,7 @@
         showPlayBtnSpinner: false,
         showStopBtnSpinner: false,
         showSendBtnSpinner: false,
+        showSettingsBtnSpinner: false,
         showSaveBtnSpinner: false,
         showLoadBtnSpinner: false,
       };
@@ -199,7 +212,76 @@
             //TODO
             break;
           case Languages.INTERNAL:
-            this.code = this.getInternalCode();
+            var codeUnmodified = this.getInternalCode();
+            var codeModified = '';
+
+            console.log(codeUnmodified)
+
+            if(codeUnmodified.includes("#RETURN_0;")) {
+              var instructionsArray = codeUnmodified
+                                        .replace(/\n|\s/g, '')
+                                        .replace('#Start;', '')
+                                        .replace('#Stop;', '')
+                                        .replace('#RETURN_0;', '')
+                                        .split(';');
+
+              for (var i = 0; i < instructionsArray.length; i++) {
+                if(instructionsArray[i] !== '') {
+                  var reverseParam = '';
+
+                  if(instructionsArray[i].includes("M")) {
+                    if(instructionsArray[i][5] !== '2' ) {
+                      reverseParam = instructionsArray[i][5] == '0' ? '1' : '0';
+                      codeModified += instructionsArray[i].substring(0, 5) + reverseParam + instructionsArray[i].substring(5 + 1) + ';\n';
+                    } else {
+                      codeModified += instructionsArray[i];
+                    }
+                  } else {
+                    codeModified += instructionsArray[i] + ';\n';
+                  }
+                }
+              }
+
+              var instructionsArrayModified = codeModified
+                                                .replace(/\n|\s/g, '')
+                                                .split(';');
+
+              console.log(instructionsArray);
+              console.log(instructionsArrayModified);
+
+              var index = 0;
+              var instrCounter = 0;
+              var grouped = [];
+
+              for (var i = 0; i < instructionsArrayModified.length; i++) {
+
+                if(instructionsArrayModified[i].includes("S")) {
+
+                  var instr = 0;
+                  for(var j = index; j <= i; j++) {
+                    grouped[instrCounter, instr] = instructionsArrayModified[j] + ';\n';
+                    instr++;
+                  }
+
+                  index = i+1;
+                  instrCounter++;
+
+                  console.log("sleep found");
+                  console.log(index);
+                  console.log(instrCounter);
+                }
+              }
+
+              console.log(grouped);
+
+              this.code = codeUnmodified.replace('#RETURN_0;', codeModified);
+
+            } else if(codeUnmodified.includes("#RETURN_1;")) {
+              this.code = codeUnmodified.replace('#RETURN_1;', '#RETURN_1_MOD;');
+            } else {
+              this.code = codeUnmodified;
+            }
+
             break;
           default:
             this.code = '';
@@ -255,11 +337,61 @@
       },
 
       onSaveButtonClicked() {
+        this.showSaveBtnSpinner = true;
+
+        /**
+         * Project files in a zip containing
+         * Readme.txt -> description
+         * YYYY-MM-DD - Cody_pp.xml -> Codypp project file
+         * arduino_sketch/
+         *    arduino_sketch.ino
+         *    ft_ESP32_IOobjects.h
+         *    ft_ESP32_IOobjects.cpp
+        **/
+
+        /* including jszip for creating a zip file */
+        /*  */
+        var JSZip = require("jszip");
+        var JSZipUtils = require("jszip-utils");
+
+        var zip = new JSZip();
+
+        /* add a Readme.txt file to the zip containing a description how to use the files */
+        zip.file("Readme.txt", readme);
+
+        /* add a *.xml file to the zip containing the codypp project */
         const xml1 = Blockly.Xml.workspaceToDom(this.blocklyWorkspace);
         const xml_text = Blockly.Xml.domToPrettyText(xml1);
 
-        const blob = new Blob([xml_text], { type: 'application/xml' });
-        saveAs(blob, 'Cody_pp.xml');
+        zip.file("codypp.xml", xml_text, { type: 'application/xml' });
+
+        /* add a folder images/ */
+        var arduino = zip.folder("arduino_sketch");
+
+        /* add ft_ESP32_IOobjects.h library content */
+        arduino.file("ft_ESP32_IOobjects.h", ft32_h);
+
+        /* add ft_ESP32_IOobjects.cpp library content */
+        arduino.file("ft_ESP32_IOobjects.cpp", ft32_cpp);
+
+        /* get the generated c++ code from the code preview component */
+        this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyWorkspace)
+
+        /* store the img from canvas into the created folder images/ */
+        arduino.file("arduino_sketch.ino", this.code);
+
+        /*  */
+        zip.generateAsync({type:"blob"}).then((content) => {
+            /* filename generation: prefix + filename => YYYY-MM-DD - FLENAME.zip */
+            let prefix = (new Date()).getFullYear() + "-"
+                          + ( (new Date()).getMonth() + 1) + "-" + (new Date()).getDate() + " - ";
+            /* using FileSaver.js to save the zip file to the user */
+            saveAs(content, prefix + "Project.zip");
+            this.showSaveBtnSpinner = false;
+        }).catch(() => {
+            console.error("zip file couldn't be created. Internal error!");
+            this.showSaveBtnSpinner = false;
+        });
       },
 
       onLoadButtonClicked() {
@@ -271,6 +403,18 @@
         }
       },
 
+      onSettingsButtonClicked() {
+        this.openConfigurationPage();
+      },
+
+
+      openConfigurationPage() {
+        this.showSettingsBtnSpinner = true;
+
+        window.open('/#/config', '_blank');
+
+        this.showSettingsBtnSpinner = false;
+      },
 
       onSocketClose() {
         this.showConnectBtnSpinner = true;
@@ -439,19 +583,19 @@
         right: 100px;
         transition: ease-out 0.2s;
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1350px) {
           bottom: 36px;
         }
       }
 
-      @media (max-width: 1200px) {
+      @media (max-width: 1350px) {
         flex-direction: column;
       }
 
       .round-button {
         margin-left: 20px;
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1350px) {
           margin-top: 10px;
         }
       }
