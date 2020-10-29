@@ -2,7 +2,7 @@
 
 # Cody++
 
-Cody++ is a simple and fast web IDE to create C++ applications for ESP32 microcontrollers based on arduino-code syntax.  
+Cody++ is a simple and fast web IDE to create C++ applications for ESP32 microcontrollers based on arduino-code syntax. It can be used standalone in combination with our provided header files and our custom robots or alongside a backend to program and interact with the robots in realtime.
 
 ## Demo
 
@@ -43,7 +43,7 @@ Generate the arduino code with the hosted [Cody++ IDE](http://www.hit.hs-karlsru
 
 <p align="center"><img width="65%" src="arduino-flash.png"></p>
 
-Only a few steps are left to program your ESP32. Beside our Cody++ software and the Arduino IDE, you will need the correct [ESP32 hardware](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0203StandDerTechnik.html). There are two possible hardware platfroms mentioned on our offical [documentation page](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0406Layout.html). I would prefer the smaller [one](http://www.hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/FT%5FESP32%5FHWK/0401AusgewaehlteLoesung.html). To setup the ESP32 correctly please visit the ft32 github page.
+Only a few steps are left to program your ESP32. Beside our Cody++ software and the Arduino IDE, you will need the correct [ESP32 hardware](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0203StandDerTechnik.html). There are two possible hardware platfroms mentioned on our offical [documentation page](http://hit-karlsruhe.de/hit%2Dinfo/info%2Dws18/Codypp%5FNet/0406Layout.html), a ([ft32](http://www.hit-karlsruhe.de/hit-info/info-ss19/FT32-HWK2/0401AusgewaehlteLoesung.html) robot or the [eMalRob](http://hit-karlsruhe.de/hit-info/info-ws19/MalRob_Platine/0406Platinenlayout.html)). To setup the micro controller of each device correctly please visit the [ft32](https://github.com/hama1067/ft32) github page.
 
 ## Web documentation
 

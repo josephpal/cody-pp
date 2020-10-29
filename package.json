@@ -13,6 +13,8 @@
     "svg": "node ./build/svg.js"
   },
   "dependencies": {
+    "fs": "0.0.1-security",
+    "fs2": "^0.3.8",
     "highlight.js": "^9.12.0",
     "node-blockly": "^1.0.31",
     "vue": "2.5.21",

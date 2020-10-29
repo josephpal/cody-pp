@@ -31,17 +31,19 @@ export default {
 
   data() {
     return {
-        value: "192.168.4.1",
+        value: !validateIp(location.hostname) ? "192.168.4.1" : location.hostname,
         errorMessage: "",
         webSocketReady: false,
         webSocketConnecting: false,
         showConnectBtnSpinner: false,
+        showConfigPageBtnSpinner: false,
         placeholderIpAddress: __DEFAULT_IP__,
     }
   },
 
   mounted() {
-    socketConnector.onClose(this.onSocketClose)
+    socketConnector.onClose(this.onSocketClose);
+    window.addEventListener("load", this.connect());
   },
 
   computed: {
@@ -56,6 +58,12 @@ export default {
     },
 
     onConnectButtonClicked() {
+      this.connect();
+    },
+
+    connect() {
+      console.log("Opening websocket connection ...");
+
       //reset error messages
       this.errorMessage = "";
 

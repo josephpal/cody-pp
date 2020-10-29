@@ -14,19 +14,6 @@ class SocketConnector {
         this.socket.close();
         this.close();
       }
-
-      /*let counter = 0;
-
-      if( browserType() === "Firefox" ) {
-        while( counter < 1000 ) {
-          // TODO: dummy wait loop until websocket connection is closed correctly
-          // waiting for this.connected === false would be much better and more efficient;
-          counter = counter + 1;
-        }
-      } else {
-        while( this.connected === true ) { }
-      }*/
-
     });
   }
 
@@ -36,7 +23,25 @@ class SocketConnector {
 
   connect(ip) {
     return new Promise((resolve, reject) => {
-      this.socket = new WebSocket(`ws://${ip}:90`);
+      /* console.log("current ip: " + location.host); */
+      let hostIP = location.hostname;
+      let port = Number(location.port);
+
+      console.log(ip);
+      console.log(hostIP);
+      console.log(port);
+
+      if(ip.includes("192.")) {
+        console.log("local ip -> ws on port 90");
+        port = 90;
+      } else {
+        console.log("global ip -> port forwarding enabled -> ws on port " + port + " + 1: ");
+        port = port + 1;
+
+        console.log(port);
+      }
+
+      this.socket = new WebSocket(`ws://${ip}:` + port.toString() );
 
       this.socket.onclose = function() {
         this.connected = false;

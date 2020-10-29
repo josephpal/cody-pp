@@ -1,9 +1,8 @@
 import Blockly from 'node-blockly/browser';
 
-/*
- *
- */
- Blockly.Blocks['start'] = {
+/* ------------------------------------------------------------------------------------------ */
+
+Blockly.Blocks['start'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Start");
@@ -31,9 +30,8 @@ Blockly.BlockSvg.START_HAT = true;
  }
 };
 
-/*
- *
- */
+/* ------------------------------------------------------------------------------------------ */
+
 Blockly.Blocks['wait'] = {
   init: function() {
     this.appendDummyInput()
@@ -62,10 +60,7 @@ Blockly.Blocks['waitGer'] = {
   }
 };
 
-/*
- *
- */
- Blockly.Blocks['perform_action'] = {
+Blockly.Blocks['perform_action'] = {
    init: function() {
      this.appendDummyInput()
          .appendField("do for")
@@ -81,7 +76,7 @@ Blockly.Blocks['waitGer'] = {
    }
  };
 
- Blockly.Blocks['perform_actionGer'] = {
+Blockly.Blocks['perform_actionGer'] = {
    init: function() {
      this.appendDummyInput()
          .appendField("Führe aus für")
@@ -97,14 +92,13 @@ Blockly.Blocks['waitGer'] = {
    }
  };
 
- /*
-  *
-  */
+/* ------------------------------------------------------------------------------------------ */
+
 Blockly.Blocks['stop_motors'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("stop")
-        .appendField(new Blockly.FieldDropdown([["all","option_all"], ["M0","motor_0"], ["M1","motor_1"], ["M2","motor_2"], ["M3","motor_3"]]), "option")
+        .appendField(new Blockly.FieldDropdown([["all","option_all"], ["M0","motor_0"], ["M1","motor_1"]/*, ["M2","motor_2"], ["M3","motor_3"]*/]), "option")
         .appendField("motor(s)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -118,7 +112,7 @@ Blockly.Blocks['stop_motorsGer'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Stoppe")
-        .appendField(new Blockly.FieldDropdown([["alle","option_all"], ["M0","motor_0"], ["M1","motor_1"], ["M2","motor_2"], ["M3","motor_3"]]), "option")
+        .appendField(new Blockly.FieldDropdown([["alle","option_all"], ["M0","motor_0"], ["M1","motor_1"]/*, ["M2","motor_2"], ["M3","motor_3"]*/]), "option")
         .appendField("Motor(en)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -128,18 +122,15 @@ Blockly.Blocks['stop_motorsGer'] = {
   }
 };
 
-/*
- *
- */
 Blockly.Blocks['motor'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("set motor")
-        .appendField(new Blockly.FieldDropdown([["M0","0"], ["M1","1"], ["M2","2"], ["M3","3"]]), "motorNumber")
+        .appendField(new Blockly.FieldDropdown([["M0","0"], ["M1","1"]/*, ["M2","2"], ["M3","3"]*/]), "motorNumber")
         .appendField(" direction")
         .appendField(new Blockly.FieldDropdown([["left","0"], ["right","1"]]), "motorDirection")
         .appendField(" speed")
-        .appendField(new Blockly.FieldDropdown([["0","0"], ["1","1"], ["2","2"], ["3","3"], ["4","4"], ["5","5"], ["6","6"], ["7","7"], ["8","8"]]), "motorSpeed");
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "motorSpeed");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
@@ -152,11 +143,11 @@ Blockly.Blocks['motorGer'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Setze Motor")
-        .appendField(new Blockly.FieldDropdown([["M0","0"], ["M1","1"], ["M2","2"], ["M3","3"]]), "motorNumber")
+        .appendField(new Blockly.FieldDropdown([["M0","0"], ["M1","1"]/*, ["M2","2"], ["M3","3"]*/]), "motorNumber")
         .appendField(" Richtung")
         .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirection")
         .appendField(" Geschwindigkeit")
-        .appendField(new Blockly.FieldDropdown([["0","0"], ["1","1"], ["2","2"], ["3","3"], ["4","4"], ["5","5"], ["6","6"], ["7","7"], ["8","8"]]), "motorSpeed");
+        .appendField(new Blockly.FieldNumber(0, 0, 50, 1), "motorSpeed");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
@@ -165,9 +156,8 @@ Blockly.Blocks['motorGer'] = {
   }
 };
 
-/*
- *
- */
+/* ------------------------------------------------------------------------------------------ */
+
 Blockly.Blocks['servo'] = {
   init: function() {
     this.appendDummyInput()
@@ -200,9 +190,8 @@ this.setHelpUrl("https://en.wikipedia.org/wiki/Servomotor");
  }
 };
 
-/*
- *
- */
+/* ------------------------------------------------------------------------------------------ */
+
 Blockly.Blocks['digital_out'] = {
   init: function() {
     this.appendDummyInput()
@@ -231,59 +220,119 @@ Blockly.Blocks['digital_outGer'] = {
   }
 };
 
-/*
- *
- */
-Blockly.Blocks['lamp'] = {
+/* ------------------------------------------------------------------------------------------ */
+
+Blockly.Blocks['led'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("set")
-        .appendField(new Blockly.FieldDropdown([["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"]]), "lampNumber")
-        .appendField("to")
-        .appendField(new Blockly.FieldDropdown([["0","0"], ["1","1"], ["2","2"], ["3","3"], ["4","4"], ["5","5"], ["6","6"], ["7","7"]]), "state");
+        .appendField(new Blockly.FieldDropdown([["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"], ["L4","4"], ["L5","5"], ["L6","6"], ["L7","7"], ["L8","8"], ["L9","9"], ["L10","10"]]), "ledNumber")
+        .appendField("to brightness")
+        .appendField(new Blockly.FieldNumber(0, 0, 255, 1), "brightness")
+        .appendField("with color")
+        .appendField(new Blockly.FieldDropdown([["Red","1"], ["Green","2"], ["Blue","3"]]), "color");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("Turn on a connected lamp.");
+ this.setTooltip("Turn on a connected LED with a defined brightness and color.");
  this.setHelpUrl("");
   }
 };
 
-Blockly.Blocks['lampGer'] = {
+Blockly.Blocks['ledGer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Setze Lampe")
-        .appendField(new Blockly.FieldDropdown([["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"]]), "lampNumber")
-        .appendField("auf Helligkeit ")
-        .appendField(new Blockly.FieldDropdown([["0","0"], ["1","1"], ["2","2"], ["3","3"], ["4","4"], ["5","5"], ["6","6"], ["7","7"]]), "state");
+        .appendField("Setze")
+        .appendField(new Blockly.FieldDropdown([["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"], ["L4","4"], ["L5","5"], ["L6","6"], ["L7","7"], ["L8","8"], ["L9","9"], ["L10","10"]]), "ledNumber")
+        .appendField("auf Helligkeit")
+        .appendField(new Blockly.FieldNumber(0, 0, 255, 1), "brightness")
+        .appendField("mit der Farbe")
+        .appendField(new Blockly.FieldDropdown([["Red","1"], ["Green","2"], ["Blue","3"]]), "color");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
- this.setTooltip("Einschalten einer angeschlossenen Lampe (Helligkeit).");
+ this.setTooltip("Einschalten einer Leuchtdiode mit einer bestimmten Helligkeit und Farbe.");
  this.setHelpUrl("");
   }
 };
 
-/*
- * Freifeld
- */
- /*Blockly.Blocks['digital_logic_compare'] = {
+Blockly.Blocks['ledReset'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField(new Blockly.FieldNumber(0, 0, 7, 1), "A")
-        .appendField(new Blockly.FieldTextInput("="), "OP")
-        .appendField(new Blockly.FieldNumber(0, 0, 1, 1), "B");
-    this.setInputsInline(true);
-    this.setOutput(true, "Boolean");
-    this.setColour(0);
- this.setTooltip("Digital Compare");
+        .appendField("reset")
+        .appendField(new Blockly.FieldDropdown([["all","option_all"], ["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"], ["L4","4"], ["L5","5"], ["L6","6"], ["L7","7"], ["L8","8"], ["L9","9"], ["L10","10"]]), "option")
+        .appendField("LED(s)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("Reset specific LED(s) to default values (brightness zero, color red).");
  this.setHelpUrl("");
   }
-};*/
+};
 
-/*
- *
- */
+Blockly.Blocks['ledResetGer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Setze")
+        .appendField(new Blockly.FieldDropdown([["alle","option_all"], ["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"], ["L4","4"], ["L5","5"], ["L6","6"], ["L7","7"], ["L8","8"], ["L9","9"], ["L10","10"]]), "option")
+        .appendField("LED(s) zurück");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("Zurücksetzen einer oder mehrerer LED(s) auf Standardwerte (Helligkeit null, Farbe Rot).");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['ledFill'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("fill until ")
+        .appendField(new Blockly.FieldDropdown([["L0","0"], ["L1","1"], ["L2","2"], ["L3","3"], ["L4","4"], ["L5","5"], ["L6","6"], ["L7","7"], ["L8","8"], ["L9","9"], ["L10","10"]]), "ledNumber")
+        .appendField("to brightness")
+        .appendField(new Blockly.FieldNumber(0, 0, 255, 1), "brightness")
+        .appendField("with color")
+        .appendField(new Blockly.FieldDropdown([["Red","0"], ["Green","1"], ["Blue","2"]]), "color");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(80);
+ this.setTooltip("Fill a LED range from L0 to the specified number with a defined brightness and color.");
+ this.setHelpUrl("");
+  }
+};
+
+/* ------------------------------------------------------------------------------------------ */
+
+Blockly.Blocks['returnToHome'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Return ")
+        .appendField(new Blockly.FieldDropdown([["simple","0"]/*, ["fast","1"]*/]), "modus")
+        .appendField("to home position"),
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("The robot automatically tries to return to its starting position.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['returnToHomeGer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Fahre im")
+        .appendField(new Blockly.FieldDropdown([["einfachen","0"]/*, ["schnellen","1"]*/]), "modus")
+        .appendField("Modus an die Startposition zurück"),
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
+ this.setTooltip("Mithilfe dieser Funktion versucht der Roboter automatisch an seine Startposition zurückzukehren.");
+ this.setHelpUrl("");
+  }
+};
+
+/* ------------------------------------------------------------------------------------------ */
+
 Blockly.Blocks['analog_logic_compare'] = {
   init: function() {
     this.appendDummyInput()
@@ -312,9 +361,6 @@ Blockly.Blocks['analog_logic_compareGer'] = {
   }
 };
 
-/*
- * Dropdown
- */
 Blockly.Blocks['digital_logic_compare'] = {
   init: function() {
     this.appendDummyInput()
@@ -343,11 +389,9 @@ Blockly.Blocks['digital_logic_compareGer'] = {
   }
 };
 
-/*
- *
- */
+/* ------------------------------------------------------------------------------------------ */
 
- Blockly.Blocks['controls_if1'] = {
+Blockly.Blocks['controls_if1'] = {
    init: function() {
      this.appendValueInput("IF0")
          .setCheck("Boolean")
@@ -378,10 +422,6 @@ Blockly.Blocks['controls_if1Ger'] = {
  this.setHelpUrl("https://en.wikipedia.org/wiki/Conditional_(computer_programming)#If%E2%80%93then(%E2%80%93else)");
   }
 };
-
-/*
- *
- */
 
  Blockly.Blocks['controls_whileuntil1'] = {
   init: function() {
@@ -471,29 +511,151 @@ Blockly.Blocks['controls_ifelse1Ger'] = {
   }
 };
 
-Blockly.Blocks['rotateleft'] = {
+/* ------------------------------------------------------------------------------------------ */
+
+Blockly.Blocks['rotation'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Rotate left by")
-        .appendField(new Blockly.FieldDropdown([["90°","angleOne"], ["180°","angleTwo"], ["270°","agnleThree"]]), "angle");
+        .appendField("Rotate around itself ")
+        .appendField(new Blockly.FieldDropdown([["left","0"], ["right","1"]]), "rotation_direction")
+        .appendField("by")
+        .appendField(new Blockly.FieldNumber(0, -1, Infinity, 0.25), "times")
+        .appendField("times");
     this.setInputsInline(true);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(60);
+ this.setTooltip("Rotate around itself left or right by n-times (0.25, 0.5, ... 2, 3, ...).");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['rotationGer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Drehung um sich selbst nach")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "rotation_direction")
+        .appendField(new Blockly.FieldNumber(0, -1, Infinity, 0.25), "times")
+        .appendField("mal");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("Drehung um sich selbst nach rechts oder links n-mal (0.25, 0.5, ... 2, 3, ...)");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['rotate'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Rotate ")
+        .appendField(new Blockly.FieldDropdown([["left","0"], ["right","1"]]), "rotate_direction")
+        .appendField(new Blockly.FieldNumber(0, 0, 360, 1), "angle")
+        .appendField("°");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("Rotate around itself left or right by an angle.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['rotateGer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Drehung")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "rotate_direction")
+        .appendField("um ")
+        .appendField(new Blockly.FieldNumber(0, 0, 360, 1), "angle")
+        .appendField("°");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("Drehung um die Achse des Stifthalters nach links oder rechts um einen angegebenen Winkel.");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['circle'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Drehung um ")
+        .appendField(new Blockly.FieldDropdown([["linkes","0"], ["rechtes","1"]]), "direction")
+        .appendField("Rad")
+        .appendField(new Blockly.FieldNumber(0, -1, Infinity, 0.25), "circle")
+        .appendField("mal");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("Rotate around the left or right wheel multiple times (0.25, 0.5, ... 2, 3, ...).");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['circleGer'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Drehung um ")
+        .appendField(new Blockly.FieldDropdown([["linkes","0"], ["rechtes","1"]]), "direction")
+        .appendField("Rad")
+        .appendField(new Blockly.FieldNumber(0, -1, Infinity, 0.25), "circle")
+        .appendField("mal");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(60);
+ this.setTooltip("Drehung um das rechte oder linke, feststehende Rad n-mal (0.25, 0.5, ... 2, 3, ...).");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Blocks['distance'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Motor M0")
+        .appendField("fahre")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM0")
+        .appendField("für ")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM0")
+        .appendField("cm")
+        .appendField("(max 100cm)");
+    this.appendDummyInput()
+        .appendField("Motor M1")
+        .appendField("fahre")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM1")
+        .appendField("für")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM1")
+        .appendField("cm")
+        .appendField("(max 100cm)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(290);
  this.setTooltip("");
  this.setHelpUrl("");
   }
 };
 
-Blockly.Blocks['rotateright'] = {
+Blockly.Blocks['distanceGer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Rotate right by")
-        .appendField(new Blockly.FieldDropdown([["90°","angleOne"], ["180°","angleTwo"], ["270°","agnleThree"]]), "angle");
-    this.setInputsInline(true);
+        .appendField("Motor M0")
+        .appendField("fahre")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM0")
+        .appendField("für ")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM0")
+        .appendField("cm")
+        .appendField("(max 100cm)");
+    this.appendDummyInput()
+        .appendField("Motor M1")
+        .appendField("fahre")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM1")
+        .appendField("für")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM1")
+        .appendField("cm")
+        .appendField("(max 100cm)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(60);
+    this.setColour(290);
  this.setTooltip("");
  this.setHelpUrl("");
   }
