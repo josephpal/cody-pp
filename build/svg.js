@@ -20,5 +20,6 @@ add('pause');
 add('play');
 add('save');
 add('stop');
+add('settings')
 
 fs.writeFileSync('./src/assets/svg/sprites.svg', sprites);
