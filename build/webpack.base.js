@@ -27,6 +27,9 @@ const webpackConfig = {
       vue$: 'vue/dist/vue.esm.js',
     },
   },
+  // node: {
+  //    fs: "empty"
+  // },
   plugins: [
     new webpack.DefinePlugin(defaults),
   ],
