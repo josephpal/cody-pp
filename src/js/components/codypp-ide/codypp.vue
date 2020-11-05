@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 import BlocklyContainer from './BlocklyContainer';
 import CodePreview from './CodePreview';
 

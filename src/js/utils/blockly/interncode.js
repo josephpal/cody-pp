@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 /**
@@ -28,9 +28,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.interncode');
+//goog.provide('Blockly.interncode');
 
-goog.require('Blockly.Generator');
+//goog.require('Blockly.Generator');
 
 
 /**

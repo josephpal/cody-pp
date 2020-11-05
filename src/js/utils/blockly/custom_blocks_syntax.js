@@ -1,19 +1,19 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 'use strict';
 
-goog.provide('Blockly.interncode.logic');
+//goog.provide('Blockly.interncode.logic');
 
-goog.require('Blockly.interncode');
+//goog.require('Blockly.interncode');
 
-goog.provide('Blockly.Cpp.logic');
+//goog.provide('Blockly.Cpp.logic');
 
-goog.require('Blockly.Cpp');
+//goog.require('Blockly.Cpp');
 
-goog.provide('Blockly.ArduinoCpp.logic');
+//goog.provide('Blockly.ArduinoCpp.logic');
 
-goog.require('Blockly.ArduinoCpp');
+//goog.require('Blockly.ArduinoCpp');
 
 /* ------------------------------------------------------------------------------------------ */
 

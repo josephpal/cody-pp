@@ -26,11 +26,9 @@
 /* global __PUBLIC_PATH__ */
 
 import Vue from 'vue';
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 import { ToggleButton } from 'vue-js-toggle-button';
 import SemiCircleButton from './SemiCircleButton';
-import '../../utils/blockly/custom_blocks';
-import '../../utils/blockly/lua';
 
 import '../../utils/blockly/cpp';
 import '../../utils/blockly/arduinocpp';
@@ -38,13 +36,16 @@ import '../../utils/blockly/basic';
 import '../../utils/blockly/basicger';
 import '../../utils/blockly/javascript';
 import '../../utils/blockly/interncode';
+import '../../utils/blockly/lua';
 
-import '../../utils/blockly/dart';
 import '../../utils/blockly/math';
 import '../../utils/blockly/logic';
 import '../../utils/blockly/loops';
 import '../../utils/blockly/text';
+
+import '../../utils/blockly/custom_blocks';
 import '../../utils/blockly/custom_blocks_syntax';
+
 import { xmlGer } from '../../utils/blockly/toolbox';
 import { xmlEng } from '../../utils/blockly/toolbox';
 import config from '../../../../config';

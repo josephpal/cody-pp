@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 /**
@@ -27,9 +27,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.Lua.texts');
+//goog.provide('Blockly.Lua.texts');
 
-goog.require('Blockly.Lua');
+//goog.require('Blockly.Lua');
 
 
 Blockly.Lua['text'] = function(block) {
@@ -389,9 +389,9 @@ Blockly.Lua['text_reverse'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.Dart.texts');
+//goog.provide('Blockly.Dart.texts');
 
-goog.require('Blockly.Dart');
+//goog.require('Blockly.Dart');
 
 
 Blockly.Dart.addReservedWords('Html,Math');
@@ -737,9 +737,9 @@ Blockly.Dart['text_reverse'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.JavaScript.texts');
+//goog.provide('Blockly.JavaScript.texts');
 
-goog.require('Blockly.JavaScript');
+//goog.require('Blockly.JavaScript');
 
 
 Blockly.JavaScript['text'] = function(block) {
@@ -1043,7 +1043,7 @@ Blockly.JavaScript['text_replace'] = function(block) {
   var to = Blockly.JavaScript.valueToCode(block, 'TO',
       Blockly.JavaScript.ORDER_NONE) || '\'\'';
   // The regex escaping code below is taken from the implementation of
-  // goog.string.regExpEscape.
+  // //goog.string.regExpEscape.
   var functionName = Blockly.JavaScript.provideFunction_(
       'textReplace',
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +

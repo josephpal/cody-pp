@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 /**
@@ -27,9 +27,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.basicger');
+//goog.provide('Blockly.basicger');
 
-goog.require('Blockly.Generator');
+//goog.require('Blockly.Generator');
 
 
 /**
@@ -203,7 +203,7 @@ Blockly.basicger.scrubNakedValue = function(line) {
  * @private
  */
 Blockly.basicger.quote_ = function(string) {
-  // Can't use goog.string.quote since Google's style guide recommends
+  // Can't use //goog.string.quote since Google's style guide recommends
   // JS string literals use single quotes.
   string = string.replace(/\\/g, '\\\\')
                  .replace(/\n/g, '\\\n')

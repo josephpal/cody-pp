@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 /**
@@ -27,9 +27,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.interncode.math');
+//goog.provide('Blockly.interncode.math');
 
-goog.require('Blockly.interncode');
+//goog.require('Blockly.interncode');
 
 
 Blockly.interncode['math_number'] = function(block) {
@@ -453,9 +453,9 @@ Blockly.interncode['math_random_float'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.ArduinoCpp.math');
+//goog.provide('Blockly.ArduinoCpp.math');
 
-goog.require('Blockly.ArduinoCpp');
+//goog.require('Blockly.ArduinoCpp');
 
 
 Blockly.ArduinoCpp.addReservedWords('Math');
@@ -941,9 +941,9 @@ Blockly.ArduinoCpp['math_random_float'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.Cpp.math');
+//goog.provide('Blockly.Cpp.math');
 
-goog.require('Blockly.Cpp');
+//goog.require('Blockly.Cpp');
 
 
 Blockly.Cpp.addReservedWords('Math');
@@ -1429,9 +1429,9 @@ Blockly.Cpp['math_random_float'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.basic.math');
+//goog.provide('Blockly.basic.math');
 
-goog.require('Blockly.basic');
+//goog.require('Blockly.basic');
 
 
 Blockly.basic['math_number'] = function(block) {
@@ -1841,9 +1841,9 @@ Blockly.basic['math_random_float'] = function(block) {
  */
 'use strict';
 
-goog.provide('Blockly.basicger.math');
+//goog.provide('Blockly.basicger.math');
 
-goog.require('Blockly.basicger');
+//goog.require('Blockly.basicger');
 
 
 Blockly.basicger['math_number'] = function(block) {

@@ -58,7 +58,7 @@
   import DropDown from './DropDown';
   import RoundButton from './RoundButton';
   import Languages from '../../enum/Languages';
-  import Blockly from 'node-blockly/browser';
+  import * as Blockly from 'blockly';
   import { resetLogicCounterVar } from '../../utils/blockly/logic';
   import { resetLoopsCounterVar } from '../../utils/blockly/loops';
 

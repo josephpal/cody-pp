@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'blockly';
 const goog = Blockly.goog;
 
 /**
@@ -27,9 +27,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.ArduinoCpp');
+//goog.provide('Blockly.ArduinoCpp');
 
-goog.require('Blockly.Generator');
+//goog.require('Blockly.Generator');
 
 
 /**
@@ -165,7 +165,7 @@ Blockly.ArduinoCpp.scrubNakedValue = function(line) {
  * @private
  */
 Blockly.ArduinoCpp.quote_ = function(string) {
-  // Can't use goog.string.quote since $ must also be escaped.
+  // Can't use //goog.string.quote since $ must also be escaped.
   string = string.replace(/\\/g, '\\\\')
                  .replace(/\n/g, '\\\n')
                  .replace(/\$/g, '\\$')

@@ -1,5 +1,5 @@
-import * as Blockly from 'node-blockly/browser';
-const goog = Blockly.goog;
+import * as Blockly from 'blockly';
+//const goog = Blockly.goog;
 
 /**
  * @license
@@ -28,9 +28,9 @@ const goog = Blockly.goog;
  */
 'use strict';
 
-goog.provide('Blockly.Lua');
+//goog.provide('Blockly.Lua');
 
-goog.require('Blockly.Generator');
+//goog.require('Blockly.Generator');
 
 
 /**
