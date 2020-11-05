@@ -1,6 +1,7 @@
 const path = require('path');
 const config = require('../config');
 const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const defaults = {
   __DEV__: JSON.stringify(config.isDev),
@@ -32,6 +33,7 @@ const webpackConfig = {
   // },
   plugins: [
     new webpack.DefinePlugin(defaults),
+    new VueLoaderPlugin()
   ],
   module: {
     rules: [

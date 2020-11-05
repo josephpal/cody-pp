@@ -1,4 +1,4 @@
-import Blockly from 'node-blockly/browser';
+import * as Blockly from 'node-blockly/browser';
 const goog = Blockly.goog;
 
 /**

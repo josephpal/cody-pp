@@ -1,5 +1,5 @@
 /* eslint-disable */
-const webpackMerge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 module.exports = () => {
   const env = process.env.NODE_ENV;
@@ -7,5 +7,5 @@ module.exports = () => {
   const baseConfig = require('./build/webpack.base');
   const envConfig = require(`./build/webpack.${env}`);
 
-  return webpackMerge(baseConfig, envConfig);
+  return merge(baseConfig, envConfig);
 };
