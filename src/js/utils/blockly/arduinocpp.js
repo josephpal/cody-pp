@@ -46,22 +46,22 @@ Blockly.ArduinoCpp = new Blockly.Generator('ArduinoCpp');
  * @private
  */
 Blockly.ArduinoCpp.addReservedWords(
-    // https://www.ArduinoCpplang.org/docs/spec/latest/ArduinoCpp-language-specification.pdf
-    // Section 16.1.1
-    'assert,break,case,catch,class,const,continue,default,do,else,enum,' +
-    'extends,false,final,finally,for,if,in,is,new,null,rethrow,return,super,' +
-    'switch,this,throw,true,try,var,void,while,with,' +
-    // https://api.ArduinoCpplang.org/ArduinoCpp_core.html
-    'print,identityHashCode,identical,BidirectionalIterator,Comparable,' +
-    'double,Function,int,Invocation,Iterable,Iterator,List,Map,Match,num,' +
-    'Pattern,RegExp,Set,StackTrace,String,StringSink,Type,bool,DateTime,' +
-    'Deprecated,Duration,Expando,Null,Object,RuneIterator,Runes,Stopwatch,' +
-    'StringBuffer,Symbol,Uri,Comparator,AbstractClassInstantiationError,' +
-    'ArgumentError,AssertionError,CastError,ConcurrentModificationError,' +
-    'CyclicInitializationError,Error,Exception,FallThroughError,' +
-    'FormatException,IntegerDivisionByZeroException,NoSuchMethodError,' +
-    'NullThrownError,OutOfMemoryError,RangeError,StackOverflowError,' +
-    'StateError,TypeError,UnimplementedError,UnsupportedError'
+  // https://www.ArduinoCpplang.org/docs/spec/latest/ArduinoCpp-language-specification.pdf
+  // Section 16.1.1
+  'assert,break,case,catch,class,const,continue,default,do,else,enum,' +
+  'extends,false,final,finally,for,if,in,is,new,null,rethrow,return,super,' +
+  'switch,this,throw,true,try,var,void,while,with,' +
+  // https://api.ArduinoCpplang.org/ArduinoCpp_core.html
+  'print,identityHashCode,identical,BidirectionalIterator,Comparable,' +
+  'double,Function,int,Invocation,Iterable,Iterator,List,Map,Match,num,' +
+  'Pattern,RegExp,Set,StackTrace,String,StringSink,Type,bool,DateTime,' +
+  'Deprecated,Duration,Expando,Null,Object,RuneIterator,Runes,Stopwatch,' +
+  'StringBuffer,Symbol,Uri,Comparator,AbstractClassInstantiationError,' +
+  'ArgumentError,AssertionError,CastError,ConcurrentModificationError,' +
+  'CyclicInitializationError,Error,Exception,FallThroughError,' +
+  'FormatException,IntegerDivisionByZeroException,NoSuchMethodError,' +
+  'NullThrownError,OutOfMemoryError,RangeError,StackOverflowError,' +
+  'StateError,TypeError,UnimplementedError,UnsupportedError'
 );
 
 /**
@@ -91,7 +91,7 @@ Blockly.ArduinoCpp.ORDER_NONE = 99;          // (...)
  * Initialise the database of variable names.
  * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
-Blockly.ArduinoCpp.init = function(workspace) {
+Blockly.ArduinoCpp.init = function (workspace) {
   // Create a dictionary of definitions to be printed before the code.
   Blockly.ArduinoCpp.definitions_ = Object.create(null);
   // Create a dictionary mapping desired function names in definitions_
@@ -100,7 +100,7 @@ Blockly.ArduinoCpp.init = function(workspace) {
 
   if (!Blockly.ArduinoCpp.variableDB_) {
     Blockly.ArduinoCpp.variableDB_ =
-        new Blockly.Names(Blockly.ArduinoCpp.RESERVED_WORDS_);
+      new Blockly.Names(Blockly.ArduinoCpp.RESERVED_WORDS_);
   } else {
     Blockly.ArduinoCpp.variableDB_.reset();
   }
@@ -110,10 +110,10 @@ Blockly.ArduinoCpp.init = function(workspace) {
   if (variables.length) {
     for (var i = 0; i < variables.length; i++) {
       defvars[i] = Blockly.ArduinoCpp.variableDB_.getName(variables[i].name,
-          Blockly.Variables.NAME_TYPE);
+        Blockly.Variables.NAME_TYPE);
     }
     Blockly.ArduinoCpp.definitions_['variables'] =
-        'var ' + defvars.join(', ') + ';';
+      'var ' + defvars.join(', ') + ';';
   }
 };
 
@@ -122,7 +122,7 @@ Blockly.ArduinoCpp.init = function(workspace) {
  * @param {string} code Generated code.
  * @return {string} Completed code.
  */
-Blockly.ArduinoCpp.finish = function(code) {
+Blockly.ArduinoCpp.finish = function (code) {
   // Indent every line.
   /*if (code) {
     code = Blockly.ArduinoCpp.prefixLines(code, Blockly.ArduinoCpp.INDENT);
@@ -154,7 +154,7 @@ Blockly.ArduinoCpp.finish = function(code) {
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
-Blockly.ArduinoCpp.scrubNakedValue = function(line) {
+Blockly.ArduinoCpp.scrubNakedValue = function (line) {
   return line + ';\n';
 };
 
@@ -164,12 +164,12 @@ Blockly.ArduinoCpp.scrubNakedValue = function(line) {
  * @return {string} ArduinoCpp string.
  * @private
  */
-Blockly.ArduinoCpp.quote_ = function(string) {
+Blockly.ArduinoCpp.quote_ = function (string) {
   // Can't use //goog.string.quote since $ must also be escaped.
   string = string.replace(/\\/g, '\\\\')
-                 .replace(/\n/g, '\\\n')
-                 .replace(/\$/g, '\\$')
-                 .replace(/'/g, '\\\'');
+    .replace(/\n/g, '\\\n')
+    .replace(/\$/g, '\\$')
+    .replace(/'/g, '\\\'');
   return '\'' + string + '\'';
 };
 
@@ -182,14 +182,14 @@ Blockly.ArduinoCpp.quote_ = function(string) {
  * @return {string} ArduinoCpp code with comments and subsequent blocks added.
  * @private
  */
-Blockly.ArduinoCpp.scrub_ = function(block, code) {
+Blockly.ArduinoCpp.scrub_ = function (block, code) {
   var commentCode = '';
   // Only collect comments for blocks that aren't inline.
   if (!block.outputConnection || !block.outputConnection.targetConnection) {
     // Collect comment for this block.
     var comment = block.getCommentText();
-    comment = Blockly.utils.wrap(comment, Blockly.ArduinoCpp.COMMENT_WRAP - 3);
     if (comment) {
+      comment = Blockly.utils.wrap(comment, Blockly.ArduinoCpp.COMMENT_WRAP - 3);
       if (block.getProcedureDef) {
         // Use documentation comment for function comments.
         commentCode += Blockly.ArduinoCpp.prefixLines(comment + '\n', '/// ');
@@ -225,8 +225,8 @@ Blockly.ArduinoCpp.scrub_ = function(block, code) {
  * @param {number=} opt_order The highest order acting on this value.
  * @return {string|number}
  */
-Blockly.ArduinoCpp.getAdjusted = function(block, atId, opt_delta, opt_negate,
-    opt_order) {
+Blockly.ArduinoCpp.getAdjusted = function (block, atId, opt_delta, opt_negate,
+  opt_order) {
   var delta = opt_delta || 0;
   var order = opt_order || Blockly.ArduinoCpp.ORDER_NONE;
   if (block.workspace.options.oneBasedIndex) {
@@ -235,13 +235,13 @@ Blockly.ArduinoCpp.getAdjusted = function(block, atId, opt_delta, opt_negate,
   var defaultAtIndex = block.workspace.options.oneBasedIndex ? '1' : '0';
   if (delta) {
     var at = Blockly.ArduinoCpp.valueToCode(block, atId,
-        Blockly.ArduinoCpp.ORDER_ADDITIVE) || defaultAtIndex;
+      Blockly.ArduinoCpp.ORDER_ADDITIVE) || defaultAtIndex;
   } else if (opt_negate) {
     var at = Blockly.ArduinoCpp.valueToCode(block, atId,
-        Blockly.ArduinoCpp.ORDER_UNARY_PREFIX) || defaultAtIndex;
+      Blockly.ArduinoCpp.ORDER_UNARY_PREFIX) || defaultAtIndex;
   } else {
     var at = Blockly.ArduinoCpp.valueToCode(block, atId, order) ||
-        defaultAtIndex;
+      defaultAtIndex;
   }
 
   if (Blockly.isNumber(at)) {

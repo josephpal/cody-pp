@@ -14,7 +14,8 @@
 
       <div class="code-container" v-bar>
         <div class="scrollable">
-          <pre v-highlightjs="code"><code :class="languageClass"></code></pre>
+          <pre><code v-html="code"></code></pre>
+          <!-- <highlightjs :language="languageClass" :code="code" /> -->
         </div>
       </div>
     </div>
@@ -59,8 +60,10 @@
   import RoundButton from './RoundButton';
   import Languages from '../../enum/Languages';
   import * as Blockly from 'blockly';
-  import { resetLogicCounterVar } from '../../utils/blockly/logic';
-  import { resetLoopsCounterVar } from '../../utils/blockly/loops';
+  // import { resetLogicCounterVar } from '../../utils/blockly/logic';
+  // import { resetLoopsCounterVar } from '../../utils/blockly/loops';
+
+  import languageArduinoCPP from "../../languages/arduinocpp/index"
 
   import SocketMessages from '../../enum/SocketMessageTypes';
 
@@ -200,7 +203,8 @@
             this.code = Blockly.Cpp.workspaceToCode(this.blocklyWorkspace);
             break;
           case Languages.ARDUINOCPP:
-            this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyWorkspace);
+            this.code = languageArduinoCPP.workspaceToCode(this.blocklyWorkspace)
+           // this.code = Blockly.ArduinoCpp.workspaceToCode(this.blocklyWorkspace);
             break;
           case Languages.BASIC:
             this.code = Blockly.basic.workspaceToCode(this.blocklyWorkspace);
@@ -289,8 +293,8 @@
       },
 
       getInternalCode() {
-        resetLogicCounterVar();
-        resetLoopsCounterVar();
+        // resetLogicCounterVar();
+        // resetLoopsCounterVar();
         return Blockly.interncode.workspaceToCode(this.blocklyWorkspace);
       },
 

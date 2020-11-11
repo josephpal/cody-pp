@@ -47,29 +47,29 @@ Blockly.Lua = new Blockly.Generator('Lua');
  * @private
  */
 Blockly.Lua.addReservedWords(
-    // Special character
-    '_,' +
-    // From theoriginalbit's script:
-    // https://github.com/espertus/blockly-lua/issues/6
-    '__inext,assert,bit,colors,colours,coroutine,disk,dofile,error,fs,' +
-    'fetfenv,getmetatable,gps,help,io,ipairs,keys,loadfile,loadstring,math,' +
-    'native,next,os,paintutils,pairs,parallel,pcall,peripheral,print,' +
-    'printError,rawequal,rawget,rawset,read,rednet,redstone,rs,select,' +
-    'setfenv,setmetatable,sleep,string,table,term,textutils,tonumber,' +
-    'tostring,turtle,type,unpack,vector,write,xpcall,_VERSION,__indext,' +
-    // Not included in the script, probably because it wasn't enabled:
-    'HTTP,' +
-    // Keywords (http://www.lua.org/pil/1.3.html).
-    'and,break,do,else,elseif,end,false,for,function,if,in,local,nil,not,or,' +
-    'repeat,return,then,true,until,while,' +
-    // Metamethods (http://www.lua.org/manual/5.2/manual.html).
-    'add,sub,mul,div,mod,pow,unm,concat,len,eq,lt,le,index,newindex,call,' +
-    // Basic functions (http://www.lua.org/manual/5.2/manual.html, section 6.1).
-    'assert,collectgarbage,dofile,error,_G,getmetatable,inpairs,load,' +
-    'loadfile,next,pairs,pcall,print,rawequal,rawget,rawlen,rawset,select,' +
-    'setmetatable,tonumber,tostring,type,_VERSION,xpcall,' +
-    // Modules (http://www.lua.org/manual/5.2/manual.html, section 6.3).
-    'require,package,string,table,math,bit32,io,file,os,debug'
+  // Special character
+  '_,' +
+  // From theoriginalbit's script:
+  // https://github.com/espertus/blockly-lua/issues/6
+  '__inext,assert,bit,colors,colours,coroutine,disk,dofile,error,fs,' +
+  'fetfenv,getmetatable,gps,help,io,ipairs,keys,loadfile,loadstring,math,' +
+  'native,next,os,paintutils,pairs,parallel,pcall,peripheral,print,' +
+  'printError,rawequal,rawget,rawset,read,rednet,redstone,rs,select,' +
+  'setfenv,setmetatable,sleep,string,table,term,textutils,tonumber,' +
+  'tostring,turtle,type,unpack,vector,write,xpcall,_VERSION,__indext,' +
+  // Not included in the script, probably because it wasn't enabled:
+  'HTTP,' +
+  // Keywords (http://www.lua.org/pil/1.3.html).
+  'and,break,do,else,elseif,end,false,for,function,if,in,local,nil,not,or,' +
+  'repeat,return,then,true,until,while,' +
+  // Metamethods (http://www.lua.org/manual/5.2/manual.html).
+  'add,sub,mul,div,mod,pow,unm,concat,len,eq,lt,le,index,newindex,call,' +
+  // Basic functions (http://www.lua.org/manual/5.2/manual.html, section 6.1).
+  'assert,collectgarbage,dofile,error,_G,getmetatable,inpairs,load,' +
+  'loadfile,next,pairs,pcall,print,rawequal,rawget,rawlen,rawset,select,' +
+  'setmetatable,tonumber,tostring,type,_VERSION,xpcall,' +
+  // Modules (http://www.lua.org/manual/5.2/manual.html, section 6.3).
+  'require,package,string,table,math,bit32,io,file,os,debug'
 );
 
 /**
@@ -99,7 +99,7 @@ Blockly.Lua.ORDER_NONE = 99;
  * Initialise the database of variable names.
  * @param {!Blockly.Workspace} workspace Workspace to generate code from.
  */
-Blockly.Lua.init = function(workspace) {
+Blockly.Lua.init = function (workspace) {
   // Create a dictionary of definitions to be printed before the code.
   Blockly.Lua.definitions_ = Object.create(null);
   // Create a dictionary mapping desired function names in definitions_
@@ -108,7 +108,7 @@ Blockly.Lua.init = function(workspace) {
 
   if (!Blockly.Lua.variableDB_) {
     Blockly.Lua.variableDB_ =
-        new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
+      new Blockly.Names(Blockly.Lua.RESERVED_WORDS_);
   } else {
     Blockly.Lua.variableDB_.reset();
   }
@@ -119,7 +119,7 @@ Blockly.Lua.init = function(workspace) {
  * @param {string} code Generated code.
  * @return {string} Completed code.
  */
-Blockly.Lua.finish = function(code) {
+Blockly.Lua.finish = function (code) {
   // Convert the definitions dictionary into a list.
   var definitions = [];
   for (var name in Blockly.Lua.definitions_) {
@@ -140,7 +140,7 @@ Blockly.Lua.finish = function(code) {
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
-Blockly.Lua.scrubNakedValue = function(line) {
+Blockly.Lua.scrubNakedValue = function (line) {
   return 'local _ = ' + line + '\n';
 };
 
@@ -151,10 +151,10 @@ Blockly.Lua.scrubNakedValue = function(line) {
  * @return {string} Lua string.
  * @private
  */
-Blockly.Lua.quote_ = function(string) {
+Blockly.Lua.quote_ = function (string) {
   string = string.replace(/\\/g, '\\\\')
-                 .replace(/\n/g, '\\\n')
-                 .replace(/'/g, '\\\'');
+    .replace(/\n/g, '\\\n')
+    .replace(/'/g, '\\\'');
   return '\'' + string + '\'';
 };
 
@@ -167,14 +167,14 @@ Blockly.Lua.quote_ = function(string) {
  * @return {string} Lua code with comments and subsequent blocks added.
  * @private
  */
-Blockly.Lua.scrub_ = function(block, code) {
+Blockly.Lua.scrub_ = function (block, code) {
   var commentCode = '';
   // Only collect comments for blocks that aren't inline.
   if (!block.outputConnection || !block.outputConnection.targetConnection) {
     // Collect comment for this block.
     var comment = block.getCommentText();
-    comment = Blockly.utils.wrap(comment, Blockly.Lua.COMMENT_WRAP - 3);
     if (comment) {
+      comment = Blockly.utils.wrap(comment, Blockly.Lua.COMMENT_WRAP - 3);
       commentCode += Blockly.Lua.prefixLines(comment, '-- ') + '\n';
     }
     // Collect comments for all value arguments.

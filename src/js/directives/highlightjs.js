@@ -1,7 +1,7 @@
 'use strict';
 
-const hljs = require("highlight.js/lib/highlight.js");
-hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
+// const hljs = require("highlight.js/lib/highlight.js");
+// hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
 
 
 const vueHighlightJS = {};

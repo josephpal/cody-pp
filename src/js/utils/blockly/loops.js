@@ -46,7 +46,7 @@ const goog = Blockly.goog;
 var b = -1;
 
 export const resetLoopsCounterVar = () => {
-    b = -1;
+  b = -1;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ Blockly.interncode.CONTINUE_STATEMENT = 'goto continue\n';
  * @return {string} Generated label or '' if unnecessary
  */
 
-Blockly.interncode.addContinueLabel = function(branch) {
+Blockly.interncode.addContinueLabel = function (branch) {
   if (branch.indexOf(Blockly.interncode.CONTINUE_STATEMENT) > -1) {
     return branch + Blockly.interncode.INDENT + '::continue::\n';
   } else {
@@ -80,7 +80,7 @@ Blockly.interncode.addContinueLabel = function(branch) {
   }
 };
 
-Blockly.Cpp.addContinueLabel = function(branch) {
+Blockly.Cpp.addContinueLabel = function (branch) {
   if (branch.indexOf(Blockly.Cpp.CONTINUE_STATEMENT) > -1) {
     return branch + Blockly.Cpp.INDENT + '::continue::\n';
   } else {
@@ -88,7 +88,7 @@ Blockly.Cpp.addContinueLabel = function(branch) {
   }
 };
 
-Blockly.ArduinoCpp.addContinueLabel = function(branch) {
+Blockly.ArduinoCpp.addContinueLabel = function (branch) {
   if (branch.indexOf(Blockly.ArduinoCpp.CONTINUE_STATEMENT) > -1) {
     return branch + Blockly.ArduinoCpp.INDENT + '::continue::\n';
   } else {
@@ -98,11 +98,11 @@ Blockly.ArduinoCpp.addContinueLabel = function(branch) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Blockly.interncode['controls_repeat_ext'] = function(block) {
+Blockly.interncode['controls_repeat_ext'] = function (block) {
 
   // Repeat n times (external number).
   var repeats = Blockly.interncode.valueToCode(block, 'TIMES',
-      Blockly.interncode.ORDER_NONE) || '0';
+    Blockly.interncode.ORDER_NONE) || '0';
   if (Blockly.isNumber(repeats)) {
     repeats = parseInt(repeats, 10);
   } else {
@@ -111,20 +111,20 @@ Blockly.interncode['controls_repeat_ext'] = function(block) {
   var branch = Blockly.interncode.statementToCode(block, 'DO') || '\n';
   branch = Blockly.interncode.addContinueLabel(branch);
   var loopVar = Blockly.interncode.variableDB_.getDistinctName(
-      'count', Blockly.Variables.NAME_TYPE);
+    'count', Blockly.Variables.NAME_TYPE);
   ++b;
   var code = '#W,' + 'Z,' + repeats + ',' + b + ';' + '\n' +
-      branch + '#X,' + b + ';' + '\n';
+    branch + '#X,' + b + ';' + '\n';
   return code;
 };
 
 Blockly.interncode['controls_repeat_extGer'] = Blockly.interncode['controls_repeat_ext'];
 
-Blockly.Cpp['controls_repeat_ext'] = function(block) {
+Blockly.Cpp['controls_repeat_ext'] = function (block) {
 
   // Repeat n times (external number).
   var repeats = Blockly.Cpp.valueToCode(block, 'TIMES',
-      Blockly.Cpp.ORDER_NONE) || '0';
+    Blockly.Cpp.ORDER_NONE) || '0';
   if (Blockly.isNumber(repeats)) {
     repeats = parseInt(repeats, 10);
   } else {
@@ -133,7 +133,7 @@ Blockly.Cpp['controls_repeat_ext'] = function(block) {
   var branch = Blockly.Cpp.statementToCode(block, 'DO') || '\n';
   branch = Blockly.Cpp.addContinueLabel(branch);
   var loopVar = Blockly.Cpp.variableDB_.getDistinctName(
-      'count', Blockly.Variables.NAME_TYPE);
+    'count', Blockly.Variables.NAME_TYPE);
   ++b;
   var code = 'for (int i = 0; i<' + repeats + ';i++) {\n' + branch + '}\n';
   return code;
@@ -141,11 +141,11 @@ Blockly.Cpp['controls_repeat_ext'] = function(block) {
 
 Blockly.Cpp['controls_repeat_extGer'] = Blockly.Cpp['controls_repeat_ext'];
 
-Blockly.ArduinoCpp['controls_repeat_ext'] = function(block) {
+Blockly.ArduinoCpp['controls_repeat_ext'] = function (block) {
 
   // Repeat n times (external number).
   var repeats = Blockly.ArduinoCpp.valueToCode(block, 'TIMES',
-      Blockly.ArduinoCpp.ORDER_NONE) || '0';
+    Blockly.ArduinoCpp.ORDER_NONE) || '0';
   if (Blockly.isNumber(repeats)) {
     repeats = parseInt(repeats, 10);
   } else {
@@ -154,7 +154,7 @@ Blockly.ArduinoCpp['controls_repeat_ext'] = function(block) {
   var branch = Blockly.ArduinoCpp.statementToCode(block, 'DO') || '\n';
   branch = Blockly.ArduinoCpp.addContinueLabel(branch);
   var loopVar = Blockly.ArduinoCpp.variableDB_.getDistinctName(
-      'count', Blockly.Variables.NAME_TYPE);
+    'count', Blockly.Variables.NAME_TYPE);
   ++b;
   var code = 'for (int i = 0; i < ' + repeats + '; i++) {\n' + branch + '}\n';
   return code;
@@ -164,11 +164,11 @@ Blockly.ArduinoCpp['controls_repeat_extGer'] = Blockly.ArduinoCpp['controls_repe
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Blockly.interncode['controls_whileuntil1'] = function(block) {
+Blockly.interncode['controls_whileuntil1'] = function (block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
   var argument0 = Blockly.interncode.valueToCode(block, 'BOOL',
-      until ? Blockly.interncode.ORDER_UNARY :
+    until ? Blockly.interncode.ORDER_UNARY :
       Blockly.interncode.ORDER_NONE) || 'A,0,=,0';
   var branch = Blockly.interncode.statementToCode(block, 'DO') || '\n';
   branch = Blockly.interncode.addLoopTrap(branch, block.id);
@@ -182,11 +182,11 @@ Blockly.interncode['controls_whileuntil1'] = function(block) {
 
 Blockly.interncode['controls_whileuntil1Ger'] = Blockly.interncode['controls_whileuntil1'];
 
-Blockly.Cpp['controls_whileuntil1'] = function(block) {
+Blockly.Cpp['controls_whileuntil1'] = function (block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
   var argument0 = Blockly.Cpp.valueToCode(block, 'BOOL',
-      until ? Blockly.Cpp.ORDER_UNARY :
+    until ? Blockly.Cpp.ORDER_UNARY :
       Blockly.Cpp.ORDER_NONE) || '';
   var branch = Blockly.Cpp.statementToCode(block, 'DO') || '\n';
   branch = Blockly.Cpp.addLoopTrap(branch, block.id);
@@ -200,11 +200,11 @@ Blockly.Cpp['controls_whileuntil1'] = function(block) {
 
 Blockly.Cpp['controls_whileuntil1Ger'] = Blockly.Cpp['controls_whileuntil1'];
 
-Blockly.ArduinoCpp['controls_whileuntil1'] = function(block) {
+Blockly.ArduinoCpp['controls_whileuntil1'] = function (block) {
   // Do while/until loop.
   var until = block.getFieldValue('MODE') == 'UNTIL';
   var argument0 = Blockly.ArduinoCpp.valueToCode(block, 'BOOL',
-      until ? Blockly.ArduinoCpp.ORDER_UNARY :
+    until ? Blockly.ArduinoCpp.ORDER_UNARY :
       Blockly.ArduinoCpp.ORDER_NONE) || '';
   var branch = Blockly.ArduinoCpp.statementToCode(block, 'DO') || '\n';
   branch = Blockly.ArduinoCpp.addLoopTrap(branch, block.id);
@@ -220,7 +220,7 @@ Blockly.ArduinoCpp['controls_whileuntil1Ger'] = Blockly.ArduinoCpp['controls_whi
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Blockly.interncode['start'] = function(block) {
+Blockly.interncode['start'] = function (block) {
   var branch = Blockly.interncode.statementToCode(block, 'state') || '\n';
   branch = Blockly.interncode.addLoopTrap(branch, block.id);
   branch = Blockly.interncode.addContinueLabel(branch);
@@ -230,97 +230,97 @@ Blockly.interncode['start'] = function(block) {
 
 Blockly.interncode['startGer'] = Blockly.interncode['start'];
 
-Blockly.Cpp['start'] = function(block) {
+Blockly.Cpp['start'] = function (block) {
   var branch = Blockly.Cpp.statementToCode(block, 'state') || '\n';
   branch = Blockly.Cpp.addLoopTrap(branch, block.id);
   branch = Blockly.Cpp.addContinueLabel(branch);
   var code = "#include \"ft_ESP32_IOobjects.h\"\n\n"
-	+ "enum Motor_Port {Motor_0, Motor_1};\n\n"
-	+ "enum Led_Port {L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10};\n\n"
-  + "enum Servo_Port {Servo_0, Servo_1, Servo_2, Servo_3};\n\n"
-	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
-  + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
-  + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
-	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
-	+ "/* global objects */\n"
-  + "Motor mMotorArray[MOTOR_QTY];\n" + "Led mLedArray[LED_QTY];\n" + "CServoMotor mServoArray[SERVO_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n"+ "\n"
-  + "/* setup enum */\n"
-	+ "Motor_Port mMotor;\n" + "Led_Port mLed;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" +  "\n"
-	+ "int main() {\n"
-  + Blockly.Cpp.INDENT + "/* ----- motor objects ----- */\n"
-  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
-  + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
-  + Blockly.Cpp.INDENT + "}\n\n"
-  + Blockly.Cpp.INDENT + "/* ----- led objects ----- */\n\n"
-  + Blockly.Cpp.INDENT + "/* -> initialize led strip */\n"
-  + Blockly.Cpp.INDENT + "led_init();\n\n"
-  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < LED_QTY; i++) {\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + "mLedArray[i] = Led(i);\n"
-  + Blockly.Cpp.INDENT + "}\n\n"
-  + Blockly.Cpp.INDENT + "/* -> clear remaining led pixel information */\n"
-  + Blockly.Cpp.INDENT + "led_clear();\n\n"
-  + Blockly.Cpp.INDENT + "/* ----- servo objects ----- */\n"
-  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < SERVO_QTY; i++) {\n"
-  + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mServoArray[i] = CServoMotor(i);\n"
-  + Blockly.Cpp.INDENT + "}\n\n"
-  + Blockly.Cpp.INDENT + "/* ----- input objects ----- */\n"
-  + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
-  + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
-  + Blockly.Cpp.INDENT + "}\n}\n\n"
-  + branch + "\n" + Blockly.Cpp.INDENT + "return 0; \n}";
+    + "enum Motor_Port {Motor_0, Motor_1};\n\n"
+    + "enum Led_Port {L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10};\n\n"
+    + "enum Servo_Port {Servo_0, Servo_1, Servo_2, Servo_3};\n\n"
+    + "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
+    + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
+    + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
+    + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
+    + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
+    + "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
+    + "/* global objects */\n"
+    + "Motor mMotorArray[MOTOR_QTY];\n" + "Led mLedArray[LED_QTY];\n" + "CServoMotor mServoArray[SERVO_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n" + "\n"
+    + "/* setup enum */\n"
+    + "Motor_Port mMotor;\n" + "Led_Port mLed;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" + "\n"
+    + "int main() {\n"
+    + Blockly.Cpp.INDENT + "/* ----- motor objects ----- */\n"
+    + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
+    + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
+    + Blockly.Cpp.INDENT + "}\n\n"
+    + Blockly.Cpp.INDENT + "/* ----- led objects ----- */\n\n"
+    + Blockly.Cpp.INDENT + "/* -> initialize led strip */\n"
+    + Blockly.Cpp.INDENT + "led_init();\n\n"
+    + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < LED_QTY; i++) {\n"
+    + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + "mLedArray[i] = Led(i);\n"
+    + Blockly.Cpp.INDENT + "}\n\n"
+    + Blockly.Cpp.INDENT + "/* -> clear remaining led pixel information */\n"
+    + Blockly.Cpp.INDENT + "led_clear();\n\n"
+    + Blockly.Cpp.INDENT + "/* ----- servo objects ----- */\n"
+    + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < SERVO_QTY; i++) {\n"
+    + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mServoArray[i] = CServoMotor(i);\n"
+    + Blockly.Cpp.INDENT + "}\n\n"
+    + Blockly.Cpp.INDENT + "/* ----- input objects ----- */\n"
+    + Blockly.Cpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
+    + Blockly.Cpp.INDENT + Blockly.ArduinoCpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
+    + Blockly.Cpp.INDENT + "}\n}\n\n"
+    + branch + "\n" + Blockly.Cpp.INDENT + "return 0; \n}";
   return code;
 };
 
 Blockly.Cpp['startGer'] = Blockly.Cpp['start'];
 
-Blockly.ArduinoCpp['start'] = function(block) {
+Blockly.ArduinoCpp['start'] = function (block) {
   var branch = Blockly.ArduinoCpp.statementToCode(block, 'state') || '\n';
   branch = Blockly.ArduinoCpp.addLoopTrap(branch, block.id);
   branch = Blockly.ArduinoCpp.addContinueLabel(branch);
   var code = "#include \"ft_ESP32_IOobjects.h\"\n\n"
-	+ "enum Motor_Port {Motor_0, Motor_1};\n\n"
-	+ "enum Led_Port {L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10};\n\n"
-  + "enum Servo_Port {Servo_0, Servo_1, Servo_2, Servo_3};\n\n"
-	+ "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
-  + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
-  + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
-  + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
-	+ "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
-	+ "/* global objects */\n"
-  + "Motor mMotorArray[MOTOR_QTY];\n" + "Led mLedArray[LED_QTY];\n" + "CServoMotor mServoArray[SERVO_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n"+ "\n"
-  + "/* setup enum */\n"
-	+ "Motor_Port mMotor;\n" + "Led_Port mLed;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" +  "\n" + "void setup() {\n"
-  + Blockly.ArduinoCpp.INDENT + "Serial.begin(115200);\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* ----- motor objects ----- */\n"
-  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
-  + Blockly.ArduinoCpp.INDENT + "}\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* ----- led objects ----- */\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* -> initialize led strip */\n"
-  + Blockly.ArduinoCpp.INDENT + "led_init();\n\n"
-  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < LED_QTY; i++) {\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.Cpp.INDENT + "mLedArray[i] = Led(i);\n"
-  + Blockly.ArduinoCpp.INDENT + "}\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* -> clear remaining led pixel information */\n"
-  + Blockly.ArduinoCpp.INDENT + "led_clear();\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* ----- servo objects ----- */\n"
-  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < SERVO_QTY; i++) {\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mServoArray[i] = CServoMotor(i);\n"
-  + Blockly.ArduinoCpp.INDENT + "}\n\n"
-  + Blockly.ArduinoCpp.INDENT + "/* ----- input objects ----- */\n"
-  + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
-  + Blockly.ArduinoCpp.INDENT + "}\n}\n\n"
-  + "void loop() {\n"
-  + branch + "\n"
-  + Blockly.ArduinoCpp.INDENT + "while(true) {\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "/* infinite loop used as breakpoint */\n"
-  + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "delay(1);" + "\n"
-  + Blockly.ArduinoCpp.INDENT + "}\n"
-  + "}";
+    + "enum Motor_Port {Motor_0, Motor_1};\n\n"
+    + "enum Led_Port {L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10};\n\n"
+    + "enum Servo_Port {Servo_0, Servo_1, Servo_2, Servo_3};\n\n"
+    + "enum Digital_Port {Digital_0, Digital_1, Digital_2, Digital_3,\n"
+    + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + " "
+    + "Digital_4, Digital_5, Digital_6, Digital_7};\n\n"
+    + "enum Analog_Port {Analog_0, Analog_1, Analog_2, Analog_3,\n"
+    + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT + Blockly.Cpp.INDENT
+    + "Analog_4, Analog_5, Analog_6, Analog_7};\n\n"
+    + "/* global objects */\n"
+    + "Motor mMotorArray[MOTOR_QTY];\n" + "Led mLedArray[LED_QTY];\n" + "CServoMotor mServoArray[SERVO_QTY];\n" + "DigitalAnalogIn mDAIn[DAIN_QTY];\n" + "\n"
+    + "/* setup enum */\n"
+    + "Motor_Port mMotor;\n" + "Led_Port mLed;\n" + "Digital_Port mDigital_Port;\n" + "Analog_Port mAnalog_Port;\n" + "\n" + "void setup() {\n"
+    + Blockly.ArduinoCpp.INDENT + "Serial.begin(115200);\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* ----- motor objects ----- */\n"
+    + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < MOTOR_QTY; i++) {\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mMotorArray[i] = Motor(i);\n"
+    + Blockly.ArduinoCpp.INDENT + "}\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* ----- led objects ----- */\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* -> initialize led strip */\n"
+    + Blockly.ArduinoCpp.INDENT + "led_init();\n\n"
+    + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < LED_QTY; i++) {\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.Cpp.INDENT + "mLedArray[i] = Led(i);\n"
+    + Blockly.ArduinoCpp.INDENT + "}\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* -> clear remaining led pixel information */\n"
+    + Blockly.ArduinoCpp.INDENT + "led_clear();\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* ----- servo objects ----- */\n"
+    + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < SERVO_QTY; i++) {\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mServoArray[i] = CServoMotor(i);\n"
+    + Blockly.ArduinoCpp.INDENT + "}\n\n"
+    + Blockly.ArduinoCpp.INDENT + "/* ----- input objects ----- */\n"
+    + Blockly.ArduinoCpp.INDENT + "for(unsigned int i = 0; i < DAIN_QTY; i++) {\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "mDAIn[i] = DigitalAnalogIn(i);\n"
+    + Blockly.ArduinoCpp.INDENT + "}\n}\n\n"
+    + "void loop() {\n"
+    + branch + "\n"
+    + Blockly.ArduinoCpp.INDENT + "while(true) {\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "/* infinite loop used as breakpoint */\n"
+    + Blockly.ArduinoCpp.INDENT + Blockly.ArduinoCpp.INDENT + "delay(1);" + "\n"
+    + Blockly.ArduinoCpp.INDENT + "}\n"
+    + "}";
   return code;
 };
 
