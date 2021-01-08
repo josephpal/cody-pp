@@ -13,7 +13,7 @@
       </div>
 
       <div class="version-tag">
-        <a>r-1.2.1</a>
+        <a>r-1.2.3</a>
       </div>
     </div>
 
