@@ -71,6 +71,13 @@ class SocketConnector {
     return new Promise((resolve, reject) => {
       this.socket.send(`${requestType}/${data}`);
 
+      if( requestType === SocketMessageTypes.PING ) {
+          var currentdate = new Date();
+          var datetime = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds() + ":" + currentdate.getMilliseconds();
+
+          console.log("Sending: PING @" + datetime);
+      }
+
       const onMessage = ({ data }) => {
           const type = data.split('/')[0];
 
@@ -133,13 +140,19 @@ class SocketConnector {
   _startPingPong() {
     this.pingPongInterval = setInterval(() => {
       this.pingPongTimeout = setTimeout(() => {
-        console.error("Websocket server connection timed out!")
+        var currentdate = new Date();
+        var datetime = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds() + ":" + currentdate.getMilliseconds();
+
+        console.error("Websocket server connection timed out @" + datetime)
         this.close();
-      }, 1500);
+      }, 3500);
 
       return this.send(SocketMessageTypes.PING, '', SocketMessageTypes.PONG)
         .then(() => {
-          console.log("Received: PONG");
+          var currentdate = new Date();
+          var datetime = currentdate.getHours() + ":" + currentdate.getMinutes() + ":" + currentdate.getSeconds() + ":" + currentdate.getMilliseconds();
+
+          console.log("Received: PONG @" + datetime);
             if (this.pingPongTimeout) {
               console.log("Clearing timeout ...");
               clearTimeout(this.pingPongTimeout);
@@ -147,7 +160,7 @@ class SocketConnector {
         })
         .catch((err) => (console.error("Can not send ping!", err)));
 
-    }, 3000);
+    }, 5000);
   }
 }
 
