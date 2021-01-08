@@ -38,6 +38,8 @@ export default {
         showConnectBtnSpinner: false,
         showConfigPageBtnSpinner: false,
         placeholderIpAddress: __DEFAULT_IP__,
+        connectionTryCounter: 0,
+        maxConnectionTries: 5,
     }
   },
 
@@ -54,11 +56,24 @@ export default {
 
   methods: {
     onSocketClose() {
-        this.webSocketReady = false;
+        if( this.connectionTryCounter < this.maxConnectionTries && this.webSocketReady ) {
+            console.error("Websocket connection lost! Reconnecting ...");
+            this.webSocketReady = false;
+            this.connect();
+        } else {
+            console.error("Websocket connection closed!");
+            console.error(this.webSocketReady);
+            this.webSocketReady = false;
+        }
     },
 
     onConnectButtonClicked() {
+      this.connectionTryCounter = 0;
       this.connect();
+    },
+
+    reconnect() {
+
     },
 
     connect() {
@@ -68,6 +83,7 @@ export default {
       this.errorMessage = "";
 
       if( !this.webSocketReady ) {
+        /* button state: connect to ws */
         if( !validateIp(this.value) ) {
           //IP adress is not valid
           this.errorMessage = "Invalid IP address!";
@@ -82,8 +98,10 @@ export default {
           }
         }
       } else {
-          socketConnector.close();
+          /* button state: disonnect from ws */
+          this.webSocketReady = false;
           this.webSocketConnecting = false;
+          socketConnector.close();
       }
     },
 
@@ -94,11 +112,21 @@ export default {
         this.webSocketReady = true;
         this.showConnectBtnSpinner = false;
         this.webSocketConnecting = false;
+        this.connectionTryCounter = 0;
       }).catch(() => {
         this.showConnectBtnSpinner = false;
         this.webSocketReady = false;
-        this.errorMessage = `Not reacheable!`;
         this.webSocketConnecting = false;
+
+        this.connectionTryCounter+=1;
+
+        if( this.connectionTryCounter >= this.maxConnectionTries ) {
+            console.error("max connection tries to client reached!");
+            this.errorMessage = `Not reacheable!`;
+        } else {
+            console.log("Not reachable! Try to reconnect ... " + this.connectionTryCounter);
+            this.connect();
+        }
       });
     },
   },
@@ -142,7 +170,7 @@ export default {
 
         &:hover {
           border: 0;
-          background-color: $colorRed;
+          background-color: rgba($colorGreen, 0.8);
         }
       }
     }
