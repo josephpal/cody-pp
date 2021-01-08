@@ -544,4 +544,28 @@ Blockly.ArduinoCpp['circleGer'] = Blockly.ArduinoCpp['circle'];
 
 /* ------------------------------------------------------------------------------------------ */
 
+Blockly.interncode['distance'] = function(block) {
+  var dropdown_motordirection = block.getFieldValue('motorDirection');
+  var number_length = block.getFieldValue('length');
+
+  var code = '#EN,0,'+ dropdown_motordirection + ',2,' + number_length + ';' + ' \n';
+  return code;
+};
+
+Blockly.interncode['distanceGer'] = Blockly.interncode['distance'];
+
+Blockly.Cpp['distance'] = function(block) {
+  var code = 'TODO' + '\n';
+  return code;
+};
+
+Blockly.Cpp['distanceGer'] = Blockly.Cpp['distance'];
+
+Blockly.ArduinoCpp['distance'] = function(block) {
+  var code = 'TODO' + '\n';
+  return code;
+};
+
+Blockly.ArduinoCpp['distanceGer'] = Blockly.ArduinoCpp['distance'];
+
 /* ------------------------------------------------------------------------------------------ */

@@ -17,16 +17,16 @@ Blockly.Blocks['start'] = {
 };
 
 Blockly.Blocks['startGer'] = {
- init: function() {
-   this.appendDummyInput()
-       .appendField("Start");
-   this.appendStatementInput("state");
-   this.setColour(65);
-this.setTooltip("Jedes Programm muss mit diesem initialen Block eingeschlossen werden.");
-// + "It initializes all necessary objects which are needed by the robot."
-// + "A similar code example is the standard main function in all common programming languages."
-this.setHelpUrl("https://en.wikipedia.org/wiki/Entry_point");
-Blockly.BlockSvg.START_HAT = true;
+  init: function() {
+    this.appendDummyInput()
+    .appendField("Start");
+    this.appendStatementInput("state");
+    this.setColour(65);
+    this.setTooltip("Jedes Programm muss mit diesem initialen Block eingeschlossen werden.");
+    // + "It initializes all necessary objects which are needed by the robot."
+    // + "A similar code example is the standard main function in all common programming languages."
+    this.setHelpUrl("https://en.wikipedia.org/wiki/Entry_point");
+    Blockly.BlockSvg.START_HAT = true;
  }
 };
 
@@ -185,8 +185,8 @@ Blockly.Blocks['servoGer'] = {
    this.setPreviousStatement(true, null);
    this.setNextStatement(true, null);
    this.setColour(290);
-this.setTooltip("Bewege einen bestimmten Servo-Motor auf eine festgelegte Position (0 -> Unten, 100 -> Oben).");
-this.setHelpUrl("https://en.wikipedia.org/wiki/Servomotor");
+   this.setTooltip("Bewege einen bestimmten Servo-Motor auf eine festgelegte Position (0 -> Unten, 100 -> Oben).");
+   this.setHelpUrl("https://en.wikipedia.org/wiki/Servomotor");
  }
 };
 
@@ -434,8 +434,8 @@ Blockly.Blocks['controls_if1Ger'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(120);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setTooltip("");
+    this.setHelpUrl("");
   }
 };
 
@@ -450,8 +450,8 @@ Blockly.Blocks['controls_whileuntil1Ger'] = {
    this.setPreviousStatement(true, null);
    this.setNextStatement(true, null);
    this.setColour(120);
-this.setTooltip("Bedingte Schliefe, die eine (mehrere) Operation(en) solange ausführt, wie die Bedingung erfüllt ist.");
-this.setHelpUrl("");
+  this.setTooltip("Bedingte Schliefe, die eine (mehrere) Operation(en) solange ausführt, wie die Bedingung erfüllt ist.");
+  this.setHelpUrl("");
  }
 };
 
@@ -468,8 +468,8 @@ Blockly.Blocks['controls_repeat_extGer'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(120);
- this.setTooltip("Wiederhole nachfolgende Aktionen eine bestimmte Anzahl an Durchgängen.");
- this.setHelpUrl("");
+   this.setTooltip("Wiederhole nachfolgende Aktionen eine bestimmte Anzahl an Durchgängen.");
+   this.setHelpUrl("");
   }
 };
 
@@ -487,8 +487,8 @@ Blockly.Blocks['controls_ifelse1'] = {
 	this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
- this.setTooltip("Do an action if the passed statement (analog/digital compare) is true. Otherwise the else case will be reached.");
- this.setHelpUrl("https://en.wikipedia.org/wiki/Conditional_(computer_programming)#If%E2%80%93then(%E2%80%93else)");
+    this.setTooltip("Do an action if the passed statement (analog/digital compare) is true. Otherwise the else case will be reached.");
+    this.setHelpUrl("https://en.wikipedia.org/wiki/Conditional_(computer_programming)#If%E2%80%93then(%E2%80%93else)");
   }
 };
 
@@ -612,21 +612,21 @@ Blockly.Blocks['circleGer'] = {
 Blockly.Blocks['distance'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Motor M0")
-        .appendField("fahre")
-        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM0")
-        .appendField("für ")
-        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM0")
-        .appendField("cm")
-        .appendField("(max 100cm)");
-    this.appendDummyInput()
-        .appendField("Motor M1")
-        .appendField("fahre")
-        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM1")
-        .appendField("für")
+        .appendField("motor")
+        .appendField(new Blockly.FieldDropdown([["M0 & M1","0"]]), "motorNumber")
+        .appendField("direction")
+        .appendField(new Blockly.FieldDropdown([["left","0"], ["right","1"]]), "motorDirection")
+        .appendField("drive for ")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "length")
+        .appendField("cm");
+    /*this.appendDummyInput()
+        .appendField("motor")
+        .appendField(new Blockly.FieldDropdown([["M1","1"]]), "motorNumberM1")
+        .appendField("direction")
+        .appendField(new Blockly.FieldDropdown([["        ","0"], ["        ","1"]]), "motorDirectionM1")
+        .appendField("drive for ")
         .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM1")
-        .appendField("cm")
-        .appendField("(max 100cm)");
+        .appendField("cm");*/
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);
@@ -638,21 +638,21 @@ Blockly.Blocks['distance'] = {
 Blockly.Blocks['distanceGer'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Motor M0")
+        .appendField("Motor")
+        .appendField(new Blockly.FieldDropdown([["M0 & M1","0"]]), "motorNumber")
         .appendField("fahre")
-        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM0")
+        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirection")
         .appendField("für ")
-        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM0")
-        .appendField("cm")
-        .appendField("(max 100cm)");
-    this.appendDummyInput()
-        .appendField("Motor M1")
+        .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "length")
+        .appendField("cm");
+    /*this.appendDummyInput()
+        .appendField("Motor")
+        .appendField(new Blockly.FieldDropdown([["M1","1"]]), "motorNumberM1")
         .appendField("fahre")
-        .appendField(new Blockly.FieldDropdown([["links","0"], ["rechts","1"]]), "motorDirectionM1")
-        .appendField("für")
+        .appendField(new Blockly.FieldDropdown([["           ","0"], ["        ","1"]]), "motorDirectionM1")
+        .appendField("für ")
         .appendField(new Blockly.FieldNumber(0, 0, 100, 0.5), "lengthM1")
-        .appendField("cm")
-        .appendField("(max 100cm)");
+        .appendField("cm");*/
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(290);

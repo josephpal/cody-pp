@@ -11,7 +11,7 @@ WAS:  BESCHREIBUNG</comment>
             <label text="Motor Operationen:" web-class="toolboxLabelStyle"></label>
             <block type="motorGer"></block>
             <block type="stop_motorsGer"></block>
-            <!--<block type="distanceGer"></block>-->
+            <block type="distanceGer"></block>
 
             <label text="Servo-Motor hoch- oder runterfahren:" web-class="toolboxLabelStyle"></label>
             <block type="servoGer"></block>
@@ -295,7 +295,7 @@ What: DESCRIPTION</comment>
             <label text="motor operations:" web-class="toolboxLabelStyle"></label>
             <block type="motor"></block>
             <block type="stop_motors"></block>
-            <!--<block type="distance"></block>-->
+            <block type="distance"></block>
 
             <label text="move a servo up/down:" web-class="toolboxLabelStyle"></label>
             <block type="servo"></block>
