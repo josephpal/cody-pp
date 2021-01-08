@@ -68,12 +68,12 @@
     color: #fff;
     cursor: pointer;
     box-shadow: 2px 2px 10px $colorDarkestGrey;
-    background-color: rgba($colorRed, .8);
-    transition: background-color .3s;
+    background-color: rgba($colorGreen, 0.6);
+    transition: background-color .15s;
 
     &:hover {
       border: 0;
-      background-color: $colorRed;
+      background-color: rgba($colorGreen, 0.8);
     }
 
     &.disabled {
